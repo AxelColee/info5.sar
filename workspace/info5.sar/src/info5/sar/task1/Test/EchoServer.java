@@ -8,21 +8,22 @@ public class EchoServer {
 
 	public static int ARRAY_LENGTH = 256;
 	
-	public Task client;
+	public Task client1;
+	public Task client2;
+	public Task client3;
 	public Task server;
-
-	private byte[] dataToSend = new byte[ARRAY_LENGTH];
-	private byte[] dataReceived = new byte[ARRAY_LENGTH];
-
-	private Channel clientChannel;
-	private Channel serverChannel;
 
 	public Runnable getClientRunnable() {
         return () -> {
 
+			Task client = (Task) Thread.currentThread();
+
 			Broker broker = client.getBroker();
 
-			clientChannel = broker.connect("toto", 80);
+			byte[] dataToSend = new byte[ARRAY_LENGTH];
+	 		byte[] dataReceived = new byte[ARRAY_LENGTH];
+
+			Channel clientChannel = broker.connect("toto", 80);
 
 			for(int i = 0; i < ARRAY_LENGTH; i++)
 				dataToSend[i] = (byte) i;
@@ -47,6 +48,14 @@ public class EchoServer {
 
 			clientChannel.disconnect();
 
+
+			//Tests
+			for(int i = 0; i < ARRAY_LENGTH; i++){
+				assert(dataToSend[i] == dataReceived[i]) : "Data recieved different from the one sent : " + i;
+			}	
+
+			assert(clientChannel != null) : "Client Channel not initialized";
+			assert(clientChannel.disconnected() == true) : "Client Channel not disconnected";
 		};
 	}
 
@@ -55,9 +64,11 @@ public class EchoServer {
 
     		byte[] dataReceived = new byte[ARRAY_LENGTH];
 
+			Task server = (Task) Thread.currentThread();
+
 			Broker broker = server.getBroker();
 
-			serverChannel = broker.accept(80);
+			Channel serverChannel = broker.accept(80);
 
 			for(int i = 0; i < ARRAY_LENGTH;){
 				int readBytes = serverChannel.read(dataReceived, 0, ARRAY_LENGTH);
@@ -76,40 +87,40 @@ public class EchoServer {
 			}
 
 			serverChannel.disconnect();
+
+			assert(serverChannel != null) : "Server Channel not initialized";
+			assert(serverChannel.disconnected() == true): "Server Channel not disconnected";
 		};
 	}
 
 	private void setup(){
-		//this.client = new ...
+		//this.client1 = new ...
+		//this.client2 = new ...
+		//this.client3 = new ...
+
 		//this.server = new ...
 	}
 
-	public static void main(){
+	public static void main(String[] args){
 
 		EchoServer echoServer = new EchoServer();
 
 		echoServer.setup();
 
 		echoServer.server.start();
-		echoServer.client.start();
+		echoServer.client1.start();
+		echoServer.client2.start();
+		echoServer.client3.start();
 
 		try{
 			echoServer.server.join();
-			echoServer.client.join();
+			echoServer.client1.join();
+			echoServer.client2.join();
+			echoServer.client3.join();
+
 		}catch(InterruptedException e){
 			e.printStackTrace();
 		}
-
-		//Tests
-		for(int i = 0; i < ARRAY_LENGTH; i++){
-			assert(echoServer.dataToSend[i] == echoServer.dataReceived[i]) : "Data recieved different from the one sent : " + i;
-		}	
-
-		assert(echoServer.clientChannel != null) : "Client Channel not initialized";
-		assert(echoServer.clientChannel.disconnected() == true) : "Client Channel not disconnected";
-
-		assert(echoServer.serverChannel != null) : "Client Channel not initialized";
-		assert(echoServer.serverChannel.disconnected() == true): "Client Channel not disconnected";
 		
 		System.out.println("TEST PASSED");
 
