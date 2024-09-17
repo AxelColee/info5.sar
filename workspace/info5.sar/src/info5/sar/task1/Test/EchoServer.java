@@ -36,7 +36,7 @@ public class EchoServer {
 				totalWroteBytes += wroteBytes;
 			}
 
-			//Sending all the data
+			//Getting all the data
 			for(int totalReadBytes = 0; totalReadBytes < ARRAY_LENGTH;){
 				int readBytes = clientChannel.read(dataReceived, 0, ARRAY_LENGTH);
 				if (readBytes < 0) {
