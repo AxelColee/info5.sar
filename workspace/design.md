@@ -3,7 +3,7 @@
 ## Broker Class
 Broker has to be **synchronized**. Indeed, when several connections occur on the same broker, each one of them as to be treated sequentially. For instance, it applies for multiple accept et connect coming simultaneously.
 
-To manage all the incomming connections. A broker needs to have a list of Rdv, a class describe later. 
+To manage all the incomming connections. A broker needs to have a list of Rdv, a class described later. 
 
 
 ### Attributes
@@ -19,16 +19,13 @@ To manage all the incomming connections. A broker needs to have a list of Rdv, a
 *Broker(BrokerManager brokerManager, String name)* : Sets *brokerManager* and *name* 
 
 ### Methods
-- *public Channel accept(int port)* : Declare a port on which other broker will be able to connect. Creates a new RDV instance to be added to rdvs.
+- *public Channel accept(int port)* : calls private method accept(Broker, port).
 
-- *public Connect(String name, int port)* Tries to connect to the broker *name* on the port *port*. Calls the methods *Connect*
-Si le broker manager ne connait pas alors null
-If the broker targetted has a running port then waits
+- *public Connect(String name, int port)* Tries to connect to the broker *name* on the port *port*. Calls the methods *Connect* on the broker giving its own reference too.
 
+- *private Channel Connect(Broker brokerConnect, int port)*: Creates*brokerConnect* tries to connect to find an Rdv < Accept > on the port *port* in *_rdvs*. If not adds a new entry to rdvs. Returns the Communication Channel. HAs to synchronized *_rdvs* as several threads can access the same broker and so *_rdvs*. if not any rdv match then creates a new rdv and calls connect on this one. 
 
-- *private Channel Connect(Broker brokerConnect, int port)*: Creates*brokerConnect* tries to connect to find an Rdv < Accept > on the port *port* in *_rdvs*. If not adds a new entry to rdvs. Returns the Communication Channel.
-
-- *private Channel Accept (Broker brokerAccept, int port)* : Tries to find a Rdv< Accept  >  to connect otherwise creates a new Rdv < Connect > instance and adds it to the list. Returns the new communication Channel.
+- *private Channel Accept (Broker brokerAccept, int port)* : Goes through *_rdvs*. If a matching rendez vous is found return accept on this rendez-vous. If an other accept is found raises an IllegalStateException. Finally if the there aren't any match or erro a new Rdv instance of this accept is created 
 
 
 ## Rdv Class
@@ -47,9 +44,9 @@ If the broker targetted has a running port then waits
 
 
 ### Methods
--*public Channel connect(Broker brokerConnect)* : Set the distant broker as *BrokerConnect*. Checks if the two broker already arrived. If they haven't, puts the broker thread to sleep. Else wake the other one up and creates a the channele and linked them by two circluarBuffer. The channels have to be created before the Accept thread is woke up. Uses a timeout to stop connection if time exceeds givent time
+-*public Channel connect(Broker brokerConnect)* : Set the distant broker as *BrokerConnect*. Checks if the two broker already arrived. If they haven't, puts the broker thread waiting. Else notify the other one up and creates a the channel and linked them by two circluarBuffer. The channels have to be created before the Accept thread is woke up. Uses a timeout to stop connection if time exceeds givent time.
 
--*public Channel accept(Broker b)* : Set the local Broker as *brokerAccept*. Checks if the two broker already arrived. If they haven't, puts the broker thread to sleep. Else wake the other one up and creates a the channele and linked them by two circluarBuffer. The channels have to be created before the Connect thread is woke up. 
+-*public Channel accept(Broker brokerAccept)* : Set the local Broker as *brokerAccept*. Checks if the two broker already arrived. If they haven't, puts the broker thread waitig. Else notify the other one up and creates a the channel and linked them by two circluarBuffer. The channels have to be created before the Connect thread is woke up. 
 
 -*private Channel newChannels()* : Creates two circular buffer referenced them into two channles and set those ones as *channelAccept* and *channelConnect*.
 
@@ -71,7 +68,7 @@ Every Task has an set of objects associated in order to achive its function : Th
 - static Broker getBroker();
 To call this method, as Task extends Thread , we can access this method evry where using *(Task) Thread.currentThread()*
 
-- *public void start()* : Overwriting the defaukt Thread method and running the class runnable *_runnable*.
+- *public void run()* : Overwrites the default Thread method and runs the class runnable *_runnable*.
 
 ## Channel 
 Channels are the objects used by the task to communicate. Each Channel is known by a task and knows two circular buffer to communicate withe an other channel.
@@ -90,13 +87,16 @@ Channels are the objects used by the task to communicate. Each Channel is known 
 
 ### Methods 
 
-*public int write(byte[] bytes, int offset, int length)* : Returns the number of bytes wrote. Calls the method put on the *out* CircularBuffer. if this methods catches an illegalStateException("full"), stop the execution until it can put again. If *disconnected* returns true, a DisconnectedChannelException wille be raised.
+*public int write(byte[] bytes, int offset, int length)* : Returns the number of bytes wrote. Calls the method put on the *_out* CircularBuffer. if this methods catches an illegalStateException("full"), stop the execution until it can put again (*wait()*). 
+Has to synchronize the *_out* buffer. If *disconnected* returns true, a DisconnectedChannelException will be raised.
 If a disconnection channels is received from the other end, write the remaining bytes as if the channles were still connecting, dropping silently the last bytes
 
-*public int read(byte[] bytes, int offset, int length)* : Returns the number of bytes read. Calls the metjod get on the in buffer. if this methods catches an illegalStateException("empty"), stop the execution until it can pull again. If *disconnected* returns true, a DisconnectedChannelException wille be raised.
+*public int read(byte[] bytes, int offset, int length)* : Returns the number of bytes read. Calls the metjod get on the in buffer. if this methods catches an illegalStateException("empty"), stop the execution until it can pull again (*wait()*). Has to synchronize on the *_in* buffer. If *disconnected* returns true, a DisconnectedChannelException wille be raised.
 If a disconnection channels is received from the other end, read the remaining bytes
 
-*disconnect()* : sets *disconnected* to true and sends 
+*public void disconnect()* : sets *disconnected* to true and sends 
+
+*public boolean disconnected()* : returns *_disconnected*;
 
 ## BrokerManager Class
 
