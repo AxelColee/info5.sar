@@ -1,27 +1,16 @@
 package info5.sar.task1;
 
+import info5.sar.task1.Impl.DisconnectedException;
 
-public class Channel{
+public abstract class Channel{
 
-	public int read(byte[] bytes, int offset, int length) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'read'");
-	}
+	public abstract int read(byte[] bytes, int offset, int length) throws DisconnectedException;
 
-	public int write(byte[] bytes, int offset, int length) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'write'");
-	}
+	public abstract int write(byte[] bytes, int offset, int length) throws DisconnectedException;
 
-	public void disconnect() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'disconnect'");
-	}
+	public abstract void disconnect();
 
-	public boolean disconnected() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'disconnected'");
-	}
+	public abstract boolean disconnected();
 
     
 }

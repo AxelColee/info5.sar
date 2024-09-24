@@ -3,20 +3,24 @@ package info5.sar.task1.Test;
 import info5.sar.task1.Broker;
 import info5.sar.task1.Channel;
 import info5.sar.task1.Task;
+import info5.sar.task1.Impl.BrokerImpl;
+import info5.sar.task1.Impl.BrokerManager;
+import info5.sar.task1.Impl.DisconnectedException;
+import info5.sar.task1.Impl.TaskImpl;
 
 public class EchoServer {
 
 	public static int ARRAY_LENGTH = 256;
 	
-	public Task client1;
-	public Task client2;
-	public Task client3;
-	public Task server;
+	public TaskImpl client1;
+	public TaskImpl client2;
+	public TaskImpl client3;
+	public TaskImpl server;
 
 	public Runnable getClientRunnable() {
         return () -> {
 
-			Task client = (Task) Thread.currentThread();
+			TaskImpl client = (TaskImpl) Thread.currentThread();
 
 			Broker broker = client.getBroker();
 
@@ -30,16 +34,29 @@ public class EchoServer {
 
 			//Sending all the data
 			for(int totalWroteBytes = 0; totalWroteBytes < 256;){
-				int wroteBytes = clientChannel.write(dataToSend, 0, ARRAY_LENGTH);
+				int wroteBytes = 0;
+				try {
+					wroteBytes = clientChannel.write(dataToSend, 0, ARRAY_LENGTH);
+				} catch (DisconnectedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (wroteBytes < 0) {
 					throw new Error("Write error");
 				}
 				totalWroteBytes += wroteBytes;
 			}
 
+
 			//Getting all the data
 			for(int totalReadBytes = 0; totalReadBytes < ARRAY_LENGTH;){
-				int readBytes = clientChannel.read(dataReceived, 0, ARRAY_LENGTH);
+				int readBytes = 0;
+				try {
+					readBytes = clientChannel.read(dataReceived, 0, ARRAY_LENGTH);
+				} catch (DisconnectedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (readBytes < 0) {
 					throw new Error("Read error");
 				}
@@ -64,14 +81,22 @@ public class EchoServer {
 
     		byte[] dataReceived = new byte[ARRAY_LENGTH];
 
-			Task server = (Task) Thread.currentThread();
+    		Thread t = Thread.currentThread();
+    		
+			TaskImpl server = (TaskImpl) t;
 
 			Broker broker = server.getBroker();
 
 			Channel serverChannel = broker.accept(80);
 
 			for(int i = 0; i < ARRAY_LENGTH;){
-				int readBytes = serverChannel.read(dataReceived, 0, ARRAY_LENGTH);
+				int readBytes = 0;
+				try {
+					readBytes = serverChannel.read(dataReceived, 0, ARRAY_LENGTH);
+				} catch (DisconnectedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (readBytes < 0) {
 					throw new Error("Read error");
 				}
@@ -79,7 +104,13 @@ public class EchoServer {
 			}
 
 			for(int i = 0; i < ARRAY_LENGTH;){
-				int wroteBytes = serverChannel.write(dataReceived, 0, ARRAY_LENGTH);
+				int wroteBytes = 0;
+				try {
+					wroteBytes = serverChannel.write(dataReceived, 0, ARRAY_LENGTH);
+				} catch (DisconnectedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if (wroteBytes < 0) {
 					throw new Error("Write error");
 				}
@@ -88,17 +119,24 @@ public class EchoServer {
 
 			serverChannel.disconnect();
 
+
 			assert(serverChannel != null) : "Server Channel not initialized";
 			assert(serverChannel.disconnected() == true): "Server Channel not disconnected";
 		};
 	}
 
 	private void setup(){
-		//this.client1 = new ...
-		//this.client2 = new ...
-		//this.client3 = new ...
-
-		//this.server = new ...
+		
+		BrokerManager brokerManager = BrokerManager.getInstance();
+		
+		Broker broker1 = new BrokerImpl("toto", brokerManager);
+		Broker broker2 = new BrokerImpl("titi", brokerManager);
+	
+		this.client1 = new TaskImpl(broker2, this.getClientRunnable());
+		this.client2 = new TaskImpl(broker2, this.getClientRunnable());
+		this.client3 = new TaskImpl(broker2, this.getClientRunnable());
+		
+		this.server = new TaskImpl(broker1, this.getServerRunnable());
 	}
 
 	public static void main(String[] args){
@@ -109,14 +147,14 @@ public class EchoServer {
 
 		echoServer.server.start();
 		echoServer.client1.start();
-		echoServer.client2.start();
-		echoServer.client3.start();
+//		echoServer.client2.start();
+//		echoServer.client3.start();
 
 		try{
 			echoServer.server.join();
 			echoServer.client1.join();
-			echoServer.client2.join();
-			echoServer.client3.join();
+//			echoServer.client2.join();
+//			echoServer.client3.join();
 
 		}catch(InterruptedException e){
 			e.printStackTrace();
