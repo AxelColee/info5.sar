@@ -13,6 +13,8 @@ public class Rdv {
 		this._port = port;
 	}
 	
+	
+	//Uatre possibilité avec des channels qui initilisent les in. Quan ils arrivent ici seulement le deuxieme qui arrivent lie les deux channels sinon attend
 	@SuppressWarnings("static-access")
 	synchronized public Channel connect(BrokerImpl brokerConnect){
 		

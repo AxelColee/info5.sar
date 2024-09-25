@@ -11,9 +11,9 @@ public class BrokerImpl extends info5.sar.task1.Broker{
 	
 	public String _name; 
 	private BrokerManager _brokerManager;
-	private List<Rdv> _rdvs;
+	private List<Rdv> _rdvs; //Beteer to use a HashMap
 
-	public BrokerImpl(String name, BrokerManager brokerManager) {
+	public BrokerImpl(String name, BrokerManager brokerManager) { ///Get the broker manager in the constructor not given in the constructor
 		super(name);
 		this._name = name;
 		this._brokerManager = brokerManager;
@@ -37,6 +37,7 @@ public class BrokerImpl extends info5.sar.task1.Broker{
 			
 			rdv = new Rdv(port);
 			this._rdvs.add(rdv);
+			//_rdvs.notifyAll();
 		}
 		return rdv.accept(this);
 		
@@ -47,6 +48,10 @@ public class BrokerImpl extends info5.sar.task1.Broker{
 		return this._brokerManager.connect(this, name, port);
 	}
 	
+	
+	
+	/// An other way is to make all the connect wait here. Let only the first one pass to rdv. 
+	//Juste le notify dans e accept (seul un nouveau accept permet au connect d'avoir un rendez vous 
 	Channel connect(BrokerImpl brokerConnect, int port) {
 		Rdv rdv;
 		synchronized (_rdvs) {
@@ -58,7 +63,6 @@ public class BrokerImpl extends info5.sar.task1.Broker{
 			
 			rdv = new Rdv(port);
 			this._rdvs.add(rdv);
-
 		}
 		
 		return rdv.connect(this);

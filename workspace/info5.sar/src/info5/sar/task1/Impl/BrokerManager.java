@@ -10,7 +10,7 @@ public final class BrokerManager {
 	
 	private static final BrokerManager INSTANCE = new BrokerManager();
 	
-	private List<Broker> _brokers;
+	private List<Broker> _brokers; // Better to use a HAshMap
 	
 	private BrokerManager() {
 		_brokers = new LinkedList<Broker>();
@@ -20,7 +20,9 @@ public final class BrokerManager {
         return INSTANCE;
     }
 	
-	public Channel connect(BrokerImpl brokerConnect, String name, int port) {
+	
+	//Avoir une methode de get plutot que connect et ensuite faire le connect dans la classe appelante
+	public synchronized Channel connect(BrokerImpl brokerConnect, String name, int port) {
 		for(Broker broker: _brokers) {
 			BrokerImpl brokerImpl = (BrokerImpl) broker;
 			if(brokerImpl.getName().equals(name)) {
@@ -30,7 +32,8 @@ public final class BrokerManager {
 		return null;
 	}
 	
-	public void addBroker(Broker broker) {
+	public synchronized void addBroker(Broker broker) {
+		//check if this broker is already in the list or if one has the same name 
 		this._brokers.add(broker);
 	}
 
