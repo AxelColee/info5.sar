@@ -6,18 +6,16 @@ import info5.sar.task1.Channel;
 public class Rdv {
 
 	private int _port;
-	private BrokerImpl _brokerAccept, _brokerConnect;
-	private Channel _channelAccept, _channelConnect;
+	private Broker _brokerAccept, _brokerConnect;
+	private ChannelImpl _channelAccept, _channelConnect;
 	
 	public Rdv(int port) {
 		this._port = port;
 	}
 	
-	@SuppressWarnings("static-access")
-	synchronized public Channel connect(BrokerImpl brokerConnect){
-		
-		this._brokerConnect = brokerConnect;
-		
+	
+	synchronized public Channel connect(){
+				
 		if(this._brokerAccept != null) {
 			this.newChannels();
 			
@@ -35,11 +33,8 @@ public class Rdv {
 		
 	}
 	
-	@SuppressWarnings("static-access")
-	synchronized public Channel accept(BrokerImpl brokerAccept){
-		
-		this._brokerAccept = brokerAccept;
-		
+	synchronized public Channel accept(){
+				
 		if(this._brokerConnect != null) {
 			this.newChannels();
 			
@@ -55,17 +50,20 @@ public class Rdv {
 				e.printStackTrace();
 			}
 		}
-		_brokerAccept.getRdvs().remove(this);
 		return this._channelAccept;
 		
 	}
 	
 	private void newChannels() {
-		CircularBuffer in = new CircularBuffer(100);
-		CircularBuffer out = new CircularBuffer(100);
 		
-		this._channelAccept = new ChannelImpl(in, out);
-		this._channelConnect = new ChannelImpl(out, in);
+		this._channelAccept = new ChannelImpl();
+		this._channelConnect = new ChannelImpl();
+		
+		this._channelAccept._out = this._channelConnect._in;
+		this._channelConnect._out = this._channelAccept._in;
+		
+		this._channelAccept._rch = this._channelConnect;
+		this._channelConnect._rch = this._channelAccept;
 	}
 	
 	public int getPort() {
@@ -78,6 +76,14 @@ public class Rdv {
 	
 	public boolean isConnect() {
 		return this._brokerConnect != null;
+	}
+	
+	public void setConnectBroker(Broker b) {
+		this._brokerConnect = b;
+	}
+	
+	public void setAcceptBroker(Broker b) {
+		this._brokerAccept = b;
 	}
 	
 	

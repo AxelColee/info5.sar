@@ -28,7 +28,7 @@ public class EchoServer {
 	 		byte[] dataReceived = new byte[ARRAY_LENGTH];
 
 			Channel clientChannel = broker.connect("toto", 80);
-
+			
 			for(int i = 0; i < ARRAY_LENGTH; i++)
 				dataToSend[i] = (byte) i;
 
@@ -73,6 +73,7 @@ public class EchoServer {
 
 			assert(clientChannel != null) : "Client Channel not initialized";
 			assert(clientChannel.disconnected() == true) : "Client Channel not disconnected";
+			
 		};
 	}
 
@@ -86,51 +87,54 @@ public class EchoServer {
 			TaskImpl server = (TaskImpl) t;
 
 			Broker broker = server.getBroker();
+			
+			for(int j = 0; j < 3; j++) {
+				Channel serverChannel = broker.accept(80);
 
-			Channel serverChannel = broker.accept(80);
+				for(int i = 0; i < ARRAY_LENGTH;){
+					int readBytes = 0;
+					try {
+						readBytes = serverChannel.read(dataReceived, 0, ARRAY_LENGTH);
+					} catch (DisconnectedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (readBytes < 0) {
+						throw new Error("Read error");
+					}
+					i += readBytes;
+				}
 
-			for(int i = 0; i < ARRAY_LENGTH;){
-				int readBytes = 0;
-				try {
-					readBytes = serverChannel.read(dataReceived, 0, ARRAY_LENGTH);
-				} catch (DisconnectedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				for(int i = 0; i < ARRAY_LENGTH;){
+					int wroteBytes = 0;
+					try {
+						wroteBytes = serverChannel.write(dataReceived, 0, ARRAY_LENGTH);
+					} catch (DisconnectedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if (wroteBytes < 0) {
+						throw new Error("Write error");
+					}
+					i += wroteBytes;
 				}
-				if (readBytes < 0) {
-					throw new Error("Read error");
-				}
-				i += readBytes;
+				
+				serverChannel.disconnect();
+
+
+				assert(serverChannel != null) : "Server Channel not initialized";
+				assert(serverChannel.disconnected() == true): "Server Channel not disconnected";
+				
 			}
-
-			for(int i = 0; i < ARRAY_LENGTH;){
-				int wroteBytes = 0;
-				try {
-					wroteBytes = serverChannel.write(dataReceived, 0, ARRAY_LENGTH);
-				} catch (DisconnectedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if (wroteBytes < 0) {
-					throw new Error("Write error");
-				}
-				i += wroteBytes;
-			}
-
-			serverChannel.disconnect();
-
-
-			assert(serverChannel != null) : "Server Channel not initialized";
-			assert(serverChannel.disconnected() == true): "Server Channel not disconnected";
+			
 		};
 	}
 
 	private void setup(){
 		
-		BrokerManager brokerManager = BrokerManager.getInstance();
 		
-		Broker broker1 = new BrokerImpl("toto", brokerManager);
-		Broker broker2 = new BrokerImpl("titi", brokerManager);
+		Broker broker1 = new BrokerImpl("toto");
+		Broker broker2 = new BrokerImpl("titi");
 	
 		this.client1 = new TaskImpl(broker2, this.getClientRunnable());
 		this.client2 = new TaskImpl(broker2, this.getClientRunnable());
@@ -147,14 +151,14 @@ public class EchoServer {
 
 		echoServer.server.start();
 		echoServer.client1.start();
-//		echoServer.client2.start();
-//		echoServer.client3.start();
+		echoServer.client2.start();
+		echoServer.client3.start();
 
 		try{
 			echoServer.server.join();
 			echoServer.client1.join();
-//			echoServer.client2.join();
-//			echoServer.client3.join();
+			echoServer.client2.join();
+			echoServer.client3.join();
 
 		}catch(InterruptedException e){
 			e.printStackTrace();
