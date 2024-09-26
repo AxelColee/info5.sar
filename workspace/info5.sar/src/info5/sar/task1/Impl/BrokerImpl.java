@@ -9,65 +9,81 @@ import info5.sar.task1.Task;
 
 public class BrokerImpl extends info5.sar.task1.Broker{
 	
-	public String _name; 
+	private String _name; 
 	private BrokerManager _brokerManager;
-	private List<Rdv> _rdvs; //Beteer to use a HashMap
+	private List<Rdv> _rdvs;
 
-	public BrokerImpl(String name, BrokerManager brokerManager) { ///Get the broker manager in the constructor not given in the constructor
+	public BrokerImpl(String name) {
 		super(name);
 		this._name = name;
-		this._brokerManager = brokerManager;
+		this._brokerManager = BrokerManager.getInstance();
 		this._rdvs = new LinkedList<Rdv>();
 		
-		brokerManager.addBroker(this);
+		_brokerManager.addBroker(this);
 	}
 
 	@Override
 	public Channel accept(int port) {
-		Rdv rdv;
+		Rdv rdv = null;
 		synchronized (_rdvs) {
 			for(Rdv r: this._rdvs) {
 				if(r.isAccept()) {
 					throw new IllegalStateException("Two Accepts on the same Broker");
 				}
 				if(r.isConnect() && r.getPort() == port) {
-					return r.accept(this);
+					rdv = r;
+					rdv.setAcceptBroker(this);
+					break;
 				}
 			}
 			
-			rdv = new Rdv(port);
-			this._rdvs.add(rdv);
-			//_rdvs.notifyAll();
+			if(rdv == null) {
+				rdv = new Rdv(port);
+				rdv.setAcceptBroker(this);
+				this._rdvs.add(rdv);
+			}else {
+				_rdvs.remove(rdv);
+			}
+
 		}
-		return rdv.accept(this);
+		return rdv.accept();
 		
 	}
 
 	@Override
 	public Channel connect(String name, int port) {
-		return this._brokerManager.connect(this, name, port);
+		
+		BrokerImpl remoteBroker = (BrokerImpl) _brokerManager.getBroker(name);
+		if(remoteBroker == null) {
+			return null;
+		}
+		
+		return remoteBroker.connect(this, port);
 	}
 	
 	
-	
-	/// An other way is to make all the connect wait here. Let only the first one pass to rdv. 
-	//Juste le notify dans e accept (seul un nouveau accept permet au connect d'avoir un rendez vous 
-	Channel connect(BrokerImpl brokerConnect, int port) {
-		Rdv rdv;
+	Channel connect(Broker brokerConnect, int port) {
+		Rdv rdv = null;
 		synchronized (_rdvs) {
 			for(Rdv r: this._rdvs) {
 				if(r.isAccept() && r.getPort() == port) {
-					return r.connect(brokerConnect);
+					rdv = r;
+					rdv.setConnectBroker(brokerConnect);
+					break;
 				}
 			}
 			
-			rdv = new Rdv(port);
-			this._rdvs.add(rdv);
+			if(rdv == null) {
+				rdv = new Rdv(port);
+				rdv.setConnectBroker(brokerConnect);
+				this._rdvs.add(rdv);
+			}else {
+				_rdvs.remove(rdv);
+			}
+	
 		}
 		
-		return rdv.connect(this);
-
-		
+		return rdv.connect();
 		
 	}
 	
