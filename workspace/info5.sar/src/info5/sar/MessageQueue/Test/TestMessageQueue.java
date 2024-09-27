@@ -1,6 +1,8 @@
 package info5.sar.MessageQueue.Test;
 
-import info5.sar.MessageQueue.Abstract.QueueBroker;
+import info5.sar.Channel.Abstract.Broker;
+import info5.sar.Channel.Impl.BrokerImpl;
+import info5.sar.MessageQueue.Impl.QueueBroker;
 
 public class TestMessageQueue {
 	
@@ -12,17 +14,17 @@ public class TestMessageQueue {
 	
 	private void setup() {
 		
-		//Broker brokerClient = new Broker("toto");
-		//Broker brokerServer = new Broker("titi");
+		Broker brokerClient = new BrokerImpl("client");
+		Broker brokerServer = new BrokerImpl("serveur");
 		
-		//QueueBroker queueBrokerClient = new QueueBroker(brokerClient);
-		//QueueBroker queueBrokerServer = new QueueBroker(brokerServer);
+		QueueBroker queueBrokerClient = new QueueBroker(brokerClient);
+		QueueBroker queueBrokerServer = new QueueBroker(brokerServer);
 		
-		//this.client1 = new EchoClient(queueBrokerClient);
-		//this.client2 = new EchoClient(queueBrokerClient);
-		//this.client3 = new EchoClient(queueBrokerClient);
+		this.client1 = new EchoClient(queueBrokerClient);
+		this.client2 = new EchoClient(queueBrokerClient);
+		this.client3 = new EchoClient(queueBrokerClient);
 		
-		//this.server = new EchoClient(queueBrokerServer);		
+		this.server = new EchoServer(queueBrokerServer);		
 	}
 	
 	public static void main(String[] args) {

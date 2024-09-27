@@ -3,18 +3,16 @@ package info5.sar.MessageQueue.Test;
 import info5.sar.Channel.Abstract.Broker;
 import info5.sar.MessageQueue.Abstract.MessageQueue;
 import info5.sar.MessageQueue.Abstract.QueueBroker;
-import info5.sar.MessageQueue.Abstract.Task;
+import info5.sar.MessageQueue.Impl.Task;
 
 public class EchoServer extends Task{
 	
 	static Runnable getEchoServerRunnable() {
 		return () ->{
-			EchoClient client = (EchoClient) EchoClient.getTask();
+			EchoServer client = (EchoServer) EchoServer.getTask();
 			
 			QueueBroker broker = client.getQueueBroker();
-			
-			String string = "Ceci est un message";
-			
+						
 			for(int i = 0; i < 3; i++) {
 				
 				MessageQueue messageQueue = broker.accept(80);
@@ -39,16 +37,5 @@ public class EchoServer extends Task{
 	
 	public EchoServer(QueueBroker b) {
 		super(b, EchoServer.getEchoServerRunnable());
-	}
-
-	@Override
-	protected Broker getBroker() {
-		return null;
-	}
-
-	@Override
-	protected QueueBroker getQueueBroker() {
-		return null;
-		
 	}
 }

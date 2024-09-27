@@ -1,12 +1,11 @@
 package info5.sar.MessageQueue.Test;
 
+import java.util.UUID;
+
 import info5.sar.Channel.Abstract.Broker;
-import info5.sar.Channel.Abstract.Channel;
-import info5.sar.Channel.Exception.DisconnectedException;
-import info5.sar.Channel.Impl.TaskImpl;
 import info5.sar.MessageQueue.Abstract.MessageQueue;
 import info5.sar.MessageQueue.Abstract.QueueBroker;
-import info5.sar.MessageQueue.Abstract.Task;
+import info5.sar.MessageQueue.Impl.Task;
 
 public class EchoClient extends Task{
 	
@@ -16,10 +15,10 @@ public class EchoClient extends Task{
 			
 			QueueBroker broker = client.getQueueBroker();
 			
-			String string = "Ceci est un message";
+			String string = UUID.randomUUID().toString() + UUID.randomUUID().toString();
 			byte[] message = string.getBytes();
 	
-			MessageQueue messageQueue = broker.connect("toto", 80);
+			MessageQueue messageQueue = broker.connect("serveur", 80);
 			
 			messageQueue.send(message, 0, message.length);
 			
@@ -46,17 +45,6 @@ public class EchoClient extends Task{
 	public EchoClient(QueueBroker b) {
 		super(b, EchoClient.getEchoClientRunnable());
 	}
-
-	@Override
-	protected Broker getBroker() {
-		return null;
-	}
-
-	@Override
-	protected QueueBroker getQueueBroker() {
-		return null;
-	}
-	
 	
 
 }
