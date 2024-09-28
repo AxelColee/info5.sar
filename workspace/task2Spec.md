@@ -21,7 +21,8 @@ Moreover, a Broker is always owned by a Task but several tasks can use the same 
 
 ## MessageQueue
 This class dictates how messages are sent and receive.
-A messageQueue will be used by Tasks in order to send a receieve whole message (a set of bytes). Message queue will hold a Channel (developped in task1) communicate.
+A messageQueue will be used by Tasks in order to send a receieve whole message (a set of bytes). Message queue will hold a Channel (developped in task1) to communicate.
+Furthermore Several task can use the same MessageQueue.
 
 ### Methods 
 *void send(byte[] bytes, int offset, int length)* : Sends a set of *length* bytes contained in the array *bytes* from *offset* byte. If the connection is closed before the end of the message. This method will keep sending the bytes silently. Send methods can only be executed if the Message Queue is not closed
