@@ -15,7 +15,7 @@ public class EchoClient extends Task{
 			
 			QueueBroker broker = client.getQueueBroker();
 			
-			String string = UUID.randomUUID().toString() + UUID.randomUUID().toString();
+			String string = UUID.randomUUID().toString().repeat(10);
 			byte[] message = string.getBytes();
 	
 			MessageQueue messageQueue = broker.connect("serveur", 80);
