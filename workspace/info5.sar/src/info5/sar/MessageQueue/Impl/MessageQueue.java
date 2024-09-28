@@ -12,7 +12,7 @@ public class MessageQueue extends info5.sar.MessageQueue.Abstract.MessageQueue{
 	}
 
 	@Override
-	public void send(byte[] bytes, int offset, int length) {
+	synchronized public void send(byte[] bytes, int offset, int length) {
 		
 		int nbSentBytes = 0;
 
@@ -40,7 +40,7 @@ public class MessageQueue extends info5.sar.MessageQueue.Abstract.MessageQueue{
 	}
 
 	@Override
-	public byte[] receive() {
+	synchronized public byte[] receive() {
 		int nbReceivedBytes = 0;
 		
 		byte[] size = new byte[1];
