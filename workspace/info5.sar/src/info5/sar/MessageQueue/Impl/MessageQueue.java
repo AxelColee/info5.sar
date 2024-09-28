@@ -15,17 +15,20 @@ public class MessageQueue extends info5.sar.MessageQueue.Abstract.MessageQueue{
 	synchronized public void send(byte[] bytes, int offset, int length) {
 		
 		int nbSentBytes = 0;
-
-		byte[] size = new byte[1];
-	    size[0] = (byte) length;
+		
+		byte[] size = new byte[4];
+	    size[0] = (byte) ((length  & 0xFF000000) >> 24);
+	    size[1] = (byte) ((length  & 0x00FF0000) >> 16);
+	    size[2] = (byte) ((length  & 0x0000FF00) >> 8);
+	    size[3] = (byte) (length  & 0x000000FF);
 	    
-	    do {
+	    while (nbSentBytes < 4) {
 	    	try {
-				nbSentBytes = _channel.write(size, 0, 1);
+				nbSentBytes = _channel.write(size, 0 + nbSentBytes, 4 - nbSentBytes);
 			} catch (DisconnectedException e) {
 				e.printStackTrace();
 			}
-		} while (nbSentBytes < 1);
+		} 
 	    
 		
 		nbSentBytes = 0;
@@ -43,18 +46,22 @@ public class MessageQueue extends info5.sar.MessageQueue.Abstract.MessageQueue{
 	synchronized public byte[] receive() {
 		int nbReceivedBytes = 0;
 		
-		byte[] size = new byte[1];
+		byte[] size = new byte[4];
 	    
-	    do {
+		while (nbReceivedBytes < 4) {
 	    	try {
-	    		nbReceivedBytes = _channel.read(size, 0, 1);
+	    		nbReceivedBytes = _channel.read(size, 0 + nbReceivedBytes, 4 - nbReceivedBytes);
 			} catch (DisconnectedException e) {
 				e.printStackTrace();
 			}
-		} while (nbReceivedBytes < 1);
+		} 
 	    
-	    int length = size[0];
-	    byte [] message = new byte[length];
+	    int length = ((size[0] & 0xFF) << 24) |
+                ((size[1] & 0xFF) << 16) |
+                ((size[2] & 0xFF) << 8) |
+                (size[3] & 0xFF);
+	    
+	    byte[] message = new byte[length];
 	    
 	    nbReceivedBytes = 0;
 		while(nbReceivedBytes < length) {
