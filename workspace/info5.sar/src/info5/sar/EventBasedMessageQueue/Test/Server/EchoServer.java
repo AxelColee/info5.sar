@@ -11,7 +11,7 @@ public class EchoServer extends Task{
 			
 			QueueBroker broker = client.getBroker();
 			
-			broker.bind(80, new EchoServerAcceptListener());
+			broker.bind(80, new EchoServerAcceptListener(broker));
 		};
 	}
 	

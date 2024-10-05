@@ -30,7 +30,7 @@ public class EchoServerMessageListener implements MessageListener{
 	}
 
 	@Override
-	public void sent(info5.sar.EventBasedMessageQueue.Abstract.Message message) {
+	public void sent(Message message) {
 		_queue.close();
 		
 		assert(_queue != null) : "Server queue not initialized";
