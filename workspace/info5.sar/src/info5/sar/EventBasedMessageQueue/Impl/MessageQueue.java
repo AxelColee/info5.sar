@@ -3,6 +3,7 @@ package info5.sar.EventBasedMessageQueue.Impl;
 import info5.sar.Channel.Exception.DisconnectedException;
 import info5.sar.Channel.Impl.ChannelImpl;
 import info5.sar.EventBasedMessageQueue.Impl.EventTasks.EventTask;
+import info5.sar.EventBasedMessageQueue.Impl.EventTasks.ReceiveEventTask;
 import info5.sar.EventBasedMessageQueue.Impl.EventTasks.SendEventTask;
 
 public class MessageQueue extends info5.sar.EventBasedMessageQueue.Abstract.MessageQueue{
@@ -12,6 +13,7 @@ public class MessageQueue extends info5.sar.EventBasedMessageQueue.Abstract.Mess
 	private MessageListener _listener;
 	private Message _msg;
 	private Message _msgLength;
+	private MessageQueue _rmq;
 	
 	public MessageQueue(ChannelImpl channel) {
 		super();
@@ -28,6 +30,7 @@ public class MessageQueue extends info5.sar.EventBasedMessageQueue.Abstract.Mess
 	@Override
 	public void send(Message message) {
 		EventTask task = new SendEventTask(this, message);
+		new ReceiveEventTask(_rmq);
 	}
 	
 	public boolean _send(Message message) {
@@ -114,6 +117,10 @@ public class MessageQueue extends info5.sar.EventBasedMessageQueue.Abstract.Mess
 	
 	private void resetMessage() {
 		_msg = null;
+	}
+	
+	public void setMsq(MessageQueue mq) {
+		_rmq = mq;
 	}
 
 }

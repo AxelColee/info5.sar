@@ -79,14 +79,15 @@ public class EventPump extends Thread{
             	
         	this.getNext();
         
-        	Future<?> future = executorService.submit(_currentRunnable);
+//        	Future<?> future = executorService.submit(_currentRunnable);
         	
         	try {
-        		future.get(MAX_EXECUTION_TIME_MS, TimeUnit.MILLISECONDS);          
+        		_currentRunnable.run();
+//        		future.get(MAX_EXECUTION_TIME_MS, TimeUnit.MILLISECONDS);          
             } catch (Exception e) {
             	// Nothing to do here
-            	future.cancel(true);
-            	executorService = Executors.newSingleThreadExecutor();
+//            	future.cancel(true);
+//            	executorService = Executors.newSingleThreadExecutor();
             }
         	
         	

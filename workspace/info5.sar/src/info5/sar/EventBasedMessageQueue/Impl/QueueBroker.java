@@ -75,11 +75,16 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 				MessageQueue queue1 = new MessageQueue(channel1);
 				MessageQueue queue2 = new MessageQueue(channel2);
 				
+				queue1.setMsq(queue2);
+				queue2.setMsq(queue1);
+				
 				listener.connected(queue1);
 				_accepts.get(port).accepted(queue2);
 				
-				EventTask task1 = new ReceiveEventTask(queue1);
-				EventTask task2 = new ReceiveEventTask(queue2);
+
+				
+//				EventTask task1 = new ReceiveEventTask(queue1);
+//				EventTask task2 = new ReceiveEventTask(queue2);
 				
 				return true;
 			}
