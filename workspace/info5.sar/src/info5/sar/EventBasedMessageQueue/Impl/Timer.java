@@ -20,7 +20,7 @@ public class Timer extends Thread {
             }
             
         } catch (InterruptedException e) {
-            //Nothing to do here
+        	System.out.println("jebvbueu");
         }
     }
 }

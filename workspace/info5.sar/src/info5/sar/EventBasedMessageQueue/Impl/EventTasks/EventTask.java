@@ -28,5 +28,5 @@ public abstract class EventTask implements Runnable {
 	public static EventTask getTask() {
 		return (EventTask) EventPump.getCurrentRunnable();
 	}
-
+	
 }

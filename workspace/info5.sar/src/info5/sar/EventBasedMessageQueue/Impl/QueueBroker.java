@@ -79,6 +79,7 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 				_accepts.get(port).accepted(queue2);
 				
 				EventTask task1 = new ReceiveEventTask(queue1);
+				EventTask task2 = new ReceiveEventTask(queue2);
 				
 				return true;
 			}
