@@ -1,5 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Abstract;
 
+import info5.sar.EventBasedMessageQueue.Impl.Message;
+
 public abstract class MessageQueue {
 	public interface MessageListener {
         void received(byte[] bytes);

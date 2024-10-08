@@ -1,6 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
-import info5.sar.EventBasedMessageQueue.Abstract.Message;
+import info5.sar.EventBasedMessageQueue.Impl.EventPump;
+import info5.sar.EventBasedMessageQueue.Impl.Message;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue.MessageListener;
 
@@ -8,6 +9,7 @@ public class EchoClientMessageListener implements MessageListener{
 	
 	private MessageQueue _queue;
 	private Message _message;
+	private static int cpt = 0;
 	
 	public EchoClientMessageListener(MessageQueue queue, Message msg) {
 		_queue = queue;
@@ -16,7 +18,7 @@ public class EchoClientMessageListener implements MessageListener{
 
 	@Override
 	public void received(byte[] bytes) {
-		_queue.close();
+		//_queue.close();
 		
 		//Tests
 		for(int i = 0; i < _message.getLength(); i++){
@@ -25,6 +27,12 @@ public class EchoClientMessageListener implements MessageListener{
 
 		assert(_queue != null) : "Client Queue not initialized";
 		assert(_queue.closed() == true) : "Client Queue not disconnected";
+		
+		System.out.println("Client passed");
+		
+		if(cpt++ >= 2) {
+			EventPump.getInstance().stopPump();
+		}
 	}
 
 	@Override
@@ -34,7 +42,7 @@ public class EchoClientMessageListener implements MessageListener{
 
 	@Override
 	public void sent(Message message) {
-		//Is receiving
+		
 	}
 
 }

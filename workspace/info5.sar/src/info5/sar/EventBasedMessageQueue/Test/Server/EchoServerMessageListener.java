@@ -9,7 +9,7 @@ public class EchoServerMessageListener implements MessageListener{
 	
 	private MessageQueue _queue;
 	private QueueBroker _broker;
-	private int cpt = 0;
+	private static int cpt = 0;
 	
 	public EchoServerMessageListener(MessageQueue queue, QueueBroker broker) {
 		_queue = queue;
@@ -19,9 +19,6 @@ public class EchoServerMessageListener implements MessageListener{
 	@Override
 	public void received(byte[] bytes) {
 		_queue.send(new Message(bytes, 0, bytes.length));
-		if(++cpt >= 3) {
-			_broker.unbind(80);
-		}
 	}
 
 	@Override
@@ -30,11 +27,14 @@ public class EchoServerMessageListener implements MessageListener{
 	}
 
 	@Override
-	public void sent(info5.sar.EventBasedMessageQueue.Abstract.Message message) {
-		_queue.close();
+	public void sent(Message message) {
 		
 		assert(_queue != null) : "Server queue not initialized";
 		assert(_queue.closed() == true) : "Server queue not disconnected";
+		
+		if(cpt++ >= 2) {
+			System.out.println("Server passed");
+		}
 
 	}
 

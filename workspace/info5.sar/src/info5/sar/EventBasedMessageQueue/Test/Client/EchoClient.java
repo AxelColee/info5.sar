@@ -12,7 +12,7 @@ public class EchoClient extends Task{
 			
 			QueueBroker broker = client.getBroker();
 			
-			broker.connect("toto", 80, new EchoClientConnectListener());
+			broker.connect("serverBroker", 80, new EchoClientConnectListener());
 		};
 		
 	}
