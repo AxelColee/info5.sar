@@ -1,6 +1,9 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
 import info5.sar.EventBasedMessageQueue.Impl.Message;
+
+import java.util.UUID;
+
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.QueueBroker.ConnectListener;
 
@@ -9,7 +12,7 @@ public class EchoClientConnectListener implements ConnectListener{
 	@Override
 	public void connected(MessageQueue queue) {
 		
-		Message msg = new Message("Hello from Client".getBytes(), 0, "Hello from Client".length());
+		Message msg = new Message(UUID.randomUUID().toString().repeat(10).getBytes());
 		
 		queue.setListener(new EchoClientMessageListener(queue, msg));
 		
