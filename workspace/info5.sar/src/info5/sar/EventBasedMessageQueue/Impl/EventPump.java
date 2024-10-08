@@ -55,8 +55,6 @@ public class EventPump extends Thread{
     
     public void stopPump() {
     	this._running = false;
-    	this.stop();
-    	System.out.println("stopppp");
     }
     
     
@@ -75,19 +73,13 @@ public class EventPump extends Thread{
                     }
                 }
 			}
-            	
-            	
+            		
         	this.getNext();
         
-//        	Future<?> future = executorService.submit(_currentRunnable);
-        	
         	try {
         		_currentRunnable.run();
-//        		future.get(MAX_EXECUTION_TIME_MS, TimeUnit.MILLISECONDS);          
             } catch (Exception e) {
-            	// Nothing to do here
-//            	future.cancel(true);
-//            	executorService = Executors.newSingleThreadExecutor();
+            	
             }
         	
         	

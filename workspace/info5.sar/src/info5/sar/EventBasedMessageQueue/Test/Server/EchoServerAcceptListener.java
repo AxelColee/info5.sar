@@ -7,6 +7,7 @@ import info5.sar.EventBasedMessageQueue.Abstract.QueueBroker.AcceptListener;
 public class EchoServerAcceptListener implements AcceptListener{
 	
 	private QueueBroker _broker;
+	private int cpt = 0;
 	
 	public EchoServerAcceptListener(QueueBroker broker) {
 		_broker = broker;
@@ -16,6 +17,10 @@ public class EchoServerAcceptListener implements AcceptListener{
 	public void accepted(MessageQueue queue) {
 		
 		queue.setListener(new EchoServerMessageListener(queue, _broker));
+		
+		if(cpt++ >= 2) {
+			_broker.unbind(80);
+		}
 	}
 
 }

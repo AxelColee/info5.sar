@@ -1,6 +1,5 @@
 package info5.sar.EventBasedMessageQueue.Test.Server;
 
-import info5.sar.EventBasedMessageQueue.Impl.EventPump;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue.MessageListener;
@@ -10,7 +9,7 @@ public class EchoServerMessageListener implements MessageListener{
 	
 	private MessageQueue _queue;
 	private QueueBroker _broker;
-	private int cpt = 0;
+	private static int cpt = 0;
 	
 	public EchoServerMessageListener(MessageQueue queue, QueueBroker broker) {
 		_queue = queue;
@@ -20,10 +19,6 @@ public class EchoServerMessageListener implements MessageListener{
 	@Override
 	public void received(byte[] bytes) {
 		_queue.send(new Message(bytes, 0, bytes.length));
-		if(cpt++ >= 2) {
-			_broker.unbind(80);
-			
-		}
 	}
 
 	@Override
@@ -36,6 +31,10 @@ public class EchoServerMessageListener implements MessageListener{
 		
 		assert(_queue != null) : "Server queue not initialized";
 		assert(_queue.closed() == true) : "Server queue not disconnected";
+		
+		if(cpt++ >= 2) {
+			System.out.println("Server passed");
+		}
 
 	}
 
