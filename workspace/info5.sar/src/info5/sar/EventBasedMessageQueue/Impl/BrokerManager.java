@@ -17,13 +17,13 @@ public class BrokerManager {
         return INSTANCE;
     }
 	
-	public synchronized QueueBroker getBroker(String name) {
+	public QueueBroker getBroker(String name) {
 		QueueBroker broker =  _brokers.get(name);
 		
 		return broker;
 	}
 	
-	public synchronized void registerBroker(QueueBroker broker) {
+	public void registerBroker(QueueBroker broker) {
 		
 		String name = broker.name();
 		

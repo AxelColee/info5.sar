@@ -31,10 +31,8 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 	}
 	
 	public boolean _unbind(int port) {
-		synchronized (_brokerManager) {
 			_accepts.remove(port);
 			return true;
-		}
 	}
 
 	@Override
@@ -44,13 +42,11 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 	}
 	
 	public boolean _bind(int port, AcceptListener listener) {
-		synchronized (_accepts) {
 			if(_accepts.containsKey(port)) {
 				return false;
 			}
 			_accepts.put(port, listener);
 			return true;
-		}
 	}
 
 	@Override
@@ -60,7 +56,6 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 	}
 	
 	public boolean _connect(int port, ConnectListener listener) {
-		synchronized (_accepts) {
 			if(_accepts.containsKey(port)) {
 				
 				ChannelImpl channel1 = new ChannelImpl();
@@ -85,6 +80,6 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 			}
 			return false;
 		}
-	}
+	
 
 }
