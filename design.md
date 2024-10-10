@@ -3,52 +3,52 @@
 ## Prerequisite
 This framework is event based and multithreaded. 
 
-## ThreadedTasks
-We will refer as threadedTask when we discuss the Tasks at the top layer of the implenetation. Those tasks have a predeteminded behavior dictated by a Runnable thatt is given in the constructor. They extend thread and so will be started() in main. **Each ThreadedTask runs on a Thread**.
-
-ThreadedTasks are the entitites trying to connect and communicate to each other. **But they will only be able to perform Bind and Connect in their Runnable** (the method available in their Broker). How a Task will repond to a connection or bind that succeds will be set in the different listener that, and will be described later on(ConnectListener, AcceptListener, MessageListener).
-
-**All in all, a Threaded Tasks shouldn't stop its execution at any moment.**
-
+## Task
+Task objects allows to post runnables on the EventPump
 
 ### Attributes
 
-- *private QueueBroker _broker* : The QueueBroker that will initiate connection with other broker and so other ThreadedTasks.
+- *private EventPump _pump* The pump on which Runnab les will be posted
 
-- *private Runnable _runnable* : The runnable of this thread.
+- *static Task _currentTask* : The task being run by the pump.
 
-### Constructor
+- *private Runnable _runnable* : the runnable this task has to post.
 
-Task(QueueBroker b, Runnable r) : Sets _QueueBroker and _runnnable attributes.
+- *private boolean _killed : Wheter or not this task has been killed.
+
+## Constructor
+
+- *public Task()* : Sets pump with the su=ingleton insatnce of it and *_killed* to false.
 
 ### Methods
 
-Broker getBroker() : Returns _broker.
+- *public abstract void post(Runnable r) : _pump.post(r) and sets _runnable.
 
-static Task getTask() : Get the current thread, casts it to Task and returns it.
+- *public static EventTask task()* : Returns _currentTask.
+
+- *public abstract void kill()* : _killed = true
+
+- *public abstract boolean killed()* : Returns _killed
+
 
 ## EventPump
-The EventPump is the one that will execute Runnable posted by EventThreads. The runnable that it executes should be short enough to include **one** of the following action :
-- send()
-- connect()
+The EventPump is the one that will execute Runnable posted by tasks. 
 
-**A pump will have its own thread** and be be started by the first runnable that's added to its runnables.
+**A pump will have its own thread** and be be started in the boostraping so it **extends Thread**
 
 **The Pump follows a singleton pattern**
-
-This class **extends thread** so a start method can be called.
 
 ### Attributes
 
 - private *Queue< Runnable > _runnables* : A Queue of all the runnable to execute.
 
-- *private Runnable _currentRunnable* : The Runnable being treated in the start loop.
+- *private Runnable _currentRunnable* : The Runnable being treated currently.
 
-- *private boolean _running* : a flag to dettect if the pump should stop
+- *private boolean _running* : a flag to detect if the pump should stop.
 
 ### Constructor
 
-- *private EventPump()* : Declares _runnables.
+- *private EventPump()* : Declares *_runnables* and sets *_runnning* to true
 
 ### Method
 
@@ -56,112 +56,44 @@ This class **extends thread** so a start method can be called.
 
 - *syncronized public removeRunnable(Runnable runnable)* : Removes A runnable to _runnables. Is **Synchronized** to allow several threads to use the same list.
 
-- *synchronized private Runnable getNextRunnable(Runnable runnable)* : Returns the next Runnable from _runnables.
+- *synchronized private Runnable getNextRunnable(Runnable runnable)* : Returns the next Runnable from *_runnables ands* sets *_currentRunnable*
 Is **Synchronized** to allow several threads to use the same list.
 
-- *private void start()* : Loops while (_running) on all the runnables. If one currentRunnable is killed, it will be directly skipped. The Ruunable is removed before of _runnables before being tested. If a Runnable isn't killed at the end of its run function then it will be posted again.
-
-## EventTasks
-Event Tasks shouldn't be visible to a user. They operate between QueueBroker, MessageQueue and the pump. QueueBroker will create new EventTask with a runnbale that tries to connect and be sent on the pump. MessageQueue will create new Event task with a runnable that tries to send and receive.
-
-### Attributes
-
-- *private Runnable _runnable* : the runnable asociated to this task.
-- *private boolean killed* : A boolean that describes the the state of an EventTask.
-
-### Methods
-
-- *public abstract void post(Runnable r)*  : call the pump *post* method
-- *public static EventTask task()* : Returns the pump currentRunnable attribute
-- *public abstract void kill()* : Changes the _killed attributes to true.
-- *public abstract boolean killed()* :Returns _ killed.
-
-### Specialization
-
-This class should be extended and change for the different event Task possible. For instance, one could be dedicated to connect, bind, send ... Constructor should be thought accordingly.
-
-Each of this version should have a specifific run() method. This method will be posted using the post(Runnable r) method.
-
-**Every Specialization should implements Runnables**
-
-#### BindSpecialization
-The AcceptEventTask has the broker  on which it should accepts, the port and the listener associated.
-
-In the run() method, if the _bind method succeds it will kill itself.
-
-#### UnbindSpecialization
-The UnbindEventTask has the broker on which it should unbind and the port number.
-
-In the run() method, if the _unbind method succeeds it will kill itself.
-
-#### ConnectSpecialization
-The ConnectEventTask has the name on which it should connect, port number and ConnectListener associated.
-
-In the run() method, if the _connect method succeds it will kill itself.
-
-#### SendSpecialization
-The SendEventTask has the queue and the Message.
-
-In the run() method, if the _send method succeds it will kill itself.
-
-#### ReceiveSpecialization
-The receive specialization has the message queue
-
-In the run() method, if the _receieve method succeds it will kill itself.
-
+- *private void run()* : Loops while (_running) on all the runnables. The Ruunable is removed before being treated. If *_runnables* is empty waits until a new runnable is posted.
 
 ## QueueBroker 
-
-QueueBroker should be **synchronized**. Indeed, a queueBroker can be accessed by sevral ThreadedTask at the same time. Therefore different bind method will access the same protected data _accepts (see below). 
-The main mission of queue Broker is to to create EventTask designed for each of its actions (more details in methods section)
+QueueBroker should synchronize all of its access to _binds lists.
+It will iteract with the Channel Framework being threaded. It should never call directly _broker as it can be blocked. Therefore each time it wants to access _broker a new Thread has to be created to perform the method.
 
 ### Attributes
 
-- *private Map< Integer, AcceptListener > _accepts* : A map linking the port and the associated AcceptListener.
+- *private Map< Integer, AcceptListener > _binds* : A map linking the port and the associated AcceptListener. It represents all the bind currently being done.
 
-- *private BrokerManager _broker* : The brokerManager it is associated to.
-
-- *private String _name* : The name of this broker.
+- *private Broker _broker* : The broker.
 
 - *private BrokerManager _brokerManager : The borokerManager instance.
 
 ### Constructor
 
-*public QueueBroker(String name)* : Defines the _name. Also sets the unique singleton instance of the BrokerManager and register itself on it and register itself to the brokerManager. Finally initializes the map _accepts.
+*public QueueBroker(String name)* : Creates a new Broker(*name*). Finally initializes the map _binds.
 
 ### Methods
 
-- *public boolean unbind(int port)* : Creates a new task with a runnable calling _unbind(port, this).
+- *public boolean unbind(int port)* : Creates a new unbindEvent and commision a thread to run it. Returns true if sent on the pump (a bind on *port*) exists, false otherwise.
 
-- *private _unbind(int port, Queue broker broker)* : 
- removes the entry *port* of *_accepts*.
+- *public abstract boolean bind(int port, AcceptListener listener)* : Creates a new bindEvent and commision a thread to run it. Returns true if no other bind on the same port already exists or the number of binds hasn't exceeds, false otherwise.
 
-- *public abstract boolean bind(int port, AcceptListener listener)* : Creates a new task with a runnable that adds a new entry *port*,*listener* on *_accepts* of *broker*.
-
-- *private boolean _bind(int port, AcceptListener listener)* : Adds a new entry on _accepts if it doesn't already exists.
-
-- *public boolean connect(String name, int port, ConnectListener listener, Queue Broker)* : Creates a new EventTask containing a Runnable that tries connecting to the broker *name* on *port* and sends *listener* with it. 
-
-- *private boolean _connect(int port, ConnectListener listner)* : If a match is found  creates new Channel, calls listner.connected(queue1), currentAcceptlistener.Accepted(queue2) with the correct queue and returns true. If not match have been found, returns false.
+- *public boolean connect(String name, int port, ConnectListener listener)* : Creates a new connectEvent and commision a thread to run it. Returns true if sent on the pump.
 
 ## MessageQueue
-Message queue can be accesed by multiple instances.
-Message queue will be accessed by the listnners Accept and Connect Listeners in order to run code once an accept or a connect succeeds.
-
-For message sending and receiving, in the connect and accepted method, a MessageListener should be set. It describes the behavior of this message queue once a message is received or sent.
-(For more details about the interfaces go to Intefaces Section).
-
-This class should also create EventTAsk for some actions.
+MessageQueue as Queue Broker should commission thread to run any method that could use its _channel attributes as its methods can be blocking.
+It's the responsability of the user to set correclty the MessageListener of this Queue other wise an IllegalStateException should be raised.
 
 ### Attrributes 
 
 - *private MessageListener _messageListener* : The listener for message.
 
 - *private Channel _channel* : Channel from the Channel framework that sends bytes.
-
-- *private Message _msg* : A message instance used only to save parts of the message recieved.
-
-- *private Message _msgLength : A message instance to save the length of the message being received.
 
 ### Constructor 
 
@@ -171,12 +103,9 @@ This class should also create EventTAsk for some actions.
 
 - *public abstract void setListener(MessageListener listener)* : Sets _listener
     
-- *public abstract void send(Message message)* : Creates a new EventTask a sets a runnable that sends _message on a channel. Ownership of messge is given.
+- *public abstract void send(Message message)* : Creates a new sendEvent and commision a thread to do it.
 
--*private boolean _send(Message message)* : If the entire message on channel, returns true else returns false, for a partial sent *message*. It also sets a new send task if not complete.
-
-
--*private void _receive(MessageListener listener) : Fills first _msgLength and then _msg. Once msg is complete calls listenr.received(Message msg). Finally it resets both Message attributes.  It also sets a new receive task if not complete.
+-*private void _receive(MessageListener listener) : Creates a new sendEvent and commision a thread to do it.
 
 - *public abstract void close()* : Calls disconnect on _channel.
 
@@ -202,24 +131,81 @@ ConnectListener implementation should be specific to your usage of this framewor
 
 - *public refused()* : Your behavior for a connection refused.
 
-## BrokerManager Class
+## Event 
 
-BrokerManager is the entity that know all of the brokers and allow them to find eachother.
+Event is an abstract class that implements Runnable. They will be the specific runnables runned by QueueBroker And message Queue for their respective actions
 
-This class follows a **singleton pattern**.
+### UnbindEvent
 
-### Attributes
+#### Attributes
+- private QueueBroker _queueBroker : The queueBroker from which this runnable has been emitted.
+- private int _port : the port on which it shoul unbind.
 
-- *private static final BrokerManager INSTANCE* : The singleton instance. 
+#### Constructor
 
-- *private HashMap<String, QueueBroker> _brokers* : A map of (name,QueueBroker).
+- *public UnbindEvent(QueueBroker queue, int port)* : Sets _queueBroker and _port 
 
-### Constructor
+#### Methods
 
-- *public BrokerManager()* initializes the _brokers. 
+- *public void run()* : Goes through _binds and removes the *_port* entry if it exists.
 
-### Methods
+### BindEvent
 
-- *public void registerBroker(QueueBroker broker)* : adds *broker* to *_brokers* with its name has a key.
+#### Attributes
+- *private Broker _broker : the broker on which it should accept
+- private int _port : the port on which the broker should accept
+- private AcceptListenr listener : The listener once it has bound.
 
-- *public QueueBroker getBroker(String name)* : Returns the Broker with the name *name*. If not found null.
+#### Constructor
+
+- *public UnbindEvent(Broker broker, int port, AcceptListener listener)* : Sets all the attributes
+
+#### Methods
+
+- *public void run()* : Calls accepts(port) on _broker. The channel returned will be used to create a new Message Queue instance and finally accepted() methods of the listener will be invoked with the queue. Loops on this while the bond entry exists in _binds.
+
+### ConnectEvent
+
+#### Attributes
+- *private Broker _broker : the broker on which it should accept
+- private String _name : The broke namer on it shoudl accept.
+- private int _port : the port on which the broker should accept
+- private ConectListenr listener : The listener once it has bound.
+
+#### Constructor
+
+- *public UnbindEvent(Broker broker, int port, String name, ConnectListener listener)* : Sets all the attributes
+
+#### Methods
+
+- *public void run()* : Calls connects(name, port) on _broker. The channel returned will be used to create a new Message Queue instance and finally accepted() methods of the listener will be invoked with the queue.
+
+### SendEvent
+
+#### Attributes
+- *private Broker _channel : the channel on which it should send bytes
+- private Message _name : The message that should be sent
+- private MessaeListenerListenr listener : The listener for the queue that has emitted this send task.
+
+#### Constructor
+
+- *public SendEvent(Channel channel, Message msg, MessageListener listener)* : Sets all the attributes
+
+#### Methods
+
+- *public void run()* : calls write(msg.getBytes(), offset, length) on _channel. Finally calls sent(msg) on listenrr
+
+### ReceiveEvent
+
+#### Attributes
+- *private Broker _channel : the channel on which it should send bytes
+- private Message _name : The message that should be sent
+- private MessaeListenerListenr listener : The listener for the queue that has emitted this send task.
+
+#### Constructor
+
+- *public ReceiveEvent(Channel channel, MessageListener listener)* : Sets all the attributes
+
+#### Methods
+
+- *public void run()* : calls read(bytes, offset, length) on _channel. Finally calls received(bytes) on listenr
