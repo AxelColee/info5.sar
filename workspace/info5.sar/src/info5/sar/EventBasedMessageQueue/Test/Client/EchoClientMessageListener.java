@@ -1,6 +1,5 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
-import info5.sar.EventBasedMessageQueue.Impl.EventPump;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue.MessageListener;

@@ -28,6 +28,7 @@ public class EchoServerMessageListener implements MessageListener{
 
 	@Override
 	public void sent(Message message) {
+		_queue.close();
 		
 		assert(_queue != null) : "Server queue not initialized";
 		assert(_queue.closed() == true) : "Server queue not disconnected";
