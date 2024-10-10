@@ -1,5 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
+import java.util.UUID;
+
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.QueueBroker.ConnectListener;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
@@ -18,7 +20,7 @@ public class EchoClientConnectListener implements ConnectListener{
 
 	@Override
 	public void refused() {
-		throw new IllegalStateException("Connect Refused");
+		//Nothing to do here
 	}
 
 }

@@ -3,83 +3,72 @@ package info5.sar.EventBasedMessageQueue.Impl;
 import java.util.HashMap;
 import java.util.Map;
 
-import info5.sar.Channel.Impl.ChannelImpl;
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.BindEventTask;
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.ConnectEventTask;
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.EventTask;
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.ReceiveEventTask;
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.UnbindEventTask;
+import info5.sar.Channel.Impl.BrokerImpl;
+import info5.sar.EventBasedMessageQueue.Impl.Event.BindEvent;
+import info5.sar.EventBasedMessageQueue.Impl.Event.ConnectEvent;
+import info5.sar.EventBasedMessageQueue.Impl.Event.UnbindEvent;
 
 public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.QueueBroker{
-	
-	private BrokerManager _brokerManager;
-	private String _name;
-	private Map<Integer,AcceptListener> _accepts;
 
+	private BrokerImpl _broker;
+	private Map<Integer,AcceptListener> _binds;
+	
 	public QueueBroker(String name) {
 		super(name);
-		_name = name;
-		_brokerManager = BrokerManager.getInstance();
-		_brokerManager.registerBroker(this);
-		_accepts = new HashMap<Integer, QueueBroker.AcceptListener>();
+		_broker = new BrokerImpl(name);
+		_binds = new HashMap<Integer, QueueBroker.AcceptListener>();
 	}
 
 	@Override
 	public boolean unbind(int port) {
-		EventTask task = new UnbindEventTask(this, port);
+		Task task = new Task();
+		UnbindEvent unbindEvent = new UnbindEvent(task, this, port);
+		task.post(unbindEvent);
 		return true;
-	}
-	
-	public boolean _unbind(int port) {
-			_accepts.remove(port);
-			return true;
 	}
 
 	@Override
 	public boolean bind(int port, AcceptListener listener) {
-		EventTask task = new  BindEventTask(this, port, listener);
+		Task task = new Task();
+		BindEvent bindEvent = new BindEvent(task, this, port, listener);
+		task.post(bindEvent);
 		return true;
-	}
-	
-	public boolean _bind(int port, AcceptListener listener) {
-			if(_accepts.containsKey(port)) {
-				return false;
-			}
-			_accepts.put(port, listener);
-			return true;
 	}
 
 	@Override
 	public boolean connect(String name, int port, ConnectListener listener) {
-		ConnectEventTask task = new ConnectEventTask(name, port, listener);
+		Task task = new Task();
+		ConnectEvent connectEvent = new ConnectEvent(task, _broker, name, port, listener);
+		task.post(connectEvent);
 		return true;
 	}
+
+	@Override
+	public String name() {
+		return _broker.getName();
+	}
 	
-	public boolean _connect(int port, ConnectListener listener) {
-			if(_accepts.containsKey(port)) {
-				
-				ChannelImpl channel1 = new ChannelImpl();
-				ChannelImpl channel2 = new ChannelImpl();
-				
-				channel1._out = channel2._in;
-				channel2._out = channel1._in;
-				
-				channel1._rch = channel2;
-				channel2._rch = channel1;
-				
-				MessageQueue queue1 = new MessageQueue(channel1);
-				MessageQueue queue2 = new MessageQueue(channel2);
-				
-				queue1.setMsq(queue2);
-				queue2.setMsq(queue1);
-				
-				listener.connected(queue1);
-				_accepts.get(port).accepted(queue2);
-								
-				return true;
-			}
-			return false;
+	public void removeBind(int port) {
+		synchronized (_binds) {
+			_binds.remove(port);
 		}
+	}
 	
+	public void addBind(int port, AcceptListener listener) {
+		synchronized (_binds) {
+			_binds.put(port, listener);
+		}
+	}
+	
+	public boolean getBind(int port) {
+		synchronized (_binds) {
+			return _binds.containsKey(port);
+		}
+		
+	}
+	
+	public BrokerImpl getBroker() {
+		return _broker;
+	}
 
 }

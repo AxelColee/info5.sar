@@ -12,6 +12,18 @@ public class Message {
 		_length = length;
 	}
 	
+	public Message(byte[] bytes) {
+		_bytes = bytes;
+		_offset = 0;
+		_length = bytes.length;
+	}
+	
+	public Message(int length) {
+		_bytes = new byte[length];
+		_offset = 0;
+		_length = length;
+	}
+	
 	public int getOffset() {
 		return _offset;
 	}
@@ -41,5 +53,9 @@ public class Message {
 	public byte getByteAt(int i) {
 		return _bytes[i];
 	}
-}
+	
+	public void setByteAt(byte b, int i) {
+		_bytes[i] = b;
+	}
 
+}

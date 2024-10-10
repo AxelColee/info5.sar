@@ -13,6 +13,6 @@ public class EchoClient implements Runnable{
 
 	@Override
 	public void run() {
-		_broker.connect("toto", 80, new EchoClientConnectListener());		
+		_broker.connect("serverBroker", 80, new EchoClientConnectListener());		
 	}
 }

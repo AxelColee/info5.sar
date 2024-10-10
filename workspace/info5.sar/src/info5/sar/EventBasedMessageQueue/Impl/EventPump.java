@@ -2,13 +2,6 @@ package info5.sar.EventBasedMessageQueue.Impl;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import info5.sar.EventBasedMessageQueue.Impl.EventTasks.EventTask;
 
 public class EventPump extends Thread{
 	
@@ -17,12 +10,9 @@ public class EventPump extends Thread{
 	private boolean _running;
 	private Queue<Runnable> _runnables;
 	private static Runnable _currentRunnable;
-	private final long MAX_EXECUTION_TIME_MS = 500;
-    private ExecutorService executorService;
 	
 	private EventPump() {
 		_runnables = new LinkedList<Runnable>();
-		executorService = Executors.newSingleThreadExecutor();
 		_running = true;
 	}
 	
@@ -81,17 +71,9 @@ public class EventPump extends Thread{
             } catch (Exception e) {
             	
             }
-        	
-        	
-        	if (!EventTask.getTask().killed()) {
-                 this.post(_currentRunnable);
-        	}
+
             	 
         }
         
     }
 }
-
-
-	
-

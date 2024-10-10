@@ -2,15 +2,10 @@ package info5.sar.EventBasedMessageQueue.Abstract;
 
 public abstract class QueueBroker {
 	
-	private String _name;
-	
 	public QueueBroker(String name) {
-		_name = name;
 	}
 	
-	public  String name() {
-		return _name;
-	}
+	public abstract String name();
     
     public interface AcceptListener {
         void accepted(MessageQueue queue);
