@@ -1,6 +1,5 @@
 package info5.sar.MixedMessageQueue.Impl;
 
-import info5.sar.MixedMessageQueue.Impl.Event.SendEvent;
 import info5.sar.ThreadedChannel.Exception.DisconnectedException;
 import info5.sar.ThreadedChannel.Impl.ChannelImpl;
 
@@ -15,6 +14,7 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 		super();
 		_channel = channel;
 		_closed = false;
+		_receive();
 	}
 	
 	@Override
@@ -26,14 +26,14 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 		return _listener;
 	}
 	
-	@Override
-	public void send(Message message) {
-		Task task = new Task();
-		SendEvent sendEvent = new SendEvent(task, this, message);
-		task.post(sendEvent);
-	}
+//	@Override
+//	public void send(Message message) {
+//		Task task = new Task();
+//		SendEvent sendEvent = new SendEvent(task, this, message);
+//		task.post(sendEvent);
+//	}
 	
-	public void _send(Message msg) {
+	public void send(Message msg) {
 		
 		new Thread(new Runnable() {
 			
@@ -69,13 +69,14 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 					}
 				}
 				
-				_listener.sent(msg);
+				Task task = new Task();
+				task.post(()-> _listener.sent(msg));
 			}
 			
 		}).start();
 	}
 	
-	public void _receive() {
+	private void _receive() {
 		
 		new Thread(new Runnable() {
 			
@@ -112,8 +113,9 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 						}
 					}
 					
+					Task task = new Task();
+					task.post(() -> _listener.received(message));
 					
-					_listener.received(message);
 				}while(!MessageQueue.this.closed()) ;
 				
 			}
