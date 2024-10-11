@@ -21,12 +21,18 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 		if(_bindThreads.containsKey(port)) {
 			Thread t = _bindThreads.get(port);
 			t.interrupt();
-			removeBind(port);
+			_bindThreads.remove(port);
+			return true;
 		}
-		return true;
+		return false;
 	}
+		
 	
 	public boolean bind(int port, AcceptListener listener) {
+		if(_bindThreads.containsKey(port)) {
+			return false;
+		}
+		
 		Thread thread = new Thread();
 	
 		thread = new Thread(new Runnable() {
@@ -42,11 +48,11 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 						task.post(() -> listener.accepted(mq));
 					}
 					
-				}while(getBind(port));
+				}while(_bindThreads.containsKey(port));
 				
 			}
 		});
-		addBind(port, thread);
+		_bindThreads.put(port, thread);
 		thread.start();
 		return true;
 	}	
@@ -74,24 +80,6 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 	@Override
 	public String name() {
 		return _broker.getName();
-	}
-	
-	private void removeBind(int port) {
-		synchronized (_bindThreads) {
-			_bindThreads.remove(port);
-		}
-	}
-	
-	private void addBind(int port, Thread thread) {
-		synchronized (_bindThreads) {
-			_bindThreads.put(port, thread);
-		}
-	}
-	
-	private boolean getBind(int port) {
-		synchronized (_bindThreads) {
-			return _bindThreads.containsKey(port);
-		}
 	}
 
 }

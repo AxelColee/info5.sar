@@ -46,7 +46,7 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 						}
 						
 					} catch (InterruptedException e) {
-						return;
+						return;//channel Closed
 					}
 					if (_closed)
 						return;
