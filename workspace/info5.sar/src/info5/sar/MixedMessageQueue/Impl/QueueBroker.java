@@ -13,12 +13,12 @@ import info5.sar.ThreadedChannel.Impl.ChannelImpl;
 public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroker{
 
 	private BrokerImpl _broker;
-	private Map<Integer,AcceptListener> _binds;
+	private Map<Integer,Thread> _bindThreads;
 	
 	public QueueBroker(String name) {
 		super(name);
 		_broker = new BrokerImpl(name);
-		_binds = new HashMap<Integer, QueueBroker.AcceptListener>();
+		_bindThreads = new HashMap<Integer, Thread>();
 	}
 
 	@Override
@@ -30,8 +30,11 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 	}
 	
 	public void _unbind(int port) {
-		this.removeBind(port);
-
+		if(_bindThreads.containsKey(port)) {
+			Thread t = _bindThreads.get(port);
+			t.interrupt();
+			removeBind(port);
+		}
 	}
 
 	@Override
@@ -43,28 +46,31 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 	}
 	
 	public void _bind(int port, AcceptListener listener) {
-		new Thread(new Runnable() {
+		Thread thread = new Thread();
+	
+		thread = new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				do {
-					
-					addBind(port, listener);
-					
+										
 					ChannelImpl channelAccept = (ChannelImpl) _broker.accept(port);
-					
-					MessageQueue mq = new MessageQueue(channelAccept);
-					
-					listener.accepted(mq);
-					
-					Task task = new Task();
-					ReceiveEvent receievEvent = new ReceiveEvent(task, mq);
-					task.post(receievEvent);
+					if(channelAccept != null) {
+						MessageQueue mq = new MessageQueue(channelAccept);
+						
+						listener.accepted(mq);
+						
+						Task task = new Task();
+						ReceiveEvent receievEvent = new ReceiveEvent(task, mq);
+						task.post(receievEvent);
+					}
 					
 				}while(getBind(port));
 				
 			}
-		}).start();
+		});
+		addBind(port, thread);
+		thread.start();
 	}
 
 	@Override
@@ -104,20 +110,20 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 	}
 	
 	private void removeBind(int port) {
-		synchronized (_binds) {
-			_binds.remove(port);
+		synchronized (_bindThreads) {
+			_bindThreads.remove(port);
 		}
 	}
 	
-	private void addBind(int port, AcceptListener listener) {
-		synchronized (_binds) {
-			_binds.put(port, listener);
+	private void addBind(int port, Thread thread) {
+		synchronized (_bindThreads) {
+			_bindThreads.put(port, thread);
 		}
 	}
 	
 	private boolean getBind(int port) {
-		synchronized (_binds) {
-			return _binds.containsKey(port);
+		synchronized (_bindThreads) {
+			return _bindThreads.containsKey(port);
 		}
 	}
 	

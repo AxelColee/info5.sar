@@ -44,10 +44,8 @@ public class Rdv {
 			try {
 				while(_brokerConnect == null) {
 					wait();
-
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 			}
 		}
 		return this._channelAccept;

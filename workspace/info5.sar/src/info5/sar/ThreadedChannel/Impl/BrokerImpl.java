@@ -46,7 +46,12 @@ public class BrokerImpl extends Broker{
 			}
 
 		}
-		return rdv.accept();
+		try {
+			return rdv.accept();
+		} catch (Exception e) {
+			_rdvs.remove(rdv);
+			return null;
+		}
 		
 	}
 
@@ -83,7 +88,12 @@ public class BrokerImpl extends Broker{
 	
 		}
 		
-		return rdv.connect();
+		try {
+			return rdv.connect();
+		} catch (Exception e) {
+			_rdvs.remove(rdv);
+			return null;
+		}
 		
 	}
 	
