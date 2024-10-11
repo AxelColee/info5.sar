@@ -1,24 +1,32 @@
 package info5.sar.EventBasedMessageQueue.Test.Server;
 
 import info5.sar.EventBasedMessageQueue.Impl.Message;
+import info5.sar.EventBasedMessageQueue.Impl.Task;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageQueue.MessageListener;
-import info5.sar.EventBasedMessageQueue.Abstract.QueueBroker;
 
 public class EchoServerMessageListener implements MessageListener{
 	
 	private MessageQueue _queue;
-	private QueueBroker _broker;
 	private static int cpt = 0;
 	
-	public EchoServerMessageListener(MessageQueue queue, QueueBroker broker) {
+	public EchoServerMessageListener(MessageQueue queue) {
 		_queue = queue;
-		_broker = broker;
 	}
 
 	@Override
 	public void received(byte[] bytes) {
-		_queue.send(new Message(bytes, 0, bytes.length));
+		
+		Task task = new Task();
+		task.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				_queue.send(new Message(bytes));
+				
+			}
+		});
+		
 	}
 
 	@Override

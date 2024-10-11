@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import info5.sar.Channel.Impl.BrokerImpl;
+import info5.sar.Channel.Impl.ChannelImpl;
 import info5.sar.EventBasedMessageQueue.Impl.Event.BindEvent;
 import info5.sar.EventBasedMessageQueue.Impl.Event.ConnectEvent;
+import info5.sar.EventBasedMessageQueue.Impl.Event.ReceiveEvent;
 import info5.sar.EventBasedMessageQueue.Impl.Event.UnbindEvent;
 
 public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.QueueBroker{
@@ -26,6 +28,11 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 		task.post(unbindEvent);
 		return true;
 	}
+	
+	public void _unbind(int port) {
+		this.removeBind(port);
+
+	}
 
 	@Override
 	public boolean bind(int port, AcceptListener listener) {
@@ -34,13 +41,61 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 		task.post(bindEvent);
 		return true;
 	}
+	
+	public void _bind(int port, AcceptListener listener) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				do {
+					
+					addBind(port, listener);
+					
+					ChannelImpl channelAccept = (ChannelImpl) _broker.accept(port);
+					
+					MessageQueue mq = new MessageQueue(channelAccept);
+					
+					listener.accepted(mq);
+					
+					Task task = new Task();
+					ReceiveEvent receievEvent = new ReceiveEvent(task, mq);
+					task.post(receievEvent);
+					
+				}while(getBind(port));
+				
+			}
+		}).start();
+	}
 
 	@Override
 	public boolean connect(String name, int port, ConnectListener listener) {
 		Task task = new Task();
-		ConnectEvent connectEvent = new ConnectEvent(task, _broker, name, port, listener);
+		ConnectEvent connectEvent = new ConnectEvent(task, this, name, port, listener);
 		task.post(connectEvent);
 		return true;
+	}
+	
+	
+	public void _connect(String name, int port, ConnectListener listener) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				ChannelImpl channelConnect = (ChannelImpl) _broker.connect(name, port);
+				
+				if(channelConnect == null) {
+					listener.refused();
+				}else {
+					MessageQueue mq = new MessageQueue(channelConnect);
+					listener.connected(mq);
+					
+					Task task = new Task();
+					ReceiveEvent receievEvent = new ReceiveEvent(task, mq);
+					task.post(receievEvent);
+				}
+				
+			}
+		}).start();
 	}
 
 	@Override
@@ -48,26 +103,25 @@ public class QueueBroker extends info5.sar.EventBasedMessageQueue.Abstract.Queue
 		return _broker.getName();
 	}
 	
-	public void removeBind(int port) {
+	private void removeBind(int port) {
 		synchronized (_binds) {
 			_binds.remove(port);
 		}
 	}
 	
-	public void addBind(int port, AcceptListener listener) {
+	private void addBind(int port, AcceptListener listener) {
 		synchronized (_binds) {
 			_binds.put(port, listener);
 		}
 	}
 	
-	public boolean getBind(int port) {
+	private boolean getBind(int port) {
 		synchronized (_binds) {
 			return _binds.containsKey(port);
 		}
-		
 	}
 	
-	public BrokerImpl getBroker() {
+	private BrokerImpl getBroker() {
 		return _broker;
 	}
 

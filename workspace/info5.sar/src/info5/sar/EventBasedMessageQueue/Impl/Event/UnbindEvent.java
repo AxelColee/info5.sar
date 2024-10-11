@@ -16,8 +16,8 @@ public class UnbindEvent extends Event {
 	}
 
 	@Override
-	protected void toDo() {
-		_queueBroker.removeBind(_port);
+	protected void _perform() {
+		_queueBroker._unbind(_port);
 	}
 
 }

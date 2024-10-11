@@ -11,17 +11,15 @@ public class EchoServerAcceptListener implements AcceptListener{
 	
 	 public EchoServerAcceptListener(QueueBroker broker) {
 		_broker = broker;
-		
-		
 	}
 
 	@Override
 	public void accepted(MessageQueue queue) {
 		
-		queue.setListener(new EchoServerMessageListener(queue, _broker));
+		queue.setListener(new EchoServerMessageListener(queue));
 		
 		if(cpt++ >= 2) {
-			_broker.unbind(80);
+			//_broker.unbind(80);
 		}
 	}
 	

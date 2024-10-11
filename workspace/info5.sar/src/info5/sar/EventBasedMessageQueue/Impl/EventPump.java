@@ -30,9 +30,8 @@ public class EventPump extends Thread{
 	}
 
     synchronized private Runnable getNext() {
-    	Runnable r = _runnables.poll();
-    	_currentRunnable = r;
-    	return r;
+    	_currentRunnable= _runnables.poll();
+    	return _currentRunnable;
     }
     
     public static Runnable getCurrentRunnable() {
@@ -43,8 +42,9 @@ public class EventPump extends Thread{
     	return _runnables.isEmpty();
     }
     
-    public void stopPump() {
+    synchronized public void stopPump() {
     	this._running = false;
+    	notifyAll();
     }
     
     
@@ -53,8 +53,9 @@ public class EventPump extends Thread{
 
         while (_running) {
         	
-        	synchronized (this) {
-        		while (this.runnbaleIsEmpty()) {
+        	
+    		while (this.runnbaleIsEmpty() && _running) {
+    			synchronized (this) {
                     try {
                         wait();
                     } catch (InterruptedException e) {
@@ -63,6 +64,10 @@ public class EventPump extends Thread{
                     }
                 }
 			}
+        	
+        	if(!_running) {
+        		return;
+        	}
             		
         	this.getNext();
         
