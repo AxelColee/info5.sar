@@ -38,9 +38,6 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 					ChannelImpl channelAccept = (ChannelImpl) _broker.accept(port);
 					if(channelAccept != null) {
 						MessageQueue mq = new MessageQueue(channelAccept);
-						
-						
-						
 						Task task = new Task();
 						task.post(() -> listener.accepted(mq));
 					}
@@ -62,8 +59,6 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 				ChannelImpl channelConnect = (ChannelImpl) _broker.connect(name, port);
 				
 				Task task = new Task();
-
-				
 				if(channelConnect == null) {
 					task.post(() -> listener.refused());
 				}else {
@@ -97,10 +92,6 @@ public class QueueBroker extends info5.sar.MixedMessageQueue.Abstract.QueueBroke
 		synchronized (_bindThreads) {
 			return _bindThreads.containsKey(port);
 		}
-	}
-	
-	private BrokerImpl getBroker() {
-		return _broker;
 	}
 
 }

@@ -18,7 +18,7 @@ public class EchoClientMessageListener implements MessageListener{
 
 	@Override
 	public void received(byte[] bytes) {
-		//_queue.close();
+		_queue.close();
 		
 		//Tests
 		for(int i = 0; i < _message.getLength(); i++){

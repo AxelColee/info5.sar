@@ -1,5 +1,8 @@
 package info5.sar.MixedMessageQueue.Impl;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import info5.sar.ThreadedChannel.Exception.DisconnectedException;
 import info5.sar.ThreadedChannel.Impl.ChannelImpl;
 
@@ -8,37 +11,56 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 	private boolean _closed;
 	private ChannelImpl _channel;
 	private MessageListener _listener;
+	private Queue<Message> _messages;
 	private Thread sendThread;
 	
 	public MessageQueue(ChannelImpl channel) {
 		super();
 		_channel = channel;
 		_closed = false;
+		sendThread = new Thread();
+		_messages = new LinkedList<Message>();
 		_receive();
+		startSendThread();
 	}
 	
 	@Override
 	public void setListener(MessageListener listener) {
 		_listener = listener;
 	}
-
-	public MessageListener getListener() {
-		return _listener;
-	}
-	
-//	@Override
-//	public void send(Message message) {
-//		Task task = new Task();
-//		SendEvent sendEvent = new SendEvent(task, this, message);
-//		task.post(sendEvent);
-//	}
 	
 	public void send(Message msg) {
+		synchronized (sendThread) {
+	        _messages.add(msg);
+	        sendThread.notify();
+	    }
+	}
+	
+	public void startSendThread() {
+		sendThread = new Thread(() -> {
+			while (!_closed) {
+				while (_messages.isEmpty() && !closed()) {
+					try {
+						synchronized (sendThread) {
+							sendThread.wait();
+						}
+						
+					} catch (InterruptedException e) {
+						return;
+					}
+					if (_closed)
+						return;
+				}
+
+				Message msg = _messages.poll();
+				_send(msg);
+			}
+		});
+		sendThread.start();
+	}
+	
+	private void _send(Message msg) {
 		
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
 				int nbSentBytes = 0;
 				int length = msg.getLength();
 				
@@ -71,9 +93,7 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 				
 				Task task = new Task();
 				task.post(()-> _listener.sent(msg));
-			}
-			
-		}).start();
+
 	}
 	
 	private void _receive() {
@@ -128,6 +148,7 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 	@Override
 	public void close() {
 		_channel.disconnect();
+		sendThread.interrupt();
 	}
 
 	@Override
@@ -135,8 +156,5 @@ public class MessageQueue extends info5.sar.MixedMessageQueue.Abstract.MessageQu
 		return _closed;
 	}
 	
-	public ChannelImpl channel() {
-		return _channel;
-	}
 
 }
