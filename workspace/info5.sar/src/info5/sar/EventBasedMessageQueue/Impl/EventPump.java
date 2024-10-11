@@ -44,7 +44,7 @@ public class EventPump extends Thread{
     
     synchronized public void stopPump() {
     	this._running = false;
-    	notifyAll();
+    	this.notifyAll();
     }
     
     
