@@ -20,7 +20,7 @@ public class Task extends info5.sar.MixedMessageQueue.Abstract.Task{
 	public void post(Runnable r) {
 		Event event = new Event(_currentTask, this, r);
 		_events.add(event);
-		_eventPump.post(r);
+		_eventPump.post(event);
 	}
 	
 	public void kill() {

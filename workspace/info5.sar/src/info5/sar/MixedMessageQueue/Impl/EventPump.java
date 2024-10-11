@@ -52,8 +52,6 @@ public class EventPump extends Thread{
     public void run() {
 
         while (_running) {
-        	
-        	
     		while (this.runnbaleIsEmpty() && _running) {
     			synchronized (this) {
                     try {
