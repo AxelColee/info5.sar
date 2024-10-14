@@ -13,7 +13,7 @@ Even thoug a broker can be used by multiple task instances it will not be synchr
 - **Broker(String name)** :
     - *name* : The broker name which will be used to be connected by a Task.
 
-- **Channel accept(int port);** : Accepts connection on the specified port. If the action is posted returns true.
+- **Channel accept(int port)** : Accepts connection on the specified port. If the action is posted returns true.
     If there is already an other accept on the same port, will return false.
     - *port* : the port on which the client tries to connect
 
@@ -47,3 +47,26 @@ Task allows the user to post runnables which will enventually be executed.
 - *public boolean killed()* : Returns true if the task is killed
 
 - *public static Task getTask()* : returns the task currently Returning
+
+## Listener should be redefined and suits your specific needs
+
+### AccepteListener
+This interface will only be used to define the expected behavior once a connectio is accepted.
+It should be redefined for each entity xanted
+
+- *public void accepted(Channel channel)* : The behavior once the connection is accepted with the linked Channel.
+
+### ConnectListener
+This interface will only be used to define the expected behavior once a connection is established.
+It should be redefined for each entity xanted
+
+- *public void connected(Channel channel)* : The behavior once the connection is established with the linked Channel.
+
+- *public void refused* : Remote broker keeps the right to refuse the connection (and if the asked remote broker doesn't exist)
+
+### Listener
+A listener associated to a channel to trigger message callback.
+
+- *void received(byte[] bytes)* : Once all the bytes have been received this is the behavior expected
+- *void closed()* : Once the connection is closed
+- *void sent(bytes[] message)* 
