@@ -50,6 +50,9 @@ This bidirectionnal channel is a byte array that can contains data. It can be wr
 - **void disconnect();** : Stops the connection
 - **boolean disconnected();** : Returns true if the channel is disconnected 
 
+- **void setReadListener(ReadListener listener)** : Sets the read Listeenr
+- **void setDsiconnectListener(ReadDisconnnect listener)** : Sets the read Listeenr
+
 ## Task
 Task allows the user to post runnables which will enventually be executed.
 
