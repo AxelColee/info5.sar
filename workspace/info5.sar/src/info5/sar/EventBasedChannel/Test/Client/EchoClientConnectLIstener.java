@@ -1,10 +1,10 @@
 package info5.sar.EventBasedChannel.Test.Client;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
-import info5.sar.EventBasedChannel.Abstract.IConnectListner;
+import info5.sar.EventBasedChannel.Abstract.IConnectListener;
 import info5.sar.EventBasedChannel.Test.DisconnectListener;
 
-public class EchoClientConnectLIstener implements IConnectListner{
+public class EchoClientConnectLIstener implements IConnectListener{
 	
 	@Override
 	public void connected(IChannel channel) {
