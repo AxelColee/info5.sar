@@ -65,7 +65,7 @@ Task allows the user to post runnables which will enventually be executed.
 
 ### AccepteListener
 This interface will only be used to define the expected behavior once a connectio is accepted.
-It should be redefined for each entity xanted
+It should be redefined for each entity wanted
 
 - *public void accepted(Channel channel)* : Callback once a connection is accepted.
 
@@ -78,10 +78,12 @@ It should be redefined for each entity xanted
 - *public void refused* : Remote broker keeps the right to refuse the connection (and if the asked remote broker doesn't exist).
 
 ## WriteListener
-- *void written(int bytesWritten)* : Callback for *bytesWritten* bytes wrote. 
+- *void wrote(byte[] bytes)* : Callback when bytes have been wrote on the channel. 
 
-### ChannelListener
+### ReadlListener
 A listener associated to a channel to trigger message callback.
 
-- *void available()* : Callback once bytes read are available.
+- *void read(bytes[] )* : Callback once a set of bytes asked has been read. *bytes* is now yours, channels dont keep a copy of it.
+
+## DisconnectListener
 - *void disconnected()* : callback for a disconnected channel.
