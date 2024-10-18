@@ -8,6 +8,10 @@ Implement a simple request/response service to allow user to exchange message wi
 Binding on a broker will accept all the connection on the specified port until an unbind is posted.
 In order for a connect to work a bind should already be done on the targetted broker. If a connect and a bind match the connection will be established. Several connect can be done on the same bind.
 
+## Writing/Reading
+Write and read actions will be done in the order they have been distributed. It means concureent not linked write acions can be sent and will be write in the same order ensuring data consistency.
+Even in this event based implementation, the set will eventually be written without the need to repost write or read ctions if only a part is written or read for now.
+
 ## Disconnecting
 If the local channel disconnects will reject all of the read and write actions. If actions already accepted are supposed to return a result they will be terminated. Meaning, theses actions could have been interrupted and could be false.
 If the remote channel disconnects all the write actions will be performed as usual even if they don't reach the remote channel. Else, read will continue as usual.
