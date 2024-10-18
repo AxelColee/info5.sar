@@ -18,7 +18,7 @@ public class Channel implements IChannel{
 	public CircularBuffer _in, _out;
 	private IReadListener _readListener;
 	private IDisconnectListener _disconnectListener;
-	private Queue<byte[]> _writeBuffer, readBuffer;
+	private Queue<byte[]> _writeBuffer, _readBuffer;
 	
 
 	@Override
@@ -36,17 +36,22 @@ public class Channel implements IChannel{
 		if(getReadBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
 			return false;
 		}
-		if(_writeBuffer.isEmpty()) {
+		if(_readBuffer.isEmpty()) {
 			_read(bytes, 0, bytes.length);
 		}
-		_writeBuffer.add(bytes);
+		_readBuffer.add(bytes);
 		return true;
 	}
 	
 	private void _read(byte[] bytes, int offset, int length) {
 		
-		if(_in.full()) {
+		if(_disconnected) {
+			return;
+		}
+		
+		if(_in.empty()) {
 			new Task().post(() -> _read(bytes, offset, length));
+			return;
 		}
 		
 		int bytesRead = 0;
@@ -56,16 +61,59 @@ public class Channel implements IChannel{
 			bytesRead++;
 		}
 		
-		if(offset == length) {
-			_readListener.read(_writeBuffer.poll());
-			new Task().post(() -> _read(bytes, offset, length));
+		if(offset >= length) {
+			_readListener.read(_readBuffer.poll());
+			byte[] nextBytes = _readBuffer.peek();
+			if(nextBytes != null) {
+				new Task().post(() -> _read(nextBytes, 0, nextBytes.length));
+			}
+			return;
 		}
+		
+	    final int updatedOffset = offset + bytesRead;
+		new Task().post(() -> _read(bytes, updatedOffset, length));
+		
 	}
 
 	@Override
-	public boolean write(byte[] bytes, IWriteListener listenner) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean write(byte[] bytes, IWriteListener listener) {
+		if(getWriteBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
+			return false;
+		}
+		if(_writeBuffer.isEmpty()) {
+			_write(bytes, 0, bytes.length, listener);
+		}
+		_writeBuffer.add(bytes);
+		return true;
+	}
+	
+	private void _write(byte[] bytes, int offset, int length, IWriteListener listener) {
+		
+		if(_dangling || _disconnected) {
+			return;
+		}
+		
+		if(_out.full()) {
+			new Task().post(() -> _write(bytes, offset, length, listener));
+			return;
+		}
+		
+		int bytesWritten = 0;
+		while (bytesWritten < length - offset && !_out.full()) {				
+			_out.push(bytes[offset + bytesWritten++]);
+		}
+		
+		if(offset >= length) {
+			listener.wrote(_writeBuffer.poll());
+			byte[] nextBytes = _writeBuffer.peek();
+			if(nextBytes != null) {
+				new Task().post(() -> _read(nextBytes, 0, nextBytes.length));
+			}
+			return;
+		}
+		
+	    final int updatedOffset = offset + bytesWritten;
+		new Task().post(() -> _read(bytes, updatedOffset, length));
 	}
 
 	@Override
@@ -97,7 +145,7 @@ public class Channel implements IChannel{
 	}
 	
 	private int getReadBufferSize() {
-		return getWriteBufferSize();
+		return getBufferSize(_readBuffer);
 	}
 
 }
