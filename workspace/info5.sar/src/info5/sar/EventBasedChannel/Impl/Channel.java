@@ -4,9 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
-import info5.sar.EventBasedChannel.Abstract.IDisconnectListener;
-import info5.sar.EventBasedChannel.Abstract.IReadListener;
-import info5.sar.EventBasedChannel.Abstract.IWriteListener;
+import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 import info5.sar.ThreadedChannel.Impl.CircularBuffer;
 
 public class Channel implements IChannel{
@@ -17,8 +15,7 @@ public class Channel implements IChannel{
 	private boolean _disconnected;
 	public boolean _dangling;
 	public CircularBuffer _in, _out;
-	private IReadListener _readListener;
-	private IDisconnectListener _disconnectListener;
+	private IChannelListener _listener;
 	private Queue<byte[]> _writeBuffer, _readBuffer;
 	
 	public Channel() {
@@ -31,17 +28,17 @@ public class Channel implements IChannel{
 	
 
 	@Override
-	public void setReadListener(IReadListener listener) {
-		_readListener = listener;
-	}
-
-	@Override
-	public void setDisconnectListener(IDisconnectListener listener) {
-		_disconnectListener = listener;
+	public void setListener(IChannelListener listener) {
+		_listener = listener;
 	}
 
 	@Override
 	public boolean read(byte[] bytes) {
+		
+		if(_listener == null) {
+			throw new IllegalStateException("DsiconnectListener not set");
+		}
+		
 		if(getReadBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
 			return false;
 		}
@@ -73,7 +70,7 @@ public class Channel implements IChannel{
 		}
 		
 		if(bytesRead >= length - offset) {
-			_readListener.read(_readBuffer.poll());
+			_listener.read(_readBuffer.poll());
 			byte[] nextBytes = _readBuffer.peek();
 			if(nextBytes != null) {
 				new Task().post(() -> _read(nextBytes, 0, nextBytes.length));
@@ -87,7 +84,12 @@ public class Channel implements IChannel{
 	}
 
 	@Override
-	public boolean write(byte[] bytes, IWriteListener listener) {
+	public boolean write(byte[] bytes) {
+		
+		if(_listener == null) {
+			throw new IllegalStateException("DsiconnectListener not set");
+		}
+		
 		if(getWriteBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
 			return false;
 		}
@@ -95,19 +97,19 @@ public class Channel implements IChannel{
 		_writeBuffer.add(bytes);
 
 		if(_writeBuffer.size() <= 1) {
-			_write(bytes, 0, bytes.length, listener);
+			_write(bytes, 0, bytes.length);
 		}
 		return true;
 	}
 	
-	private void _write(byte[] bytes, int offset, int length, IWriteListener listener) {
+	private void _write(byte[] bytes, int offset, int length) {
 		
 		if(_dangling || _disconnected) {
 			return;
 		}
 		
 		if(_out.full()) {
-			new Task().post(() -> _write(bytes, offset, length, listener));
+			new Task().post(() -> _write(bytes, offset, length));
 			return;
 		}
 		
@@ -117,7 +119,7 @@ public class Channel implements IChannel{
 		}
 		
 		if(bytesWritten >= length - offset) {
-			listener.wrote(_writeBuffer.poll());
+			_listener.wrote(_writeBuffer.poll());
 			byte[] nextBytes = _writeBuffer.peek();
 			if(nextBytes != null) {
 				new Task().post(() -> _read(nextBytes, 0, nextBytes.length));
@@ -126,18 +128,18 @@ public class Channel implements IChannel{
 		}
 		
 	    final int updatedOffset = offset + bytesWritten;
-		new Task().post(() -> _write(bytes, updatedOffset, length, listener));
+		new Task().post(() -> _write(bytes, updatedOffset, length));
 	}
 
 	@Override
 	public void disconnect() {
 		_disconnected = true;
 		
-		if(_disconnectListener == null) {
+		if(_listener == null) {
 			throw new IllegalStateException("DsiconnectListener not set");
 		}
 		
-		_disconnectListener.disconnected();
+		_listener.disconnected();
 	}
 
 	@Override
