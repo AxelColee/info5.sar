@@ -1,5 +1,6 @@
 package info5.sar.EventBasedChannel.Impl;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
@@ -20,6 +21,14 @@ public class Channel implements IChannel{
 	private IDisconnectListener _disconnectListener;
 	private Queue<byte[]> _writeBuffer, _readBuffer;
 	
+	public Channel() {
+		_disconnected = false;
+		_dangling = false;
+		_in = new CircularBuffer(64);
+		_writeBuffer = new LinkedList<byte[]>();
+		_readBuffer = new LinkedList<byte[]>();
+	}
+	
 
 	@Override
 	public void setReadListener(IReadListener listener) {
@@ -36,10 +45,12 @@ public class Channel implements IChannel{
 		if(getReadBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
 			return false;
 		}
-		if(_readBuffer.isEmpty()) {
+		
+		_readBuffer.add(bytes);
+
+		if(_readBuffer.size() <= 1) {
 			_read(bytes, 0, bytes.length);
 		}
-		_readBuffer.add(bytes);
 		return true;
 	}
 	
@@ -61,7 +72,7 @@ public class Channel implements IChannel{
 			bytesRead++;
 		}
 		
-		if(offset >= length) {
+		if(bytesRead >= length - offset) {
 			_readListener.read(_readBuffer.poll());
 			byte[] nextBytes = _readBuffer.peek();
 			if(nextBytes != null) {
@@ -80,10 +91,12 @@ public class Channel implements IChannel{
 		if(getWriteBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
 			return false;
 		}
-		if(_writeBuffer.isEmpty()) {
+		
+		_writeBuffer.add(bytes);
+
+		if(_writeBuffer.size() <= 1) {
 			_write(bytes, 0, bytes.length, listener);
 		}
-		_writeBuffer.add(bytes);
 		return true;
 	}
 	
@@ -103,7 +116,7 @@ public class Channel implements IChannel{
 			_out.push(bytes[offset + bytesWritten++]);
 		}
 		
-		if(offset >= length) {
+		if(bytesWritten >= length - offset) {
 			listener.wrote(_writeBuffer.poll());
 			byte[] nextBytes = _writeBuffer.peek();
 			if(nextBytes != null) {
@@ -123,6 +136,8 @@ public class Channel implements IChannel{
 		if(_disconnectListener == null) {
 			throw new IllegalStateException("DsiconnectListener not set");
 		}
+		
+		_disconnectListener.disconnected();
 	}
 
 	@Override

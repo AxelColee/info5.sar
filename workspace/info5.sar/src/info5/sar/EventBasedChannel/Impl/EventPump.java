@@ -31,7 +31,7 @@ public class EventPump {
     	return _currentEvent;
     }
     
-    public static Event getCurrentRunnable() {
+    public static Event getCurrentEvent() {
     	return _currentEvent;
     }
     
@@ -45,6 +45,7 @@ public class EventPump {
         	try {
         		_currentEvent.run();
             } catch (Exception e) {
+            	e.printStackTrace();
             	
             }
             	 

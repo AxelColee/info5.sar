@@ -12,6 +12,7 @@ public class EchoClientReadListener implements IReadListener{
 	
 	public EchoClientReadListener(byte[] bytes, IChannel channel) {
 		_bytes = bytes;
+		_channel = channel;
 	}
 
 	@Override
@@ -20,8 +21,9 @@ public class EchoClientReadListener implements IReadListener{
 		
 		for(int i = 0; i < _bytes.length; i++){
 			assert(_bytes[i] == bytes[i]) : "Data recieved different from the one sent : " + i;
-		}	
+		}
 		
+		System.out.println("Client Passed");
 	}
 
 }

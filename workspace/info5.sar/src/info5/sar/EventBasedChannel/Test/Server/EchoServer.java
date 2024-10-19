@@ -12,7 +12,7 @@ public class EchoServer implements Runnable{
 
 	@Override
 	public void run() {
-		 _broker.unbind(80);
+		 _broker.bind(80, new EchoServerAcceptListener());
 	}
 
 }

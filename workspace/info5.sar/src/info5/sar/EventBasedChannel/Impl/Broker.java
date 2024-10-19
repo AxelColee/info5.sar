@@ -42,12 +42,24 @@ public class Broker implements IBroker{
 
 	@Override
 	public boolean connect(String name, int port, IConnectListener listener) {
+		Broker broker = _brokerManager.getBroker(name);
+		if(broker == null) {
+			listener.refused();
+			return false;
+		}else {
+			broker._connect(port, listener);
+			return true;
+		}
+		
+	}
+	
+	private void _connect(int port, IConnectListener listener) {
 		if(_binds.containsKey(port)) {
 			
 			Channel channelAccept = new Channel();
 			Channel channelConnect = new Channel();
 			
-			channelAccept._in = channelConnect._in;
+			channelAccept._out = channelConnect._in;
 			channelConnect._out = channelAccept._in;
 			
 			channelAccept._rch = channelConnect;
@@ -56,9 +68,10 @@ public class Broker implements IBroker{
 			listener.connected(channelConnect);
 			_binds.get(port).accepted(channelAccept);
 							
-			return true;
+		}else {
+			new Task().post(() -> _connect( port, listener));
 		}
-		return false;
+		
 	}
 	
 	public String name() {

@@ -2,6 +2,7 @@ package info5.sar.EventBasedChannel.Test.Server;
 
 import info5.sar.EventBasedChannel.Abstract.IAcceptListener;
 import info5.sar.EventBasedChannel.Abstract.IChannel;
+import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedChannel.Test.DisconnectListener;
 
 public class EchoServerAcceptListener implements IAcceptListener{
@@ -13,7 +14,7 @@ public class EchoServerAcceptListener implements IAcceptListener{
 		
 		byte[] bytes = new byte[17];
 		
-		channel.read(bytes, 0, 17);
+		new Task().post(() -> channel.read(bytes));
 	}
 
 }

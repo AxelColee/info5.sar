@@ -14,6 +14,8 @@ public class EchoServerWriteListener implements IWriteListener{
 	@Override
 	public void wrote(byte[] bytes) {
 		_channel.disconnect();
+		
+		System.out.println("Server Passed");
 	}
 
 }

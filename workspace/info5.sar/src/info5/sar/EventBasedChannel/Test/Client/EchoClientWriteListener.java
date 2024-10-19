@@ -2,6 +2,7 @@ package info5.sar.EventBasedChannel.Test.Client;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IWriteListener;
+import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoClientWriteListener implements IWriteListener {
 	
@@ -14,7 +15,7 @@ public class EchoClientWriteListener implements IWriteListener {
 	@Override
 	public void wrote(byte[] bytes) {
 		byte[] answer = new byte[bytes.length];
-		_channel.read(answer, 0, answer.length);	
+		new Task().post(() -> _channel.read(answer));	
 
 	}
 

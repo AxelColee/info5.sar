@@ -2,6 +2,7 @@ package info5.sar.EventBasedChannel.Test.Client;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IConnectListener;
+import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedChannel.Test.DisconnectListener;
 
 public class EchoClientConnectLIstener implements IConnectListener{
@@ -14,7 +15,7 @@ public class EchoClientConnectLIstener implements IConnectListener{
 		channel.setReadListener(new EchoClientReadListener(bytes, channel));
 		channel.setDisconnectListener(new DisconnectListener(channel));
 		
-		channel.write(bytes, 0,17);
+		new Task().post(() -> channel.write(bytes, new EchoClientWriteListener(channel)));
 		
 	}
 

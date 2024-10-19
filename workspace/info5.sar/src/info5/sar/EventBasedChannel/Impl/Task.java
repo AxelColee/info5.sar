@@ -35,7 +35,11 @@ public class Task implements ITask {
 	}
 
 	public static Task task() {
-		return EventPump.getCurrentRunnable().getTask();
+		Event e = EventPump.getCurrentEvent();
+		if(e !=  null) {
+			e.getTask();
+		}
+		return null;
 	}
 
 }
