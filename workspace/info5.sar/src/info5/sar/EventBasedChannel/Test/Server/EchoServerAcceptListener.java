@@ -12,7 +12,7 @@ public class EchoServerAcceptListener implements IAcceptListener{
 		channel.setReadListener(new EchoServerReadListener(channel));
 		channel.setDisconnectListener(new DisconnectListener(channel));
 		
-		byte[] bytes = new byte[17];
+		byte[] bytes = new byte[360];
 		
 		new Task().post(() -> channel.read(bytes));
 	}

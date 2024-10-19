@@ -126,7 +126,7 @@ public class Channel implements IChannel{
 		}
 		
 	    final int updatedOffset = offset + bytesWritten;
-		new Task().post(() -> _read(bytes, updatedOffset, length));
+		new Task().post(() -> _write(bytes, updatedOffset, length, listener));
 	}
 
 	@Override
