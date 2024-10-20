@@ -9,7 +9,7 @@ import info5.sar.ThreadedChannel.Impl.CircularBuffer;
 
 public class Channel implements IChannel{
 	
-	private static final int MAX_BUFFER_SIZE = 1024;
+	private static final int MAX_BUFFER_SIZE = 2048;
 	
 	public Channel _rch;
 	private boolean _disconnected;
@@ -122,7 +122,7 @@ public class Channel implements IChannel{
 			_listener.wrote(_writeBuffer.poll());
 			byte[] nextBytes = _writeBuffer.peek();
 			if(nextBytes != null) {
-				new Task().post(() -> _read(nextBytes, 0, nextBytes.length));
+				new Task().post(() -> _write(nextBytes, 0, nextBytes.length));
 			}
 			return;
 		}

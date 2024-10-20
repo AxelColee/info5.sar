@@ -11,9 +11,17 @@ public class EchoServerAcceptListener implements IAcceptListener{
 		
 		channel.setListener(new EchoServerChannelListener(channel));
 		
-		byte[] bytes = new byte[360];
+		byte[] bytes1 = new byte[360];
+		byte[] bytes2 = new byte[360];
+		byte[] bytes3 = new byte[360];
+
+
 		
-		new Task().post(() -> channel.read(bytes));
+		Task task = new Task();
+		task.post(() -> channel.read(bytes1));
+		task.post(() -> channel.read(bytes2));
+		task.post(() -> channel.read(bytes3));
+
 	}
 
 }

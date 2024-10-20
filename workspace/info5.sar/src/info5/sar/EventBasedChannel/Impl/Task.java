@@ -37,7 +37,7 @@ public class Task implements ITask {
 	public static Task task() {
 		Event e = EventPump.getCurrentEvent();
 		if(e !=  null) {
-			e.getTask();
+			return e.getTask();
 		}
 		return null;
 	}

@@ -8,6 +8,7 @@ public class EchoServerChannelListener implements IChannelListener{
 	
 	private IChannel _channel;
 	private static int _cpt = 0;
+	private int writeCpt = 0;
 	
 	public EchoServerChannelListener(IChannel channel) {
 		_channel = channel;
@@ -29,6 +30,8 @@ public class EchoServerChannelListener implements IChannelListener{
 
 	@Override
 	public void wrote(byte[] bytes) {
-		_channel.disconnect();
+		if(writeCpt++ >= 2) {
+			_channel.disconnect();
+		}
 	}
 }
