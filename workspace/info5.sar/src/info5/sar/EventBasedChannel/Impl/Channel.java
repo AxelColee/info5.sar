@@ -58,7 +58,9 @@ public class Channel implements IChannel{
 		}
 		
 		if(_in.empty()) {
-			new Task().post(() -> _read(bytes, offset, length));
+			if(!_dangling) {
+				new Task().post(() -> _read(bytes, offset, length));
+			}
 			return;
 		}
 		
@@ -134,6 +136,8 @@ public class Channel implements IChannel{
 	@Override
 	public void disconnect() {
 		_disconnected = true;
+		
+		_rch._dangling = true;
 		
 		if(_listener == null) {
 			throw new IllegalStateException("DsiconnectListener not set");
