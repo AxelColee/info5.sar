@@ -19,14 +19,19 @@ public class Task implements ITask {
 
 	@Override
 	public void post(Runnable r) {
-		Event event = new Event(task(), this, r);
-		_events.add(event);
-		_eventPump.post(event);
+		if(!_killed) {
+			Event event = new Event(task(), this, r);
+			_events.add(event);
+			_eventPump.post(event);
+		}
 	}
 	
 	@Override
 	public void kill() {
-		this._killed = true;
+		if(!_killed) {
+			this._killed = true;
+			_eventPump.removeAllEventOfaTask(this);
+		}
 	}
 
 	@Override

@@ -27,12 +27,20 @@ public class EventPump {
 	}
 
     private Event getNext() {
-    	_currentEvent= _events.poll();
+    	_currentEvent = _events.poll();
     	return _currentEvent;
     }
     
     public static Event getCurrentEvent() {
     	return _currentEvent;
+    }
+    
+    public void removeAllEventOfaTask(Task task) {
+    	for(Event e : _events) {
+    		if(e.getTask() == task) {
+    			_events.remove(e);
+    		}
+    	}
     }
     
     

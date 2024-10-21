@@ -36,7 +36,7 @@ public class Channel implements IChannel{
 	public boolean read(byte[] bytes) {
 		
 		if(_listener == null) {
-			throw new IllegalStateException("DsiconnectListener not set");
+			throw new IllegalStateException("Listener not set");
 		}
 		
 		if(getReadBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
@@ -60,6 +60,8 @@ public class Channel implements IChannel{
 		if(_in.empty()) {
 			if(!_dangling) {
 				new Task().post(() -> _read(bytes, offset, length));
+			}else {
+				_readBuffer.clear();
 			}
 			return;
 		}
@@ -89,7 +91,7 @@ public class Channel implements IChannel{
 	public boolean write(byte[] bytes) {
 		
 		if(_listener == null) {
-			throw new IllegalStateException("DsiconnectListener not set");
+			throw new IllegalStateException("Listener not set");
 		}
 		
 		if(getWriteBufferSize() + bytes.length > MAX_BUFFER_SIZE) {
@@ -106,7 +108,16 @@ public class Channel implements IChannel{
 	
 	private void _write(byte[] bytes, int offset, int length) {
 		
-		if(_dangling || _disconnected) {
+		if( _disconnected) {
+			return;
+		}
+		
+		if(_dangling) {
+			_listener.wrote(_writeBuffer.poll());
+			byte[] nextBytes = _writeBuffer.peek();
+			if(nextBytes != null) {
+				new Task().post(() -> _write(nextBytes, 0, nextBytes.length));
+			}
 			return;
 		}
 		
@@ -140,7 +151,7 @@ public class Channel implements IChannel{
 		_rch._dangling = true;
 		
 		if(_listener == null) {
-			throw new IllegalStateException("DsiconnectListener not set");
+			throw new IllegalStateException("Listener not set");
 		}
 		
 		_listener.disconnected();
@@ -150,8 +161,6 @@ public class Channel implements IChannel{
 	public boolean disconnected() {
 		return _disconnected;
 	}
-	
-
 	
 	private int getBufferSize(Queue<byte[]> buffer) {
 		int sum = 0;
