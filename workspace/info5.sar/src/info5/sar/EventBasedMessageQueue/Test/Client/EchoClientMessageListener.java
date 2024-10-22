@@ -1,15 +1,14 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
+import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 
-public class EchoClientMessageListener implements IMessageQueue.IMessageListener {
+public class EchoClientMessageListener extends MessageListener {
 	
-	private IMessageQueue _queue;
 	private Message _message;
 	
-	public EchoClientMessageListener(IMessageQueue queue, Message msg) {
-		_queue = queue;
+	public EchoClientMessageListener(Message msg) {
 		_message = msg;
 	}
 

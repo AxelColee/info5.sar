@@ -2,6 +2,8 @@ package info5.sar.EventBasedMessageQueue.Test;
 
 import info5.sar.EventBasedChannel.Impl.EventPump;
 import info5.sar.EventBasedChannel.Impl.Task;
+import info5.sar.EventBasedMessageQueue.Abstract.IQueueBroker;
+import info5.sar.EventBasedMessageQueue.Impl.QueueBroker;
 import info5.sar.EventBasedMessageQueue.Test.Client.EchoClient;
 import info5.sar.EventBasedMessageQueue.Test.Server.EchoServer;
 
@@ -19,11 +21,11 @@ public class TestMain {
 	
 	private void setup() {
 
-//		IQueueBroker serverBroker = new QueueBroker("serverBroker");
-//	    IQueueBroker clientBroker = new QueueBroker("clientBroker");
+		IQueueBroker serverBroker = new QueueBroker("serverBroker");
+	    IQueueBroker clientBroker = new QueueBroker("clientBroker");
 		
-//		_clientRunnable = new EchoClient(clientBroker);
-//		_serverRunnable = new EchoServer(serverBroker);
+		_clientRunnable = new EchoClient(clientBroker);
+		_serverRunnable = new EchoServer(serverBroker);
 		
 	    _server = new Task();
 	    _client1 = new Task();
@@ -39,8 +41,8 @@ public class TestMain {
 		test.setup();
 		
 		test._client1.post(test._clientRunnable);
-		test._client2.post(test._clientRunnable);
-		test._client3.post(test._clientRunnable);
+//		test._client2.post(test._clientRunnable);
+//		test._client3.post(test._clientRunnable);
 		
 		test._server.post(test._serverRunnable);
 		

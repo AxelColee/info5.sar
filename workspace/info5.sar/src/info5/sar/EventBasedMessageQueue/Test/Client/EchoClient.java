@@ -1,6 +1,11 @@
 package info5.sar.EventBasedMessageQueue.Test.Client;
 
+import java.util.UUID;
+
+import info5.sar.EventBasedMessageQueue.Abstract.ConnectListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IQueueBroker;
+import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
+import info5.sar.EventBasedMessageQueue.Impl.Message;
 
 public class EchoClient implements Runnable {
 	
@@ -12,7 +17,13 @@ private IQueueBroker _broker;
 
 	@Override
 	public void run() {
-		_broker.connect("serverBroker", 80, new EchoClientConnectListener());		
+		Message msg = new Message(UUID.randomUUID().toString().repeat(10).getBytes());
+		
+		MessageListener messageListener = new EchoClientMessageListener(msg);
+		
+		ConnectListener connectListener = new EchoClientConnectListener(messageListener, msg);
+		
+		_broker.connect("serverBroker", 80, connectListener);		
 	}
 
 }

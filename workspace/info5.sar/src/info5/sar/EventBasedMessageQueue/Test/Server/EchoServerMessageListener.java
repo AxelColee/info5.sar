@@ -2,16 +2,10 @@ package info5.sar.EventBasedMessageQueue.Test.Server;
 
 import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
-import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue.IMessageListener;
+import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 
-public class EchoServerMessageListener implements IMessageListener{
-
-	private IMessageQueue _queue;
-	
-	public EchoServerMessageListener(IMessageQueue queue) {
-		_queue = queue;
-	}
+public class EchoServerMessageListener extends MessageListener{
 
 	@Override
 	public void received(byte[] bytes) {
