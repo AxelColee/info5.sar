@@ -17,6 +17,7 @@ public class MessageQueue implements IMessageQueue{
 	@Override
 	public void setListener(MessageListener listener) {
 		_listener = listener;
+		((InternalChannelListener)_channel.getListener()).setMessageListener(listener);
 	}
 
 	@Override

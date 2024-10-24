@@ -18,10 +18,8 @@ private IQueueBroker _broker;
 	@Override
 	public void run() {
 		Message msg = new Message(UUID.randomUUID().toString().repeat(10).getBytes());
-		
-		MessageListener messageListener = new EchoClientMessageListener(msg);
-		
-		ConnectListener connectListener = new EchoClientConnectListener(messageListener, msg);
+				
+		ConnectListener connectListener = new EchoClientConnectListener(msg);
 		
 		_broker.connect("serverBroker", 80, connectListener);		
 	}

@@ -41,9 +41,9 @@ public class TestMain {
 		test.setup();
 		
 		test._client1.post(test._clientRunnable);
-//		test._client2.post(test._clientRunnable);
-//		test._client3.post(test._clientRunnable);
-		
+		test._client2.post(test._clientRunnable);
+		test._client3.post(test._clientRunnable);
+//		
 		test._server.post(test._serverRunnable);
 		
 		EventPump.getInstance().run();

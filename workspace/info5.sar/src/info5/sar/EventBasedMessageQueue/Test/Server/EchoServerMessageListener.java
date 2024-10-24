@@ -6,19 +6,18 @@ import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 
 public class EchoServerMessageListener extends MessageListener{
+	
+	private static int _sentCpt = 0;
+
+	public EchoServerMessageListener(IMessageQueue queue) {
+		super(queue);
+	}
 
 	@Override
 	public void received(byte[] bytes) {
 		
 		Task task = new Task();
-		task.post(new Runnable() {
-			
-			@Override
-			public void run() {
-				_queue.send(new Message(bytes));
-				
-			}
-		});
+		task.post(() -> _queue.send(new Message(bytes)));
 		
 	}
 
@@ -28,14 +27,14 @@ public class EchoServerMessageListener extends MessageListener{
 		assert(_queue != null) : "Server queue not initialized";
 		assert(_queue.closed() == true) : "Server queue not disconnected";
 		
-		System.out.println("Server passed");
-
+		if(_sentCpt++ >=2) {
+			System.out.println("Server passed");
+		}
 	}
 
 	@Override
 	public void sent(Message message) {
-		_queue.close();
-
+			_queue.close();
 	}
 
 

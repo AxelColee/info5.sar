@@ -7,20 +7,20 @@ import info5.sar.EventBasedMessageQueue.Abstract.ConnectListener;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
+import info5.sar.EventBasedMessageQueue.Test.Server.EchoServerMessageListener;
 
 public class EchoClientConnectListener extends ConnectListener {
 	
 	private Message _msg;
 
-	public EchoClientConnectListener(MessageListener messageListener, Message msg) {
-		super(messageListener);
+	public EchoClientConnectListener(Message msg) {
 		_msg = msg;
 	}
 
 	@Override
 	public void connected(IMessageQueue queue) {
 		
-		queue.setListener(getMessageListener());
+		queue.setListener(new EchoClientMessageListener(queue, _msg));
 		
 		new Task().post(() -> queue.send(_msg));
 

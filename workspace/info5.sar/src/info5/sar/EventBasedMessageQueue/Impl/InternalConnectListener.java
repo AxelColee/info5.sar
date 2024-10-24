@@ -17,7 +17,7 @@ public class InternalConnectListener implements info5.sar.EventBasedChannel.Abst
 		
 		MessageQueue queue = new MessageQueue(channel);
 		
-		channel.setListener(new InternalChannelListener(_listener.getMessageListener(), queue, channel));
+		channel.setListener(new InternalChannelListener(channel));
 		
 		byte[] length = new byte[4];
 		new Task().post(() -> channel.read(length));

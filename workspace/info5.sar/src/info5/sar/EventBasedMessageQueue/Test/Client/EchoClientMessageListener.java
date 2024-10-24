@@ -8,7 +8,8 @@ public class EchoClientMessageListener extends MessageListener {
 	
 	private Message _message;
 	
-	public EchoClientMessageListener(Message msg) {
+	public EchoClientMessageListener(IMessageQueue queue, Message msg) {
+		super(queue);
 		_message = msg;
 	}
 
@@ -19,6 +20,7 @@ public class EchoClientMessageListener extends MessageListener {
 		for(int i = 0; i < _message.getLength(); i++){
 			assert(bytes[i] == _message.getByteAt(i)) : "Data recieved different from the one sent : " + i;
 		}	
+		
 		
 		_queue.close();
 

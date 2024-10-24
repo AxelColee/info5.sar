@@ -178,4 +178,10 @@ public class Channel implements IChannel{
 		return getBufferSize(_readBuffer);
 	}
 
+
+	@Override
+	public IChannelListener getListener() {
+		return _listener;
+	}
+
 }

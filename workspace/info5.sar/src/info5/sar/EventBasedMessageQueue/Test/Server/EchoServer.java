@@ -13,7 +13,7 @@ private IQueueBroker _broker;
 
 	@Override
 	public void run() {
-		new Task().post( () -> _broker.bind(80, new EchoServerAcceptListener(new EchoServerMessageListener(), _broker)));
+		new Task().post( () -> _broker.bind(80, new EchoServerAcceptListener(_broker)));
 		
 	}
 
