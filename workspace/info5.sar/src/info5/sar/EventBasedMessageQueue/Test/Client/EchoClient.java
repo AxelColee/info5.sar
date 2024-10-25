@@ -9,19 +9,20 @@ import info5.sar.EventBasedMessageQueue.Impl.Message;
 
 public class EchoClient implements Runnable {
 	
-private IQueueBroker _broker;
+	private IQueueBroker _broker;
+	private int _nbMessage;
 	
-	public EchoClient(IQueueBroker broker) {
+	public EchoClient(IQueueBroker broker, int nbMessage) {
 		_broker = broker;
+		_nbMessage = nbMessage;
 	}
 
 	@Override
 	public void run() {
-		Message msg = new Message(UUID.randomUUID().toString().repeat(10).getBytes());
 				
-		ConnectListener connectListener = new EchoClientConnectListener(msg);
+		ConnectListener connectListener = new EchoClientConnectListener(_nbMessage);
 		
-		_broker.connect("serverBroker", 80, connectListener);		
+		_broker.connect("serverBroker", 80, connectListener);	
 	}
 
 }

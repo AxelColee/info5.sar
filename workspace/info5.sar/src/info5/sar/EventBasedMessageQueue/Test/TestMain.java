@@ -9,47 +9,69 @@ import info5.sar.EventBasedMessageQueue.Test.Server.EchoServer;
 
 public class TestMain {
 
-	private Task _client1;
-	private Task _client2;
-	private Task _client3;
+	private Task _clients;
 	private Task _server;
 	
-	private EchoClient _clientRunnable;
+	private IQueueBroker _serverBroker = new QueueBroker("serverBroker");
+	private IQueueBroker _clientBroker = new QueueBroker("clientBroker");
 	
-	private EchoServer _serverRunnable;
-	
-	
-	private void setup() {
+	private void test(int nbClient, int nbMessagePerClient) {
+		
+		 _clients = new Task();
+		 _server = new Task();
+		
+		Runnable clientRunnable = new EchoClient(_clientBroker, nbMessagePerClient);
+		Runnable serverRunnable = new EchoServer(_serverBroker, nbClient, nbMessagePerClient);
 
-		IQueueBroker serverBroker = new QueueBroker("serverBroker");
-	    IQueueBroker clientBroker = new QueueBroker("clientBroker");
+		for(int i = 0; i < nbClient; i++) {
+			_clients.post(clientRunnable);
+		}
 		
-		_clientRunnable = new EchoClient(clientBroker);
-		_serverRunnable = new EchoServer(serverBroker);
+		_server.post(serverRunnable);
 		
-	    _server = new Task();
-	    _client1 = new Task();
-	    _client2 = new Task();
-	    _client3 = new Task();
-				
+		EventPump.getInstance().run();
 	}
 	
 	public static void main(String[] args) {
 		
 		TestMain test = new TestMain();
 		
-		test.setup();
+		int nbMessages = 1;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		test._client1.post(test._clientRunnable);
-		test._client2.post(test._clientRunnable);
-		test._client3.post(test._clientRunnable);
-//		
-		test._server.post(test._serverRunnable);
+		nbMessages = 3;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		EventPump.getInstance().run();
+		nbMessages = 10;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		System.out.println("TEST PASSED");
-			
+		nbMessages = 20;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
+		
+		nbMessages = 100;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
+		
+		System.out.println("TEST PASSED");	
 				
 	}
 

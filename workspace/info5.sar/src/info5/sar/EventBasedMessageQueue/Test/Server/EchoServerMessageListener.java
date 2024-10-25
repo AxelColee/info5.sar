@@ -7,10 +7,12 @@ import info5.sar.EventBasedMessageQueue.Impl.Message;
 
 public class EchoServerMessageListener extends MessageListener{
 	
-	private static int _sentCpt = 0;
+	private int _nbClient;
+	private static int _counter = 0;
 
-	public EchoServerMessageListener(IMessageQueue queue) {
+	public EchoServerMessageListener(IMessageQueue queue, int nbClient) {
 		super(queue);
+		_nbClient = nbClient;
 	}
 
 	@Override
@@ -24,11 +26,15 @@ public class EchoServerMessageListener extends MessageListener{
 	@Override
 	public void closed() {
 		
+		_counter++;
+		
 		assert(_queue != null) : "Server queue not initialized";
 		assert(_queue.closed() == true) : "Server queue not disconnected";
 		
-		if(_sentCpt++ >=2) {
+		if(_counter >= _nbClient) {
+			_counter = 0;
 			System.out.println("Server passed");
+			
 		}
 	}
 
