@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.UUID;
 
 import info5.sar.EventBasedChannel.Impl.Task;
-import info5.sar.EventBasedMessageQueue.Abstract.ConnectListener;
+import info5.sar.EventBasedMessageQueue.Abstract.IConnectListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 import info5.sar.EventBasedMessageQueue.Impl.Message;
 
-public class EchoClientConnectListener extends ConnectListener {
+public class EchoClientConnectListener implements IConnectListener {
 	
 	private int _nbMessage;
 	private List<Message> _messages;

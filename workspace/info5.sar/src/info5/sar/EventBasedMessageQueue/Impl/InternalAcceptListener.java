@@ -2,13 +2,13 @@ package info5.sar.EventBasedMessageQueue.Impl;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Impl.Task;
-import info5.sar.EventBasedMessageQueue.Abstract.AcceptListener;
+import info5.sar.EventBasedMessageQueue.Abstract.IAcceptListener;
 
 public class InternalAcceptListener implements info5.sar.EventBasedChannel.Abstract.IAcceptListener{
 	
-	private AcceptListener _listener;
+	private IAcceptListener _listener;
 	
-	public InternalAcceptListener(AcceptListener listener) {
+	public InternalAcceptListener(IAcceptListener listener) {
 		_listener = listener;
 	}
 

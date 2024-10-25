@@ -7,8 +7,8 @@ public interface IQueueBroker {
     
     public abstract boolean unbind(int port);
     
-    public abstract boolean bind(int port, AcceptListener listener);
+    public abstract boolean bind(int port, IAcceptListener listener);
     
-    public abstract boolean connect(String name, int port, ConnectListener listener);
+    public abstract boolean connect(String name, int port, IConnectListener listener);
 
 }

@@ -21,7 +21,7 @@ public class TestMain {
 		 _server = new Task();
 		
 		Runnable clientRunnable = new EchoClient(_clientBroker, nbMessagePerClient);
-		Runnable serverRunnable = new EchoServer(_serverBroker, nbClient, nbMessagePerClient);
+		Runnable serverRunnable = new EchoServer(_serverBroker, nbClient);
 
 		for(int i = 0; i < nbClient; i++) {
 			_clients.post(clientRunnable);

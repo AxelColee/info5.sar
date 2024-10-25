@@ -2,13 +2,13 @@ package info5.sar.EventBasedMessageQueue.Impl;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Impl.Task;
-import info5.sar.EventBasedMessageQueue.Abstract.ConnectListener;
+import info5.sar.EventBasedMessageQueue.Abstract.IConnectListener;
 
 public class InternalConnectListener implements info5.sar.EventBasedChannel.Abstract.IConnectListener{
 	
-	private ConnectListener _listener;
+	private IConnectListener _listener;
 	
-	public InternalConnectListener(ConnectListener listener) {
+	public InternalConnectListener(IConnectListener listener) {
 		_listener = listener;
 	}
 
