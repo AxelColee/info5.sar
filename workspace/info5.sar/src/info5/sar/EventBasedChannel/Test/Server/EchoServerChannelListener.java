@@ -7,11 +7,16 @@ import info5.sar.EventBasedChannel.Impl.Task;
 public class EchoServerChannelListener implements IChannelListener{
 	
 	private IChannel _channel;
-	private static int _cpt = 0;
-	private int writeCpt = 0;
+	private static int _clientCounter = 0;
+	private int _messageCounter;
+	private int _nbClient;
+	private int _nbMessagePerClient;
 	
-	public EchoServerChannelListener(IChannel channel) {
+	public EchoServerChannelListener(IChannel channel, int nbClient, int nbMessagePerClient) {
 		_channel = channel;
+		_nbClient = nbClient;
+		_nbMessagePerClient = nbMessagePerClient;
+		_messageCounter = 0;
 	}
 
 	@Override
@@ -21,16 +26,21 @@ public class EchoServerChannelListener implements IChannelListener{
 
 	@Override
 	public void disconnected() {
+		_clientCounter++;
+		
 		assert(_channel.disconnected() == true) : "Channel is not disconnected";
 		
-		if(_cpt++ >= 2) {
+		if(_clientCounter >= _nbClient) {
+			_clientCounter = 0;
 			System.out.println("Server Passed");
 		}
 	}
 
 	@Override
 	public void wrote(byte[] bytes) {
-		if(writeCpt++ >= 2) {
+		_messageCounter++;
+		
+		if(_messageCounter >= _nbMessagePerClient) {
 			_channel.disconnect();
 		}
 	}

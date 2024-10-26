@@ -1,7 +1,6 @@
 package info5.sar.EventBasedChannel.Test;
 
 import info5.sar.EventBasedChannel.Abstract.IBroker;
-import info5.sar.EventBasedChannel.Abstract.ITask;
 import info5.sar.EventBasedChannel.Impl.Broker;
 import info5.sar.EventBasedChannel.Impl.EventPump;
 import info5.sar.EventBasedChannel.Impl.Task;
@@ -9,50 +8,74 @@ import info5.sar.EventBasedChannel.Test.Client.EchoClient;
 import info5.sar.EventBasedChannel.Test.Server.EchoServer;
 
 public class TestMain {
-	private ITask _client1;
-	private ITask _client2;
-	private ITask _client3;
-	private ITask _server;
 	
-	private EchoClient _clientRunnable;
+	private Task _clients;
+	private Task _server;
 	
-	private EchoServer _serverRunnable;
+	private IBroker _serverBroker = new Broker("serverBroker");
+	private IBroker _clientBroker = new Broker("clientBroker");
 	
-	
-	private void setup() {
+	private void test(int nbClient, int nbMessagePerClient) {
+		
+		 _clients = new Task();
+		 _server = new Task();
+		
+		Runnable clientRunnable = new EchoClient(_clientBroker, nbMessagePerClient);
+		Runnable serverRunnable = new EchoServer(_serverBroker, nbClient, nbMessagePerClient);
 
-		IBroker serverBroker = new Broker("serverBroker");
-	    IBroker clientBroker = new Broker("clientBroker");
+		for(int i = 0; i < nbClient; i++) {
+			_clients.post(clientRunnable);
+		}
 		
-		_clientRunnable = new EchoClient(clientBroker);
-		_serverRunnable = new EchoServer(serverBroker);
+		_server.post(serverRunnable);
 		
-	    _server = new Task();
-	    _client1 = new Task();
-	    _client2 = new Task();
-	    _client3 = new Task();
-				
+		EventPump.getInstance().run();
+		
 	}
 	
 	public static void main(String[] args) {
 		
 		TestMain test = new TestMain();
 		
-
+		int nbMessages = 1;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		test.setup();
+		nbMessages = 3;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		test._client1.post(test._clientRunnable);
-		test._client2.post(test._clientRunnable);
-		test._client3.post(test._clientRunnable);
+		nbMessages = 10;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		test._server.post(test._serverRunnable);
+		nbMessages = 20;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		EventPump.getInstance().run();
+		nbMessages = 100;
+		test.test(1, nbMessages);
+		test.test(3, nbMessages);
+		test.test(10, nbMessages);
+		test.test(20, nbMessages);
+		test.test(100, nbMessages);
 		
-		System.out.println("TEST PASSED");
-			
+		System.out.println("TEST PASSED");	
 				
 	}
+	
+	
 
 }

@@ -1,5 +1,7 @@
 package info5.sar.EventBasedChannel.Test.Client;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
@@ -8,23 +10,29 @@ import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoClientConnectLIstener implements IConnectListener{
 	
+	private List<byte[]> _bytes;
+	private int _nbMessagePerClient;
+	
+	public EchoClientConnectLIstener( int nbMessagePerClient) {
+		_bytes = new LinkedList<byte[]>();
+		_nbMessagePerClient = nbMessagePerClient;
+	}
+	
 	@Override
 	public void connected(IChannel channel) {
 		
-		byte[] bytes1 = UUID.randomUUID().toString().repeat(10).getBytes(); bytes1[0] = 1;
-		byte[] bytes2 = UUID.randomUUID().toString().repeat(10).getBytes(); bytes2[0] = 2;
-		byte[] bytes3 = UUID.randomUUID().toString().repeat(10).getBytes(); bytes3[0] = 3;
+		for(int i = 0; i < _nbMessagePerClient; i++) {
+			_bytes.add(UUID.randomUUID().toString().repeat(10).getBytes());
+		}
 
-
+		channel.setListener(new EchoClientChannelListener(channel, _bytes, _nbMessagePerClient));
 		
-		channel.setListener(new EchoClientChannelListener(bytes1, bytes2, bytes3, channel));
 		
-		new Task().post(() -> channel.write(bytes1));
-		new Task().post(() -> channel.write(bytes2));
-		new Task().post(() -> channel.write(bytes3));
+		for(int i = 0; i < _nbMessagePerClient; i++) {
+			final int index = i;
+			new Task().post(() -> channel.write(_bytes.get(index)));
 
-
-		
+		}
 	}
 
 	@Override

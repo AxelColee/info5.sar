@@ -1,52 +1,39 @@
 package info5.sar.EventBasedChannel.Test.Client;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoClientChannelListener implements IChannelListener {
 	
-	private byte[] _bytes1;
-	private byte[] _bytes2;
-	private byte[] _bytes3;
-
-
+	private List<byte[]> _bytes;
+	private int _nbMessagePerClient;
 	private IChannel _channel;
+	private int _counter =0;
 	
-	private int cpt =0;
-	
-	public EchoClientChannelListener(byte[] bytes1, byte[] bytes2, byte[] bytes3,IChannel channel) {
-		_bytes1 = bytes1;
-		_bytes2 = bytes2;
-		_bytes3 = bytes3;
+	public EchoClientChannelListener(IChannel channel, List<byte[]> bytes, int nbMessagePerClient) {
 		_channel = channel;
+		_bytes = bytes;
+		_nbMessagePerClient = nbMessagePerClient;
 	}
 
 	@Override
 	public void read(byte[] bytes) {
 		
-		if(bytes[0] == 1) {
-			for(int i = 0; i < _bytes1.length; i++){
-				if(_bytes1[i] != bytes[i]) 
-					System.err.println("Data recieved different from the one sent : " + i);
-			}
-		}else if(bytes[0] == 2) {
-			for(int i = 0; i < _bytes2.length; i++){
-				if(_bytes2[i] != bytes[i]) 
-					System.err.println("Data recieved different from the one sent : " + i);
-			}
+		byte[] byteArrayReceived = _bytes.get(_counter);
 		
-	}else if(bytes[0] == 3) {
-		for(int i = 0; i < _bytes3.length; i++){
-			if(_bytes3[i] != bytes[i]) 
-				System.err.println("Data recieved different from the one sent : " + i);
-		}
-	}
+		for(int i = 0; i < byteArrayReceived.length; i++){
+			assert(bytes[i] == byteArrayReceived[i]) : "Data recieved different from the one sent : " + i;
+		}	
 		
-		if(cpt++>=2) {
+		_counter++;
+
+		if(_counter >= _nbMessagePerClient) {
 			_channel.disconnect();
 		}
-		
 		
 	}
 

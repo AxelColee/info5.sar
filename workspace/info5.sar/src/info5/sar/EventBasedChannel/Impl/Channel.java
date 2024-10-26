@@ -9,7 +9,7 @@ import info5.sar.ThreadedChannel.Impl.CircularBuffer;
 
 public class Channel implements IChannel{
 	
-	private static final int MAX_BUFFER_SIZE = 2048;
+	private static final int MAX_BUFFER_SIZE = 60000;
 	
 	public Channel _rch;
 	private boolean _disconnected;
