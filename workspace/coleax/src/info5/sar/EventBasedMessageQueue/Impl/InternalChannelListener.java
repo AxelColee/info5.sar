@@ -2,7 +2,6 @@ package info5.sar.EventBasedMessageQueue.Impl;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
-import info5.sar.EventBasedChannel.Impl.Channel;
 import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
 
@@ -39,9 +38,7 @@ public class InternalChannelListener implements IChannelListener{
 		if(_receivingState.equals(ReceivingState.Message)) {
 			_listener.received(bytes);
 			_receivingState = ReceivingState.Length;
-		    byte[] length = new byte[4];
-
-			new Task().post(() -> _channel.read(bytes));
+		    new Task().post(() -> _channel.read(bytes));
 		}else {
 			
 			 int length = ((bytes[0] & 0xFF) << 24) |

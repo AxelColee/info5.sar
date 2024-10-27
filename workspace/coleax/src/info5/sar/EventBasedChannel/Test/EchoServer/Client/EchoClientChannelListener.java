@@ -1,6 +1,5 @@
 package info5.sar.EventBasedChannel.Test.EchoServer.Client;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
