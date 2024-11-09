@@ -1,78 +1,57 @@
 # QueueMessage Specification
 
-## Purpose
-An event based message exchanging framework.
+## Overview
 
-## Prerequisite
-This framework is full event and won't be threaded safe. Therefore it does not guarantee good results when accessed by multiple threads.
+`QueueMessage` is an event-driven message exchange framework designed for asynchronous, single-threaded communication between brokers. The framework relies on tasks and event-based message handling, ensuring sequential consistency and smooth data flow without using threads.
 
-Some objetcs referred here belongs to the EventBased cHannel Framework developped earlier.
+## Prerequisites
 
-## Bootstraping
-Bootstapin the app consists of creating all the necessary obejcts (QueueBroker, Task, Listner) and Finally, starting the pump. Only by launching the Eventpump at last will ensure the orrect behavior of the framework.
+- **Single-threaded Environment**: `QueueMessage` is fully event-driven and is not thread-safe. Access by multiple threads can lead to unpredictable behavior.
+- **Dependency on EventBasedChannel Framework**: This framework builds upon components from the previously developed `EventBasedChannel` framework.
 
-Furthermore every method in QueueBroker and QueueMessage should be called in a runnable gthat wille be posted using a task. The framework won't be able to perform correclty if those methods are called directly.
+## Bootstrapping
 
-## Binding/Unbinding/connecting
-Binding on a broker will accept all the connection on the specified port until an unbind is posted.
-In order for a connect to work a bind should already be done on the targetted broker. If a connect and a bind match the connection will be established. Several connect can be done on the same bind.
+The framework requires setting up objects such as `QueueBroker`, `Task`, and `Listener` instances before starting the `EventPump`. Only when the `EventPump` is started last will the framework operate correctly, ensuring all components are prepared to handle events.
 
-## Writing/Reading
-Write and read actions will be done in the order they have been distributed. It means concureent not linked write acions can be sent and will be write in the same order ensuring data consistency.
-Even in this event based implementation, the set will eventually be written without the need to repost write or read actions if only a part is written or read for now.
+Additionally, calls to functions in `QueueBroker` and `MessageQueue` should be wrapped within `Runnable` tasks and posted via `Task` instances. Direct invocation of these methods without task posting may disrupt the framework’s expected behavior.
 
-## Disconnecting
-If the local channel disconnects it will reject all of the read and write actions from now on. If actions already accepted are supposed to return a result they will be terminated and surely won't finish. 
-If the remote channel is disconnected, read will continue until there is nothing else to read. And write will assume they have been completely wrote, silent dropping all the bytes.
+## Key Functionalities
 
-## QueueBroker Class
-This class will be used by tasks to initiate communication with other QueueBroker.
+### Binding, Unbinding, and Connecting
 
-### Constructor
-*QueueBroker(String name)* : Creates a new QueueuBroker named *name*.
+- **Binding**: Brokers can bind to a specified port, enabling them to accept incoming connections. The port remains active for new connections until an unbind request is posted.
+- **Connecting**: For a connection attempt to succeed, the target broker must have an active binding on the specified port. Multiple clients can connect to the same bound port.
+- **Unbinding**: Unbinding a port on a broker removes its availability for incoming connections.
 
-### Methods
-*String name()* : Returns the name of the Broker given in the constructor.
+### Writing and Reading
 
-*boolean bind(int port, AcceptListener listener)* : Binds a port to this broker accepting all connections until an unvbin and the same port is called. Gives also the listener for once the connection has been established. Returns true is the action can be performed.
+`QueueMessage` maintains the order of write and read actions as they are distributed. This ordered consistency ensures data integrity across independent actions. The framework will fully process data once a write or read action is initiated, without requiring reposting, even if data delivery is partial at first.
 
-*boolean unbind(int port)* : Unbinds a port to this broker. Returns true if it can be performed.
+### Disconnecting
 
-*connect connect(String name, int port, ConnectListener listener)* : Tries to connect to a distant Broker named *name* on the port *port* with the listener for once the connection is established or refused.
+- **Local Channel Disconnect**: When a local channel disconnects, all subsequent read and write actions are rejected, and any pending actions may be interrupted without completion.
+- **Remote Channel Disconnect**: If the remote end disconnects, read operations continue until the queue is empty, and write operations will act as if data was fully sent, silently ignoring any remaining bytes.
 
-## MessageQueue
-MessageQueue are used to send and receive messages between connected Brokers.
+## Core Components
 
-### Methods 
-- *void send(Message msg)* : Sends the message.
+### QueueBroker
 
-- *void close()* : Shuts the connection locally.
+The `QueueBroker` class manages communication channels and connections between brokers, supporting connection establishment and message flow across brokers. A `QueueBroker` can handle multiple connections and ports, allowing flexible interactions within the framework.
 
-- *boolean closed()* : Returns true if the MessageQueue is closed.
+### MessageQueue
 
-## Task
-Task allows the user to post runnables which will enventually be executed. They are the accessed point to QueueBroker and queueMesssages methods.
+`MessageQueue` facilitates message sending and receiving between brokers. Each queue instance is tied to a specific communication channel and ensures that message exchanges are handled in an ordered, consistent manner. A `MessageQueue` instance also manages the state of the connection, tracking whether it is active or closed.
 
-- *public void post(Runnable r)*: Post *r* on the pump 
-	
-- *public void kill()* : Kills the current task. Once killed, all the runnables posted using this task will be removed and not executed.
+## Interfaces
 
-- *public boolean killed()* : Returns true if the task is killed
+### AcceptListener
 
-- *public static Task getTask()* : Returns the currently running task.
+`AcceptListener` is responsible for handling accepted connections from brokers, creating a new `MessageQueue` instance upon acceptance. This custom interface, originating from the EventBasedChannel framework, allows the system to dynamically manage client connections as they are accepted.
 
-## Interface AcceptListener
+### ConnectListener
 
-- *void accepted(MessageQueue queue)* : Callback once the connection is accepted. 
+The `ConnectListener` interface manages client connection events, including successful connections and connection refusals. This component creates a `MessageQueue` when a connection is established, managing the lifecycle of connections in the event-driven framework.
 
-## Interface ConnectListener
-- *public void connected(MessageQueue queue)* :Callback once connected. 
+### Listener
 
-- *public refused()* : Callback when connection refused.
-
-## Interface MessageListener
-This interface is set to a specific MessageQueue adn defines the behavior for message exhanging a MessageQueeuClosing
-
-- *void received(byte[] bytes)* : Callback when the message - *bytes* have been received
-void closed() : Callback for when the MessageQueue is closed
-- *void sent(Message message)* : Callback for once the message has been sent.
+`Listener` monitors messages sent and received within the framework. It uses internal states for message length and content to manage each stage of the message lifecycle, ensuring consistent data handling across communication events.

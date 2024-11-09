@@ -1,93 +1,71 @@
-# Event Channel
-This is an event based implementation of channels
+# Event Channel Specification
 
-## Purpose 
-Implement a simple request/response service to allow user to exchange message with one another.
+An event-based implementation of channels for asynchronous communication in a single-threaded, event-driven environment.
 
-## Binding/Unbinding/connecting
-Binding on a broker will accept all the connection on the specified port until an unbind is posted.
-In order for a connect to work a bind should already be done on the targetted broker. If a connect and a bind match the connection will be established. Several connect can be done on the same bind.
+## Purpose
 
-## Writing/Reading
-Write and read actions will be done in the order they have been distributed. It means concureent not linked write acions can be sent and will be write in the same order ensuring data consistency.
-Even in this event based implementation, the set will eventually be written without the need to repost write or read actions.
-Moreover a limit is fixed preventing the user from posting too much write or read action.
+The `Event Channel` framework provides a request/response service that allows users to exchange messages efficiently. It is designed for environments where tasks communicate asynchronously through events, eliminating the need for threading. 
 
-## Disconnecting
-If the local channel disconnects, it will reject all of the read and write actions. If actions already accepted are supposed to return a result they will be terminated without properly finishing.
-If the remote channel disconnects all the write actions will be performed as usual even if they don't reach the remote channel. Else, read will continue until there is nothing left.
+## Core Functionalities
 
-## Broker Class
-The broker is the object that can initiate connection between tasks.
-Every broker has to be uniquely identified by a name and be accessed using also a port number.
-Even though a broker can be used by multiple task instances it **will not be synchronized**.
+### Binding, Unbinding, and Connecting
 
-### constructor
-- **Broker(String name)** :
-    - *name* : The broker name used to connect.
+- **Binding**: Each broker can be bound to a specific port, allowing it to accept incoming connection requests. When bound, a broker listens continuously on the specified port until an unbind operation is performed.
+- **Connecting**: A connection attempt can only succeed if the target broker is already bound to the specified port. When a connection request matches an active bind, the framework establishes a communication channel between the brokers. The framework also supports multiple connection requests on the same port, enabling flexible communication patterns.
+- **Unbinding**: Unbinding a broker from a port ceases its ability to accept new connections on that port, although active connections continue until they are explicitly disconnected.
 
-- **boolean Channel bind(String name, AcceptListener listener)** : Binds connection on the specified port. Keeps the right to refuse some bind action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *port* : the port on which the client tries to connect
-    - *listener* : The listener called once the the conection is accepted.
+### Writing and Reading
 
-- **boolean Channel unbind(int port)** : Unbinds connection on the specified port. Keeps the right to refuse some bind action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *port* : the port on which the client tries to connect
+The framework enforces a strict FIFO (First-In, First-Out) order for all write and read actions. This ensures that data sent and received maintains consistency, regardless of concurrent actions or the size of the messages.
+Once initiated, write and read actions are processed to completion without requiring reposting. This guarantees that even partial data transmission eventually completes, preserving data integrity. A limit on the number of pending write and read actions prevents resource overload and ensures that the system remains responsive. Actions that exceed this limit are rejected until resources are freed.
 
-- **boolean Channel connect(String name, int port, ConnectListener listener);** Tries connecting to an other broker. If the action is posted, will return true. Keeps the right to refuse some connect action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *name* : The name of the broker it tries to connect
-    - *port* : The *port* of *name* on which the connection will be established 
-    - *listener* : The listener called once connected or if the connectio is refused.
+### Disconnecting
 
-## Channel Class
-This bidirectionnal channel is a byte array that can contains data. It can be write or read on. As a prerequisite, this channel is **FIFO** and **lossless**.
+If a local channel disconnects, it automatically rejects all pending and future read and write actions. Previously accepted actions are terminated without guaranteeing a result, preventing further data transmission. In the event of a remote disconnect, the framework completes all pending write actions, though they may not reach the remote destination. Read actions continue until all data is exhausted, ensuring that no data is lost or stranded in the buffer.
 
-- **boolean read(bytes[] bytes);** : Returns true if the read is posted or performed. false otherwise. If read exceeds a limit, the will not be posted and return false.
-    - *bytes* : the byte array to read on.
+## Main Components
 
-- **boolean write(bytes[] bytes, int offset, int length);** : Returns true if the write can be performed, false if write exceeds a limit.
-    - *bytes* is a data array that has to be written in the Channel.
+### Broker
 
-- **void disconnect();** : Stops the connection
-- **boolean disconnected()** : Returns true if the channel is disconnected 
+The `Broker` serves as the core component for managing connections between tasks. Each broker is uniquely identified by a name and can handle multiple connections on specified ports. Operating in a single-threaded, event-driven environment, the broker is not synchronized, and all operations adhere to FIFO ordering.
 
-- **void setListener(ChannelListener listener)** : Sets the read Listener
+Brokers use ports to manage bindings and connections. By binding to a port, a broker can accept incoming connections, creating communication channels with clients. Unbinding a port stops the broker from accepting new connections, though active channels remain functional until explicitly disconnected. Brokers can initiate connection requests to other brokers. A successful connection establishes a bidirectional communication channel, enabling message exchanges. Failed connection attempts are handled gracefully, with notifications sent to the requesting entity.
 
-- **void getListener()** : Returns the listener.
+### Channel
 
+A `Channel` is a bidirectional, FIFO, and lossless medium for communication between two brokers. Each channel ensures reliable message transmission, regardless of message size or sequence.
 
-## Task
-Task allows the user to post runnables which will enventually be executed.
+Channels facilitate data transmission through read and write buffers, which store messages in the order they are posted. The FIFO nature of the channel ensures that messages are read and written sequentially. They are designed to be lossless, preserving data integrity by processing messages fully, even if transmission is temporarily interrupted. Channels also monitor the connection state between brokers. When a channel disconnects, it cleans up pending actions and informs both parties, ensuring smooth termination.
 
-- **public void post(Runnable r)**: Post *r* on the pump 
-	
-- **public void kill()** : Kills the current task. Once killed, all the runnables posted using this task will be removed and not executed.
+### Task
 
-- **public boolean killed()** : Returns true if the task is killed
+The `Task` component provides a mechanism for managing runnable events in the framework. Each task allows users to post events, which are processed asynchronously by the framework’s event pump. Tasks help in managing and grouping related actions within the event-driven environment.
 
-- **public static Task getTask()** : Returns the currently running task.
+Tasks can post runnable events to be processed by the framework. This allows for sequential execution without the need for threading. They also support lifecycle management, including the ability to terminate (or “kill”) themselves. When a task is killed, all its pending events are canceled, ensuring that the framework does not process obsolete or unnecessary actions.
 
-## Listener should be redefined and suits your specific needs
+### Event Pump
 
-### AccepteListener
-This interface will only be used to define the expected behavior once a connectio is accepted.
-It should be redefined for each entity wanted
+The `Event Pump` is the core dispatcher of the framework, handling all events posted by tasks. As a singleton, it processes events in FIFO order, ensuring predictable and sequential execution within the single-threaded environment.
 
-- **public void accepted(Channel channel)** : Callback once a connection is accepted.
+Events are executed in the order they are posted, ensuring that tasks complete actions consistently and in sequence.
+In this case, the event pump can manage events at the task level, including removing all events associated with a specific task when it is killed. This capability helps maintain system responsiveness and prevents the buildup of redundant events.
+
+## Listeners
+
+Listeners in the framework define custom behaviors for various stages of connection and data transfer. They provide flexible handling for connection establishment, data read/write events, and disconnection.
+
+### AcceptListener
+
+The `AcceptListener` handles events triggered when a connection request is accepted. This listener is customizable, allowing users to define specific actions to take once a connection is established. Typically, the listener is responsible for creating a communication channel for the accepted connection.
 
 ### ConnectListener
-This interface will only be used to define the expected behavior once a connection is established.
-It should be redefined for each entity xanted
 
-- **public void connected(Channel channel)** : Callback once connected to the target.
+The `ConnectListener` manages the events associated with connection requests. It handles both successful connections and refusals, ensuring that clients are notified of the connection status. When a connection is established, the `ConnectListener` prepares the communication channel for data exchange.
 
-- **public void refused** : Remote broker keeps the right to refuse the connection (and if the asked remote broker doesn't exist).
+### ChannelListener
 
-## ChannelListener
-- **void wrote(byte[] bytes)** : Callback when all the bytes have been wrote on the channel. 
+The `ChannelListener` is responsible for monitoring data transfer and connection state on an active channel. This includes handling:
 
-- **void read(bytes[] )** : Callback once a set of bytes asked has been read. *bytes* is now yours, channels dont keep a copy of it.
-
-- **void disconnected()** : callback for a disconnected channel.
+- **Data Write Completion**: Signals that a data block has been fully written to the channel, allowing clients to proceed with further operations.
+- **Data Read Completion**: Notifies the client when data has been successfully read and is available for processing.
+- **Disconnection**: Monitors and responds to disconnection events, informing clients that the channel is no longer active.
