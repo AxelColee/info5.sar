@@ -7,6 +7,7 @@ import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 public class MessageQueue implements IMessageQueue{
 	
 	private IChannel _channel;
+	private MessageListener _listener;
 	
 	public MessageQueue(IChannel channel) {
 		_channel = channel;
