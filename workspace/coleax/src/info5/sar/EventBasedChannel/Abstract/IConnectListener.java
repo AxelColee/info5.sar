@@ -1,9 +1,16 @@
 package info5.sar.EventBasedChannel.Abstract;
 
 /**
- * The IConnectListener interface provides methods to handle connection events.
+ * The {@code IConnectListener} interface provides methods to handle connection events.
  * This interface is implemented to define actions to be taken when a connection is
  * either successfully established or refused.
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ * <li>{@link #connected(IChannel)}: Called when a connection is established.</li>
+ * <li>{@link #refused()}: Called when a connection is refused.</li>
+ * </ul>
+ * 
  */
 public interface IConnectListener {
 	public void connected(IChannel channel);

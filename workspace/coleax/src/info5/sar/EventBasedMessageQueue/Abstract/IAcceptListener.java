@@ -1,7 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Abstract;
 
 /**
- * This interface defines a listener for accepting messages in a message queue.
+ * The {@code IAcceptListener} interface defines a listener for accepting messages in a message queue.
  * Implementations of this interface provide the logic for handling
  * the acceptance of messages.
  * 

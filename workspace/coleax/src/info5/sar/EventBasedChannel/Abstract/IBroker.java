@@ -1,7 +1,7 @@
 package info5.sar.EventBasedChannel.Abstract;
 
 /**
- * The IBroker interface defines the contract for a broker that handles binding,
+ * The {@code IBroker} interface defines the contract for a broker that handles binding,
  * unbinding, and connecting operations. Implementations of this interface are
  * expected to manage network connections and communication channels.
  */

@@ -1,7 +1,7 @@
 package info5.sar.EventBasedChannel.Abstract;
 
 /**
- * The IChannel interface defines the methods for a communication channel.
+ * The {@code IChannel} interface defines the methods for a communication channel.
  * Implementations of this interface are expected to handle the transmission
  * and reception of data, manage listeners, and handle connection states.
  */
