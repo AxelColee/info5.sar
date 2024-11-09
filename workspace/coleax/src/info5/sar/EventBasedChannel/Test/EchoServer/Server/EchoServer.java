@@ -4,17 +4,17 @@ import info5.sar.EventBasedChannel.Abstract.IBroker;
 
 /**
  * The {@code EchoServer} class implements the Runnable interface and represents a server
- * that handles echo requests from clients. It uses an IBroker to manage client connections
+ * that handles echo requests from clients. It uses an {@link IBroker} to manage client connections
  * and messages.
- *
- * <p>Fields:</p>
+ * 
+ * <p><strong>Fields:</strong></p>
  * <ul>
  *  <li>{@code _broker} - The broker used to manage client connections.</li>
  * <li>{@code _nbClient} - The number of clients to be handled by the server.</li>
  * <li>{@code _nbMessagePerClient} - The number of messages to be handled per client.</li>
  * </ul>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #run()} - Binds the server to a port and listens for client connections.</li>
  * </ul>

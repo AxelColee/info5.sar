@@ -15,7 +15,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannelListener;
  * reaches the specified number of messages per client, it disconnects the channel.</p>
  * @see IChannelListener
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  *  <li>{@code _channel}: The channel associated with this listener.</li>
  * <li>{@code _clientCounter}: Counter to keep track of the number of clients that have disconnected.</li>
@@ -24,7 +24,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannelListener;
  * <li>{@code _nbMessagePerClient}: The number of messages to be handled per client.</li>
  * </ul>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #read(byte[])}: Called when data is read from the channel. Echoes the data back to the client.</li>
  * <li>{@link #disconnected()}: Called when the channel is disconnected. Increments the client counter and prints "Server Passed" if the number of clients has been reached.</li>

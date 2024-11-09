@@ -14,6 +14,10 @@ package info5.sar.EventBasedMessageQueue.Abstract;
  */
 public abstract interface IAcceptListener {
 	
+    /**
+     * Called when a message is accepted in the queue.
+     * @param queue The message queue that accepted the message.
+     */
     public abstract void accepted(IMessageQueue queue);
    
 }

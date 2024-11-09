@@ -18,9 +18,28 @@ package info5.sar.EventBasedMessageQueue.Abstract;
  */
 public interface IMessageQueue {
 	    
+		/**
+		 * Sets a listener for incoming messages.
+		 * @param listener The listener to set.
+		 * */
 	    public abstract void setListener(MessageListener listener);
+
+		/**
+		 * Sends a message to the queue.
+		 * @param message
+		 * @return
+		 */
 	    public abstract boolean send(byte[] message);
+
+		/**
+		 * Closes the queue.
+		 * */
 	    public abstract void close();
+
+		/**
+		 * Checks if the queue is closed.
+		 * @return {@code true} if the queue is closed, else {@code false}.
+		 * */
 	    public abstract boolean closed();
 
 }

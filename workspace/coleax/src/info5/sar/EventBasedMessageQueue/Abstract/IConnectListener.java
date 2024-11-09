@@ -15,7 +15,16 @@ package info5.sar.EventBasedMessageQueue.Abstract;
  */
 public abstract interface IConnectListener {
 	
+    /**
+     * Called when a connection is established.
+     * @param queue
+     */
     public abstract void connected(IMessageQueue queue);
+
+    /**
+     * Called when a connection is refused.
+     *@param queue
+     */
     public abstract void refused();
 
 }

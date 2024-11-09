@@ -13,6 +13,15 @@ package info5.sar.EventBasedChannel.Abstract;
  * 
  */
 public interface IConnectListener {
+
+	/**
+	 * Called when a connection is established.
+	 * @param channel The channel that was connected.
+	 */
 	public void connected(IChannel channel);
+
+	/**
+	 * Called when a connection is refused.
+	 */
 	public void refused();
 }

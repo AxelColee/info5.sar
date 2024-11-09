@@ -11,11 +11,11 @@ import info5.sar.EventBasedChannel.Abstract.IConnectListener;
  * The {@code Broker} class implements the IBroker interface and represents a broker
  * that manages connections and bindings for different ports.
  * 
- * <p>This class is responsible for registering itself with the BrokerManager,
+ * <p>This class is responsible for registering itself with the {@link BrokerManager},
  * binding and unbinding ports with listeners, and handling connection requests
  * to other brokers.</p>
  * 
- * <p>It maintains a map of port numbers to IAcceptListener instances, which
+ * <p>It maintains a map of port numbers to {@link IAcceptListener} instances, which
  * are used to handle incoming connections on specific ports.</p>
  * 
  * <p>When a connection request is made, the broker checks if the requested
@@ -25,7 +25,7 @@ import info5.sar.EventBasedChannel.Abstract.IConnectListener;
  * <p>If the port is not bound, the connection request is retried a limited
  * number of times before being refused.</p>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  *   <li>{@link #Broker(String)} - Constructs a Broker with the specified name and registers it with the BrokerManager.</li>
  *   <li>{@link #unbind(int)} - Unbinds the listener from the specified port.</li>
@@ -34,12 +34,12 @@ import info5.sar.EventBasedChannel.Abstract.IConnectListener;
  *   <li>{@link #name()} - Returns the name of the broker.</li>
  * </ul>
  * 
- * <p>Private Methods:</p>
+ * <p><strong>Private Methods:</strong></p>
  * <ul>
  *   <li>{@link #_connect(int, IConnectListener)} - Handles the connection logic for the specified port.</li>
  * </ul>
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  *   <li>{@code _brokerManager} - The BrokerManager instance managing this broker.</li>
  *   <li>{@code _name} - The name of the broker.</li>
@@ -59,7 +59,12 @@ public class Broker implements IBroker{
 		_brokerManager.registerBroker(this);
 		_binds = new HashMap<Integer, IAcceptListener>();
 	}
-
+	
+	/**
+	 * Unbinds the specified port from the broker.
+	 * @param port The port to unbind.
+	 * @return {@code true} if the port was successfully unbound, else {@code false}.
+	 */
 	@Override
 	public boolean unbind(int port) {
 		
@@ -71,12 +76,25 @@ public class Broker implements IBroker{
 		return true;
 	}
 
+	/**
+	 * Binds the specified port to the broker.
+	 * @param port The port to bind.
+	 * @param listener The listener to bind to the port.
+	 * @return {@code true} if the port was successfully bound, else {@code false}.
+	 */
 	@Override
 	public boolean bind(int port, IAcceptListener listener) {
 		_binds.put(port, listener); //Change the linked listener if port already binded
 		return true;
 	}
 
+	/**
+	 * Connects to another broker on the specified port.
+	 * @param name The name of the broker to connect to.
+	 * @param port The port to connect to.
+	 * @param listener The listener to handle the connection.
+	 * @return {@code true} if the connection was successful, else {@code false}.
+	 */
 	@Override
 	public boolean connect(String name, int port, IConnectListener listener) {
 		Broker broker = _brokerManager.getBroker(name);
@@ -90,6 +108,11 @@ public class Broker implements IBroker{
 		
 	}
 	
+	/**
+	 * Returns the name of the broker.
+	 * @param port
+	 * @param listener
+	 */
 	//Private method to handle the connection logic (called by connect)
 	private void _connect(int port, IConnectListener listener) {
 		if(_binds.containsKey(port)) {
@@ -120,6 +143,10 @@ public class Broker implements IBroker{
 		
 	}
 	
+	/**
+	 * Returns the name of the broker.
+	 * @return The name of the broker.
+	 */
 	@Override
 	public String name() {
 		return _name;

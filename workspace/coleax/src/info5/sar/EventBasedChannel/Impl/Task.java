@@ -52,6 +52,10 @@ public class Task implements ITask {
 		this(MAX_TRIES);
 	}
 
+	/**
+	 * Posts a runnable event to the EventPump.
+	 * @param r The runnable event to post
+	 */
 	@Override
 	public void post(Runnable r) {
 		if(!_killed && _remaining_tries != 0) {
@@ -61,6 +65,9 @@ public class Task implements ITask {
 		}
 	}
 	
+	/**
+	 * Kills the task and removes all associated events from the EventPump.
+	 */
 	@Override
 	public void kill() {
 		if(!_killed) {
@@ -74,11 +81,19 @@ public class Task implements ITask {
 		return _killed;
 	}
 	
+	/**
+	 * Returns the number of remaining tries for the task.
+	 * @return The number of remaining tries for the task
+	 */
 	@Override
 	public int getRemainingTries() {
 		return _remaining_tries;
 	}
 	
+	/**
+	 * Returns the current task associated with the current event.
+	 * @return The current task {@link Task} associated with the current event
+	 */
 	public static Task task() {
 		Event e = EventPump.getCurrentEvent();
 		if(e !=  null) {

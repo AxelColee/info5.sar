@@ -15,10 +15,23 @@ package info5.sar.EventBasedChannel.Abstract;
  */
 public interface ITask {
 
+    /**
+     * Posts a task to be executed
+     * @param r The task to be executed
+     */
 	public abstract void post(Runnable r);
+
+    /**
+     * Returns the current task associated with the current event
+     */
     public static ITask task() {
     	throw new IllegalStateException("ITask task() method called");
     }
+
+    /**
+     * Checks if the task has been killed
+     * @return true if the task has been killed, false otherwise
+     */
     public abstract void kill();
     public abstract boolean killed();
     public abstract int getRemainingTries();

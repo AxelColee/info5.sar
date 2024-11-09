@@ -14,8 +14,21 @@ package info5.sar.EventBasedChannel.Abstract;
  */
 public interface IChannelListener {
 	
+	/**
+	 * Called when the channel is disconnected.
+	 */
 	public void disconnected();
+
+	/**
+	 * Called when data is read from the channel.
+	 * @param bytes The data read from the channel.
+	 */
 	public void read(byte[] bytes);
+
+	/**
+	 * Called when data is written to the channel.
+	 * @param bytes The data written to the channel.
+	 */
 	public void wrote(byte[] bytes);
 
 }

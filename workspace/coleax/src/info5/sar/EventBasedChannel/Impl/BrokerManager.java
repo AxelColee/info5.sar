@@ -9,7 +9,7 @@ import java.util.HashMap;
  * <p>This class ensures that only one instance of BrokerManager exists and provides
  * a global point of access to it.</p>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  *  <li>{@link #getInstance()} - Returns the singleton instance of BrokerManager.</li>
  * <li>{@link #getBroker(String)} - Returns the broker with the specified name.</li>
@@ -17,7 +17,7 @@ import java.util.HashMap;
  * <li>{@link #clean()} - Removes all brokers from the manager.</li>
  * </ul>	
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  * <li>{@code _brokers} - A map of broker names to Broker instances.</li>
  * </ul>
@@ -36,16 +36,33 @@ public class BrokerManager {
 		_brokers = new HashMap<String, Broker>();
 	}
 	
+	/**
+	 * Returns the singleton instance of BrokerManager.
+	 * @return the singleton instance of BrokerManager
+	 */
 	public static BrokerManager getInstance() {
         return INSTANCE;
     }
 	
+	/**
+	 * Returns the broker with the specified name.
+	 * @param name the name of the broker
+	 * @return the broker with the specified name
+	 * @throws IllegalStateException if two brokers have the same name
+	 * @see Broker
+	 */
 	public Broker getBroker(String name) {
 		Broker broker =  _brokers.get(name);
 		
 		return broker;
 	}
 	
+	/**
+	 * Registers a broker with the manager.
+	 * @param broker the broker to register
+	 * @throws IllegalStateException if two brokers have the same name
+	 * @see Broker
+	 */
 	public void registerBroker(Broker broker) {
 		
 		String name = broker.name();
@@ -57,6 +74,9 @@ public class BrokerManager {
 		this._brokers.put(name, broker);
 	}
 	
+	/**
+	 * Removes all brokers from the manager.
+	 */
 	public void clean() {
 		_brokers = new HashMap<String, Broker>();
 	}

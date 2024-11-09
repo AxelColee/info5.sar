@@ -13,7 +13,7 @@ import info5.sar.EventBasedChannel.Test.EchoServer.Server.EchoServer;
  * functionality. It sets up the server and client brokers, creates tasks for clients
  * and server, and runs tests with varying numbers of clients and messages.
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  * <li>{@code _clients}: Task for managing client threads.</li>
  * <li>{@code _server}: Task for managing server thread.</li>
@@ -21,7 +21,7 @@ import info5.sar.EventBasedChannel.Test.EchoServer.Server.EchoServer;
  * <li>{@code _clientBroker}: Broker for the clients.</li>
  * </ul>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #test(int, int)}: Runs a test with a specified number of clients and messages.</li>
  * <li>{@link #allTests()}: Runs all tests with varying numbers of clients and messages.</li>

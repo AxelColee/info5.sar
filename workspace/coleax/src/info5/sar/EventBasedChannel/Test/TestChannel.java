@@ -7,7 +7,7 @@ import info5.sar.EventBasedChannel.Test.EchoServer.TestEchoServer;
  * It creates an instance of TestEchoServer and invokes its allTests method.
  * After running all tests, it prints a confirmation message to the console.
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #allChannelTests()}: Runs all channel tests.</li>
  * </ul>
@@ -16,7 +16,7 @@ import info5.sar.EventBasedChannel.Test.EchoServer.TestEchoServer;
  * 
  */
 public class TestChannel {
-	
+
 	public void allChannelTests() {
 		TestEchoServer testEchoServer = new TestEchoServer();
 		

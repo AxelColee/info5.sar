@@ -8,13 +8,13 @@ package info5.sar.EventBasedChannel.Impl;
  * 
  * @see Runnable
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #run()} - Executes the event's runnable.</li>
  * <li>{@link #getTask()} - Returns the task associated with the event.</li>
  * </ul>
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  * <li>{@code _myTask} - The task associated with the event.</li>
  * <li>{@code _runnable} - The runnable that will be executed when the event is run.</li>
@@ -32,12 +32,20 @@ public class Event implements Runnable{
 		_runnable = r;
 	}
 
-	
+
+	/**
+	 * Executes the event's runnable.
+	 */
 	@Override
 	public void run() {
 		this._runnable.run();
 	}
 	
+	/**
+	 * Returns the task associated with the event.
+	 *
+	 * @return The task associated with the event.
+	 */
 	public Task getTask() {
 		return _myTask;
 	}

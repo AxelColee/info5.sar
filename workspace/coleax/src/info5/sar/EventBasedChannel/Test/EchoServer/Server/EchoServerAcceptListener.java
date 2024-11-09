@@ -17,7 +17,7 @@ import info5.sar.EventBasedChannel.Abstract.IBroker;
  *   <li>Unbinding the broker from the port if the number of connected clients reaches the specified limit.</li>
  * </ul>
  * 
- * <p>Fields:</p>
+ * <p><strong>Fields:</strong></p>
  * <ul>
  *  <li>{@code _broker}: The broker used to manage client connections.</li>
  * <li>{@code _nbClient}: The number of clients to be handled by the server.</li>
@@ -25,7 +25,7 @@ import info5.sar.EventBasedChannel.Abstract.IBroker;
  * <li>{@code _counter}: Counter to keep track of the number of connected clients.</li>
  * </ul>
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #accepted(IChannel)}: Called when a new client connection is accepted. Sets up the channel listener and initiates message reading.</li>
  * </ul>

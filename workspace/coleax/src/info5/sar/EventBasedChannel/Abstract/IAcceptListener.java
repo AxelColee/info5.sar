@@ -2,7 +2,7 @@ package info5.sar.EventBasedChannel.Abstract;
 
 /**
  * The {@code IAcceptListener} interface defines a listener for accepting channels.
- * Implementations of this interface should define the behavior
+ * Implementations of this interface define the behavior
  * when a channel is accepted.
  * 
  * <p>Methods:</p>
@@ -13,6 +13,10 @@ package info5.sar.EventBasedChannel.Abstract;
  */
 public interface IAcceptListener {
 	
+	/**
+	 * Called when a channel is accepted.
+	 * @param channel The channel that was accepted.
+	 */
 	public void accepted(IChannel channel);
 
 }

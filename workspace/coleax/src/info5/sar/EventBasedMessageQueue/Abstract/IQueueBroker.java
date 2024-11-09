@@ -7,7 +7,7 @@ package info5.sar.EventBasedMessageQueue.Abstract;
  * Implementations of this interface are expected to handle the binding and
  * connection of ports, as well as the unbinding of ports.
  * 
- * <p>Methods:</p>
+ * <p><strong>Methods:</strong></p>
  * <ul>
  * <li>{@link #name()}: Returns the name of the queue broker.</li>
  * <li>{@link #unbind(int)}: Unbinds a port from the queue broker.</li>
@@ -21,12 +21,39 @@ package info5.sar.EventBasedMessageQueue.Abstract;
  */
 public interface IQueueBroker {
 	
+    /**     
+     * Returns the name of the queue broker.
+     * @return The name of the queue broker.
+     */
 	public abstract String name();
     
+    /**
+     * Unbinds the specified port from the queue broker.
+     * 
+     * @param port The port to unbind.
+     * @return {@code true} if the port was successfully unbound, else {@code false}.
+     */
     public abstract boolean unbind(int port);
     
+
+    /**
+     * Binds the specified port to the queue broker.
+     * 
+     * @param port The port to bind.
+     * @param listener The listener to bind to the port.
+     * @return {@code true} if the port was successfully bound, else {@code false}.
+     */
     public abstract boolean bind(int port, IAcceptListener listener);
     
+
+    /**
+     * Connects to another queue broker on the specified port.
+     * 
+     * @param name The name of the queue broker to connect to.
+     * @param port The port to connect to.
+     * @param listener The listener to handle the connection.
+     * @return {@code true} if the connection was successful, else {@code false}.
+     */
     public abstract boolean connect(String name, int port, IConnectListener listener);
 
 }
