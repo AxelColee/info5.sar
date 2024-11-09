@@ -17,16 +17,14 @@ public class MessageQueue implements IMessageQueue{
 	@Override
 	public void setListener(MessageListener listener) {
 		_listener = listener;
-		((InternalChannelListener)_channel.getListener()).setMessageListener(listener);
+		((InternalChannelListener)_channel.getListener()).setMessageListener(_listener);
 	}
 
 	@Override
-	public boolean send(Message message) {
+	public boolean send(byte[] message) {
 		
 		Task task = new Task();
-		
-		
-		int length = message.getLength();
+		int length = message.length;
 		
 		byte[] size = new byte[4];
 	    size[0] = (byte) ((length  & 0xFF000000) >> 24);
@@ -35,11 +33,7 @@ public class MessageQueue implements IMessageQueue{
 	    size[3] = (byte) (length  & 0x000000FF);
 	    
 	    task.post(() -> _channel.write(size));
-	    
-	    byte[] msg = new byte[length];
-	    System.arraycopy(message.getBytes(), message.getOffset(), msg, 0 , length);
-	    
-	    task.post(() -> _channel.write(msg));
+	    task.post(() -> _channel.write(message));
 	    
 	    return true;
 	    

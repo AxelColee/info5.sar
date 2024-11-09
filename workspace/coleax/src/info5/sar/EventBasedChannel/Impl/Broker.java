@@ -33,10 +33,7 @@ public class Broker implements IBroker{
 
 	@Override
 	public boolean bind(int port, IAcceptListener listener) {
-		if(_binds.containsKey(port)) {
-			return false;
-		}
-		_binds.put(port, listener);
+		_binds.put(port, listener); //Change the linked listener if port already binded
 		return true;
 	}
 
@@ -47,13 +44,13 @@ public class Broker implements IBroker{
 			listener.refused();
 			return false;
 		}else {
-			broker._connect(port, listener);
+			broker._connect(null, port, listener);
 			return true;
 		}
 		
 	}
 	
-	private void _connect(int port, IConnectListener listener) {
+	private void _connect(Task from, int port, IConnectListener listener) {
 		if(_binds.containsKey(port)) {
 			
 			Channel channelAccept = new Channel();
@@ -69,7 +66,20 @@ public class Broker implements IBroker{
 			_binds.get(port).accepted(channelAccept);
 							
 		}else {
-			new Task().post(() -> _connect( port, listener));
+			Task t;
+			if(from != null) {
+				int remainingTries = from.getRemainingTries() - 1;
+				if(remainingTries == 0) {
+					listener.refused();
+					return;
+				}
+				
+				t = new Task(remainingTries);
+			}
+			else {
+				t = new Task();
+			}
+			t.post(() -> _connect(t, port, listener));
 		}
 		
 	}

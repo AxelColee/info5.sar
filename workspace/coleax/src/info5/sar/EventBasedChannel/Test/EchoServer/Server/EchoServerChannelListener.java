@@ -2,7 +2,6 @@ package info5.sar.EventBasedChannel.Test.EchoServer.Server;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
-import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoServerChannelListener implements IChannelListener{
 	
@@ -21,7 +20,7 @@ public class EchoServerChannelListener implements IChannelListener{
 
 	@Override
 	public void read(byte[] bytes) {
-		new Task().post(() -> _channel.write(bytes));
+		_channel.write(bytes);
 	}
 
 	@Override
