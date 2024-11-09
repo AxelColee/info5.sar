@@ -3,7 +3,7 @@ package info5.sar.EventBasedChannel.Test;
 import info5.sar.EventBasedChannel.Test.EchoServer.TestEchoServer;
 
 /**
- * The TestChannel class is responsible for running all channel tests.
+ * The {@code TestChannel} class is responsible for running all channel tests.
  * It creates an instance of TestEchoServer and invokes its allTests method.
  * After running all tests, it prints a confirmation message to the console.
  * 

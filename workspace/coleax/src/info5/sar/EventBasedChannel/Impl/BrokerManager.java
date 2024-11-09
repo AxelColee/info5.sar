@@ -3,7 +3,7 @@ package info5.sar.EventBasedChannel.Impl;
 import java.util.HashMap;
 
 /**
- * The BrokerManager class is a singleton that manages a collection of Broker instances.
+ * The {@code BrokerManager} class is a singleton that manages a collection of Broker instances.
  * It provides methods to register, retrieve, and clean brokers.
  * 
  * <p>This class ensures that only one instance of BrokerManager exists and provides

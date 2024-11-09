@@ -6,7 +6,7 @@ import java.util.List;
 import info5.sar.EventBasedChannel.Abstract.ITask;
 
 /**
- * The Task class implements the ITask interface and represents a task that can post events to an EventPump.
+ * The {@code Task} class implements the ITask interface and represents a task that can post events to an EventPump.
  * It maintains a list of events and tracks the number of remaining tries for the task. This is useful because 
  * it allows the task to be retried a certain number of times before being killed.
  * 

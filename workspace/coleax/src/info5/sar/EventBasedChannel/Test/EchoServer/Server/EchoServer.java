@@ -3,7 +3,7 @@ package info5.sar.EventBasedChannel.Test.EchoServer.Server;
 import info5.sar.EventBasedChannel.Abstract.IBroker;
 
 /**
- * The EchoServer class implements the Runnable interface and represents a server
+ * The {@code EchoServer} class implements the Runnable interface and represents a server
  * that handles echo requests from clients. It uses an IBroker to manage client connections
  * and messages.
  *

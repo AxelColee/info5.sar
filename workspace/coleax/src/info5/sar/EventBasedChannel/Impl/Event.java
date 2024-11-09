@@ -2,7 +2,7 @@ package info5.sar.EventBasedChannel.Impl;
 
 
 /**
- * The Event class implements the Runnable interface and represents an event
+ * The {@code Event} class implements the Runnable interface and represents an event
  * that can be executed. It contains a task and a runnable that will be run
  * when the event is executed.
  * 

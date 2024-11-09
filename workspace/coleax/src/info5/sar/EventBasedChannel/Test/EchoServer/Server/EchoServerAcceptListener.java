@@ -5,7 +5,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IBroker;
 
 /**
- * EchoServerAcceptListener is an implementation of the IAcceptListener interface.
+ * {@code EchoServerAcceptListener} is an implementation of the IAcceptListener interface.
  * It handles the acceptance of new client connections and sets up the necessary
  * channel listeners and message reading for each client.
  * 

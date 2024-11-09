@@ -9,7 +9,7 @@ import info5.sar.EventBasedChannel.Test.EchoServer.Client.EchoClient;
 import info5.sar.EventBasedChannel.Test.EchoServer.Server.EchoServer;
 
 /**
- * The TestEchoServer class is responsible for testing the EchoServer and EchoClient
+ * The {@code TestEchoServer} class is responsible for testing the EchoServer and EchoClient
  * functionality. It sets up the server and client brokers, creates tasks for clients
  * and server, and runs tests with varying numbers of clients and messages.
  * 

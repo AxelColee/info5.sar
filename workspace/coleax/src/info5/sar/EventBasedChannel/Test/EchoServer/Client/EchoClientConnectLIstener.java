@@ -8,7 +8,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IConnectListener;
 
 /**
- * EchoClientConnectLIstener is an implementation of the IConnectListener interface.
+ * {@code EchoClientConnectLIstener} is an implementation of the IConnectListener interface.
  * It handles the connection event for an EchoClient and manages the sending of messages
  * to the server upon connection.
  * 

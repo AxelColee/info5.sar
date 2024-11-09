@@ -4,7 +4,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 
 /**
- * EchoServerChannelListener is an implementation of the IChannelListener interface.
+ * {@code EchoServerChannelListener} is an implementation of the IChannelListener interface.
  * It listens for events on a channel and performs actions based on those events.
  * 
  * <p>This class is responsible for handling read, write, and disconnect events on the channel.

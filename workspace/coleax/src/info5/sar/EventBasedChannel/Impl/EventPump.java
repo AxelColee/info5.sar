@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * The EventPump class is a singleton that manages a queue of events.
- * It provides methods to post, unpost, and process events.
+ * The {@code EventPump} class is a singleton event dispatcher that manages a queue of events,
+ * providing a mechanism to sequentially process events in a single-threaded environment.
+ * It allows for posting, removing, and executing events one at a time, ensuring controlled
+ * event flow in event-driven architectures.
  * 
  * <p>This class is designed to handle events in a sequential manner, ensuring
  * that each event is processed one at a time.</p>
@@ -27,6 +29,9 @@ import java.util.Queue;
  * </ul>
  * 
  * <p>Note: This class is not thread-safe and should be used in a single-threaded context.</p>
+ * 
+ * @see Event
+ * @see Task
  */
 public class EventPump {
 	

@@ -1,7 +1,7 @@
 package info5.sar.EventBasedChannel.Impl;
 
 /**
- * CircularBuffer is a thread-safe circular buffer implementation.
+ * {@code CircularBuffer} is a thread-safe circular buffer implementation.
  * It supports basic operations like push and pull to add and remove bytes from the buffer.
  * The buffer has a fixed capacity and uses volatile variables to ensure visibility of changes across threads.
  * 

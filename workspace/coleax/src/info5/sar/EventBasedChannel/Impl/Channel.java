@@ -7,7 +7,7 @@ import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 
 /**
- * The Channel class implements the IChannel interface and provides methods for reading and writing data
+ * The {@code Channel} class implements the IChannel interface and provides methods for reading and writing data
  * through a circular buffer. It supports setting a listener for handling read and write events, and 
  * managing the connection state.
  * 

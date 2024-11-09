@@ -8,7 +8,7 @@ import info5.sar.EventBasedChannel.Abstract.IBroker;
 import info5.sar.EventBasedChannel.Abstract.IConnectListener;
 
 /**
- * The Broker class implements the IBroker interface and represents a broker
+ * The {@code Broker} class implements the IBroker interface and represents a broker
  * that manages connections and bindings for different ports.
  * 
  * <p>This class is responsible for registering itself with the BrokerManager,
