@@ -59,6 +59,11 @@ The directory structure is illustrated below:
             │       └── TestMain.java
 ```
 
+## Object Diagram 
+Find object diagram for the project [here](EventBasedMessageQueueDocs/SAR_object_diagram.drawio.png) 
+
+(event-based channel and event-based message queue)
+
 ## Running Tests
 
 The project has a well-defined testing structure. To run the tests, you can either execute them all together or individually for specific layers.
