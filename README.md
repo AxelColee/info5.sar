@@ -12,6 +12,12 @@ The repository includes the fully event-based version of Channel and MessageQueu
 
 To use this project in Eclipse, import the "workspace" folder. This will ensure that Eclipse properly recognizes the directory structure and sets up the environment correctly.
 
+## Documentation
+
+For detailed documentation, refer to the [Javadoc here](workspace/coleax/src/javadoc/index.html).
+
+Note: clone the repository and open the `index.html` file in the `javadoc` folder and 
+copy the entire path to the browser to view the documentation.
 ## Project Structure
 
 The project is organized as follows:
