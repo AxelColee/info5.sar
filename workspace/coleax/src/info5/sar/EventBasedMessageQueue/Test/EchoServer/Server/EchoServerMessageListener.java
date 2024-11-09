@@ -1,9 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Test.EchoServer.Server;
 
-import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.MessageListener;
-import info5.sar.EventBasedMessageQueue.Impl.Message;
 
 public class EchoServerMessageListener extends MessageListener{
 	
@@ -17,10 +15,7 @@ public class EchoServerMessageListener extends MessageListener{
 
 	@Override
 	public void received(byte[] bytes) {
-		
-		Task task = new Task();
-		task.post(() -> _queue.send(new Message(bytes)));
-		
+		_queue.send(bytes);
 	}
 
 	@Override
@@ -39,7 +34,7 @@ public class EchoServerMessageListener extends MessageListener{
 	}
 
 	@Override
-	public void sent(Message message) {
+	public void sent(byte[] message) {
 			_queue.close();
 	}
 

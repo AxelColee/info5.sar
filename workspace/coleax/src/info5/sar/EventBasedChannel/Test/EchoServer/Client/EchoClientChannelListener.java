@@ -4,7 +4,6 @@ import java.util.List;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
-import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoClientChannelListener implements IChannelListener {
 	
@@ -47,8 +46,7 @@ public class EchoClientChannelListener implements IChannelListener {
 	@Override
 	public void wrote(byte[] bytes) {
 		byte[] answer = new byte[bytes.length];
-		new Task().post(() -> _channel.read(answer));	
-
+		_channel.read(answer);	
 	}
 
 }

@@ -38,7 +38,8 @@ public class InternalChannelListener implements IChannelListener{
 		if(_receivingState.equals(ReceivingState.Message)) {
 			_listener.received(bytes);
 			_receivingState = ReceivingState.Length;
-		    new Task().post(() -> _channel.read(bytes));
+
+			new Task().post(() -> _channel.read(new byte[4]));
 		}else {
 			
 			 int length = ((bytes[0] & 0xFF) << 24) |
@@ -57,7 +58,7 @@ public class InternalChannelListener implements IChannelListener{
 	@Override
 	public void wrote(byte[] bytes) {
 		if(_sendingState.equals(SendingState.Message)) {
-			_listener.sent(new Message(bytes));
+			_listener.sent(bytes);
 			_sendingState = SendingState.Length;
 		}else {
 			_sendingState = SendingState.Message;

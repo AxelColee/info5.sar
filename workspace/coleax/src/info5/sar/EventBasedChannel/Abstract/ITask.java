@@ -8,5 +8,6 @@ public interface ITask {
     }
     public abstract void kill();
     public abstract boolean killed();
+    public abstract int getRemainingTries();
 
 }

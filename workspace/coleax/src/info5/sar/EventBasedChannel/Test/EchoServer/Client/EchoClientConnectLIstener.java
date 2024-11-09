@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IConnectListener;
-import info5.sar.EventBasedChannel.Impl.Task;
 
 public class EchoClientConnectLIstener implements IConnectListener{
 	
@@ -30,8 +29,7 @@ public class EchoClientConnectLIstener implements IConnectListener{
 		
 		for(int i = 0; i < _nbMessagePerClient; i++) {
 			final int index = i;
-			new Task().post(() -> channel.write(_bytes.get(index)));
-
+			channel.write(_bytes.get(index));
 		}
 	}
 

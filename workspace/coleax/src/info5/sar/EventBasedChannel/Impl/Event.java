@@ -6,7 +6,8 @@ public class Event implements Runnable{
 	private final Runnable _runnable;
 	
 	
-	public Event(Task fromtask, Task mytask, Runnable r) {
+
+	public Event(Task mytask, Runnable r) {
 		_myTask = mytask;
 		_runnable = r;
 	}

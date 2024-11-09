@@ -1,6 +1,5 @@
 package info5.sar.EventBasedMessageQueue.Test.EchoServer.Server;
 
-import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedMessageQueue.Abstract.IAcceptListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IMessageQueue;
 import info5.sar.EventBasedMessageQueue.Abstract.IQueueBroker;
@@ -25,7 +24,7 @@ public class EchoServerAcceptListener implements IAcceptListener {
 		queue.setListener(new EchoServerMessageListener(queue, _nbClient));
 		
 		if(_counter >= _nbClient) {
-			new Task().post(() -> _broker.unbind(80));
+			_broker.unbind(80);
 		}
 	}
 
