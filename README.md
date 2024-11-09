@@ -109,5 +109,5 @@ Contributors:
 - Emin Gundogan (emingundogan)
 - Pamella Hani (pamellahani)
 - Axel Cole (AxelColee)
-- Laure--Anne Bluteau (LaureAnneBluteau)
+- Laure-Anne Bluteau (LaureAnneBlt)
 
