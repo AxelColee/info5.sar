@@ -1,0 +1,14 @@
+module:info5.sar
+info5.sar
+info5.sar.EventBasedChannel.Abstract
+info5.sar.EventBasedChannel.Impl
+info5.sar.EventBasedChannel.Test
+info5.sar.EventBasedChannel.Test.EchoServer
+info5.sar.EventBasedChannel.Test.EchoServer.Client
+info5.sar.EventBasedChannel.Test.EchoServer.Server
+info5.sar.EventBasedMessageQueue.Abstract
+info5.sar.EventBasedMessageQueue.Impl
+info5.sar.EventBasedMessageQueue.Test
+info5.sar.EventBasedMessageQueue.Test.EchoServer
+info5.sar.EventBasedMessageQueue.Test.EchoServer.Client
+info5.sar.EventBasedMessageQueue.Test.EchoServer.Server
