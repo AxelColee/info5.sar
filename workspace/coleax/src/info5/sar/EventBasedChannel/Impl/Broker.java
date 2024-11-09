@@ -33,10 +33,7 @@ public class Broker implements IBroker{
 
 	@Override
 	public boolean bind(int port, IAcceptListener listener) {
-		if(_binds.containsKey(port)) {
-			return false;
-		}
-		_binds.put(port, listener);
+		_binds.put(port, listener); //Change the linked listener if port already binded
 		return true;
 	}
 
@@ -69,11 +66,20 @@ public class Broker implements IBroker{
 			_binds.get(port).accepted(channelAccept);
 							
 		}else {
-			new Task().post(() -> _connect( port, listener));
+			Task from = Task.task();
+			int remainingTries = from.getRemainingTries() - 1;
+			if(remainingTries == 0) {
+				listener.refused();
+				return;
+			}
+			
+			Task t = new Task(remainingTries);
+			t.post(() -> _connect(port, listener));
 		}
 		
 	}
 	
+	@Override
 	public String name() {
 		return _name;
 	}

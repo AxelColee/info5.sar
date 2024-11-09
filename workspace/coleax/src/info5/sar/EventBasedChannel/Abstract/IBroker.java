@@ -2,6 +2,7 @@ package info5.sar.EventBasedChannel.Abstract;
 
 public interface IBroker {
 
+	String name();
 	boolean bind(int port, IAcceptListener listener);
 	boolean unbind(int port);
 	boolean connect(String name, int port, IConnectListener listener);

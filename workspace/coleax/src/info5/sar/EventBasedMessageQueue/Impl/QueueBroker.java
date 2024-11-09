@@ -1,5 +1,7 @@
 package info5.sar.EventBasedMessageQueue.Impl;
 
+
+import info5.sar.EventBasedChannel.Abstract.IBroker;
 import info5.sar.EventBasedChannel.Impl.Broker;
 import info5.sar.EventBasedMessageQueue.Abstract.IAcceptListener;
 import info5.sar.EventBasedMessageQueue.Abstract.IConnectListener;
@@ -7,10 +9,10 @@ import info5.sar.EventBasedMessageQueue.Abstract.IQueueBroker;
 
 public class QueueBroker implements IQueueBroker{
 	
-	private Broker _broker;
+	private IBroker _broker;
 	
 	public QueueBroker(String name) {
-		_broker = new Broker(name);
+		_broker = (Broker) new Broker(name);
 	}
 
 	@Override
