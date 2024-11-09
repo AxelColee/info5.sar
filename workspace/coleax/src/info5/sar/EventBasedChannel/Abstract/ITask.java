@@ -1,5 +1,9 @@
 package info5.sar.EventBasedChannel.Abstract;
 
+/**
+ * The ITask interface provides a contract for task management, including methods
+ * for posting tasks, checking task status, and managing task lifecycle.
+ */
 public interface ITask {
 
 	public abstract void post(Runnable r);

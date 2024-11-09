@@ -7,6 +7,46 @@ import info5.sar.EventBasedChannel.Abstract.IAcceptListener;
 import info5.sar.EventBasedChannel.Abstract.IBroker;
 import info5.sar.EventBasedChannel.Abstract.IConnectListener;
 
+/**
+ * The Broker class implements the IBroker interface and represents a broker
+ * that manages connections and bindings for different ports.
+ * 
+ * <p>This class is responsible for registering itself with the BrokerManager,
+ * binding and unbinding ports with listeners, and handling connection requests
+ * to other brokers.</p>
+ * 
+ * <p>It maintains a map of port numbers to IAcceptListener instances, which
+ * are used to handle incoming connections on specific ports.</p>
+ * 
+ * <p>When a connection request is made, the broker checks if the requested
+ * port is bound and, if so, establishes a communication channel between the
+ * connecting party and the bound listener.</p>
+ * 
+ * <p>If the port is not bound, the connection request is retried a limited
+ * number of times before being refused.</p>
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ *   <li>{@link #Broker(String)} - Constructs a Broker with the specified name and registers it with the BrokerManager.</li>
+ *   <li>{@link #unbind(int)} - Unbinds the listener from the specified port.</li>
+ *   <li>{@link #bind(int, IAcceptListener)} - Binds a listener to the specified port.</li>
+ *   <li>{@link #connect(String, int, IConnectListener)} - Attempts to connect to another broker on the specified port.</li>
+ *   <li>{@link #name()} - Returns the name of the broker.</li>
+ * </ul>
+ * 
+ * <p>Private Methods:</p>
+ * <ul>
+ *   <li>{@link #_connect(int, IConnectListener)} - Handles the connection logic for the specified port.</li>
+ * </ul>
+ * 
+ * <p>Fields:</p>
+ * <ul>
+ *   <li>{@code _brokerManager} - The BrokerManager instance managing this broker.</li>
+ *   <li>{@code _name} - The name of the broker.</li>
+ *   <li>{@code _binds} - A map of port numbers to IAcceptListener instances.</li>
+ * </ul>
+ */
+
 public class Broker implements IBroker{
 	
 	private BrokerManager _brokerManager;
@@ -50,6 +90,7 @@ public class Broker implements IBroker{
 		
 	}
 	
+	//Private method to handle the connection logic (called by connect)
 	private void _connect(int port, IConnectListener listener) {
 		if(_binds.containsKey(port)) {
 			

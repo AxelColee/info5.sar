@@ -6,6 +6,33 @@ import java.util.Queue;
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 
+/**
+ * The Channel class implements the IChannel interface and provides methods for reading and writing data
+ * through a circular buffer. It supports setting a listener for handling read and write events, and 
+ * managing the connection state.
+ * 
+ * <p>Fields:</p>
+ * <ul>
+ *  <li>{@code _rch} - The remote channel for communication.</li>
+ * <li>{@code _disconnected} - A flag indicating if the channel is disconnected.</li>
+ * <li>{@code _dangling} - A flag indicating if the channel is in a dangling state.</li>
+ * <li>{@code _in} - The circular buffer for incoming data.</li>
+ * <li>{@code _out} - The circular buffer for outgoing data.</li>
+ * <li>{@code _listener} - The listener for the channel.</li>
+ * <li>{@code _writeBuffer} - A queue for storing data to be written.</li>
+ * <li>{@code _readBuffer} - A queue for storing data to be read.</li>
+ * </ul>
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ *  <li>{@link #setListener(IChannelListener)} - Sets the listener for the channel.</li>
+ *  <li>{@link #getListener()} - Gets the listener for the channel.</li>
+ *  <li>{@link #read(byte[])} - Reads data from the channel.</li>
+ * 	<li>{@link #write(byte[])} - Writes data to the channel.</li>
+ * 	<li>{@link #disconnect()} - Disconnects the channel.</li>
+ * 	<li>{@link #disconnected()} - Checks if the channel is disconnected.</li>
+ * </ul>
+ */
 public class Channel implements IChannel{
 	
 	private static final int MAX_BUFFER_SIZE = 60000;
