@@ -1,8 +1,30 @@
 package info5.sar.EventBasedMessageQueue.Abstract;
 
+/**
+ * The IConnectListener interface provides methods to handle connection events
+ * for a message queue. Implementations of this interface can define custom
+ * behavior for when a connection is established or refused.
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ * <li>{@link #connected(IMessageQueue)}: Called when a connection is established.</li>
+ * <li>{@link #refused()}: Called when a connection is refused.</li>
+ * </ul>
+ * 
+ * @see IMessageQueue
+ */
 public abstract interface IConnectListener {
 	
+    /**
+     * Called when a connection is established.
+     * @param queue
+     */
     public abstract void connected(IMessageQueue queue);
+
+    /**
+     * Called when a connection is refused.
+     *@param queue
+     */
     public abstract void refused();
 
 }

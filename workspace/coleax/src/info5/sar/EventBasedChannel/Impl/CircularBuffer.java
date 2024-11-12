@@ -1,5 +1,28 @@
 package info5.sar.EventBasedChannel.Impl;
 
+/**
+ * {@code CircularBuffer} is a thread-safe circular buffer implementation.
+ * It supports basic operations like push and pull to add and remove bytes from the buffer.
+ * The buffer has a fixed capacity and uses volatile variables to ensure visibility of changes across threads.
+ * 
+ * <p>Methods:
+ * <ul>
+ *   <li>{@link #full()} - Checks if the buffer is full.</li>
+ *   <li>{@link #empty()} - Checks if the buffer is empty.</li>
+ *   <li>{@link #push(byte)} - Adds a byte to the buffer. Throws IllegalStateException if the buffer is full.</li>
+ *   <li>{@link #pull()} - Retrieves and removes the next available byte from the buffer. Throws IllegalStateException if the buffer is empty.</li>
+ * </ul>
+ * </p>
+ * 
+ * <p>Fields:
+ * <ul>
+ *   <li>{@code m_tail} - The index of the tail of the buffer.</li>
+ *   <li>{@code m_head} - The index of the head of the buffer.</li>
+ *   <li>{@code m_bytes} - The array that stores the bytes in the buffer.</li>
+ * </ul>
+ * </p>
+ * 
+ */
 public class CircularBuffer {
 
 		  volatile int m_tail, m_head;

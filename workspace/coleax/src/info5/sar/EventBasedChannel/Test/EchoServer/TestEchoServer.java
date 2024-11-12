@@ -8,6 +8,25 @@ import info5.sar.EventBasedChannel.Impl.Task;
 import info5.sar.EventBasedChannel.Test.EchoServer.Client.EchoClient;
 import info5.sar.EventBasedChannel.Test.EchoServer.Server.EchoServer;
 
+/**
+ * The {@code TestEchoServer} class is responsible for testing the EchoServer and EchoClient
+ * functionality. It sets up the server and client brokers, creates tasks for clients
+ * and server, and runs tests with varying numbers of clients and messages.
+ * 
+ * <p><strong>Fields:</strong></p>
+ * <ul>
+ * <li>{@code _clients}: Task for managing client threads.</li>
+ * <li>{@code _server}: Task for managing server thread.</li>
+ * <li>{@code _serverBroker}: Broker for the server.</li>
+ * <li>{@code _clientBroker}: Broker for the clients.</li>
+ * </ul>
+ * 
+ * <p><strong>Methods:</strong></p>
+ * <ul>
+ * <li>{@link #test(int, int)}: Runs a test with a specified number of clients and messages.</li>
+ * <li>{@link #allTests()}: Runs all tests with varying numbers of clients and messages.</li>
+ * </ul>
+ */
 public class TestEchoServer {
 	private Task _clients;
 	private Task _server;

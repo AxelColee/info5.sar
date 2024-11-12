@@ -1,0 +1,414 @@
+==== CONFIGS ====		
+{
+    "base_path": "/home/hani/info5.sar/workspace/coleax/src",
+    "out": "/home/hani/info5.sar/workspace/coleax/src/javadoc",
+    "javadoc_executable": "/usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc",
+    "exclude": [],
+    "raw_params": ""
+}
+
+==== COMMAND ====
+"/usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc" 
+	-sourcepath "/home/hani/info5.sar/workspace/coleax/src" 
+	-d "/home/hani/info5.sar/workspace/coleax/src/javadoc" 
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IAcceptListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IBroker.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannelListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IConnectListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Broker.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/BrokerManager.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Event.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/EventPump.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Task.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClient.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientChannelListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientConnectLIstener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServer.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerAcceptListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerChannelListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/TestChannel.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IAcceptListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IMessageQueue.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IQueueBroker.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalAcceptListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalChannelListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/MessageQueue.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClient.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientConnectListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientMessageListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServer.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerAcceptListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerMessageListener.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/TestEchoServer.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/TestMessageQueue.java"
+	"/home/hani/info5.sar/workspace/coleax/src/info5/sar/TestMain.java"
+	"/home/hani/info5.sar/workspace/coleax/src/module-info.java"
+
+
+==== JAVADOC OUTPUT ====
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IAcceptListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IBroker.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannelListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IConnectListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Broker.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/BrokerManager.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Event.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/EventPump.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Task.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClient.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientChannelListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientConnectLIstener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServer.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerAcceptListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerChannelListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/TestChannel.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IAcceptListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IMessageQueue.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IQueueBroker.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalAcceptListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalChannelListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/MessageQueue.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClient.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientConnectListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientMessageListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServer.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerAcceptListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerMessageListener.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/TestEchoServer.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/TestMessageQueue.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/info5/sar/TestMain.java...
+Loading source file /home/hani/info5.sar/workspace/coleax/src/module-info.java...
+Constructing Javadoc information...
+Building index for all the packages and classes...
+Standard Doclet version 17.0.12+7-Ubuntu-1ubuntu222.04
+Building tree for all the packages and classes...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:14: warning: empty <p> tag
+ * <p></strong>Fields:</strong></p>
+   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:14: error: unexpected end tag: </strong>
+ * <p></strong>Fields:</strong></p>
+      ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:14: error: unexpected end tag: </strong>
+ * <p></strong>Fields:</strong></p>
+                      ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:14: error: unexpected end tag: </p>
+ * <p></strong>Fields:</strong></p>
+                               ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:15: error: unexpected end tag: </p>
+ * </p>
+   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:23: error: unexpected end tag: </p>
+ * </p>
+   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:10: error: unknown tag: stong
+ * <p><stong>Methods:</strong></p>
+      ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:10: error: unexpected end tag: </strong>
+ * <p><stong>Methods:</strong></p>
+                     ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:10: error: unexpected end tag: </p>
+ * <p><stong>Methods:</strong></p>
+                              ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/Broker.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Broker.java:56: warning: no comment
+	public Broker(String name) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/BrokerManager.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/Channel.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:13: error: @param name not found
+	 * @param host The host to connect to.
+	          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:14: error: @param name not found
+	 * @param port The port to connect to.
+	          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:15: error: invalid use of @return
+	 * @return {@code true} if the connection was successful, else {@code false}.
+	   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:17: warning: no @param for listener
+	public abstract void setListener(IChannelListener listener);
+	                     ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:28: error: @param name not found
+	 * @param host The host to connect to.
+	          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:29: error: @param name not found
+	 * @param port The port to connect to.
+	          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/IChannel.java:32: warning: no @param for bytes
+	public abstract boolean read(byte[] bytes);
+	                        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:42: warning: no comment
+	public boolean _dangling;
+	               ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:43: warning: no comment
+	public CircularBuffer _in, _out;
+	                      ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:43: warning: no comment
+	public CircularBuffer _in, _out;
+	                           ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:40: warning: no comment
+	public Channel _rch;
+	               ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Channel.java:47: warning: no comment
+	public Channel() {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/CircularBuffer.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:53: error: invalid use of @return
+		   * @return the next available byte
+		     ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:54: error: reference not found
+		   * @throws an IllegalStateException if full.
+		     ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:66: error: reference not found
+		   * @throws an IllegalStateException if empty.
+		     ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/CircularBuffer.java:31: warning: no comment
+		  public CircularBuffer(int capacity) {
+		         ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClient.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClient.java:29: warning: no comment
+	public EchoClient(IBroker broker, int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClient.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClient.java:40: warning: no comment
+	public EchoClient(IQueueBroker broker, int nbMessage) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientChannelListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientChannelListener.java:40: warning: no comment
+	public EchoClientChannelListener(IChannel channel, List<byte[]> bytes, int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientConnectListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.java:20: warning: no description for @param
+     * @param queue
+       ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.java:26: error: @param name not found
+     *@param queue
+             ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.java:26: warning: no description for @param
+     *@param queue
+      ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientConnectListener.java:44: warning: no comment
+	public EchoClientConnectListener(int nbMessage) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientConnectLIstener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Client/EchoClientConnectLIstener.java:40: warning: no comment
+	public EchoClientConnectLIstener( int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientMessageListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:26: warning: no description for @param
+		 * @param bytes
+		   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:31: error: @param name not found
+		 * @param message
+		          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:31: warning: no description for @param
+		 * @param message
+		   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:36: warning: no description for @param
+		 * @param message
+		   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/EchoClientMessageListener.java:42: warning: no comment
+	public EchoClientMessageListener(IMessageQueue queue, List<byte[]> messages) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServer.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServer.java:29: warning: no comment
+	public EchoServer(IBroker broker, int nbClient, int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServer.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServer.java:37: warning: no comment
+	public EchoServer(IQueueBroker broker, int nbClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerAcceptListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerAcceptListener.java:41: warning: no comment
+	public EchoServerAcceptListener(IBroker broker, int nbClient, int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerAcceptListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerAcceptListener.java:44: warning: no comment
+	 public EchoServerAcceptListener(IQueueBroker broker, int nbClient) {
+	        ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerChannelListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/Server/EchoServerChannelListener.java:42: warning: no comment
+	public EchoServerChannelListener(IChannel channel, int nbClient, int nbMessagePerClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerMessageListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/EchoServerMessageListener.java:42: warning: no comment
+	public EchoServerMessageListener(IMessageQueue queue, int nbClient) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/Event.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Event.java:30: warning: no comment
+	public Event(Task mytask, Runnable r) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/EventPump.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/EventPump.java:90: warning: no description for @param
+	 * @param task
+	   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/IAcceptListener.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/IAcceptListener.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/IBroker.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/IChannel.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/IChannelListener.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/IConnectListener.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/IConnectListener.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/IMessageQueue.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IMessageQueue.java:29: warning: no description for @param
+		 * @param message
+		   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/IMessageQueue.java:30: warning: no description for @return
+		 * @return
+		   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/InternalAcceptListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalAcceptListener.java:34: warning: no comment
+	public InternalAcceptListener(IAcceptListener listener) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/InternalChannelListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalChannelListener.java:111: warning: no description for @param
+	 * @param ml
+	   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalChannelListener.java:56: warning: no comment
+	public InternalChannelListener(IChannel channel) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java:47: error: @param name not found
+	 * @param queue
+	          ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java:47: warning: no description for @param
+	 * @param queue
+	   ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java:65: error: @param name not found
+	 *@param queue
+	         ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java:65: warning: no description for @param
+	 *@param queue
+	  ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/InternalConnectListener.java:41: warning: no comment
+	public InternalConnectListener(IConnectListener listener) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/IQueueBroker.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/ITask.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java:27: warning: no @return
+    public static ITask task() {
+                        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java:33: error: invalid use of @return
+     * @return true if the task has been killed, false otherwise
+       ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java:37: warning: no comment
+    public abstract int getRemainingTries();
+                        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Abstract/ITask.java:36: warning: no comment
+    public abstract boolean killed();
+                            ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:19: warning: no comment
+		protected IMessageQueue _queue;
+		                        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Abstract/MessageListener.java:21: warning: no comment
+		public MessageListener(IMessageQueue queue) {
+		       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/MessageQueue.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/MessageQueue.java:41: warning: no comment
+	public MessageQueue(IChannel channel) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.java:74: error: reference not found
+	 * @see Broker#bind(int, IAcceptListener)
+	        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.java:87: error: reference not found
+	 * @see Broker#connect(String, int, IConnectListener)
+	        ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Impl/QueueBroker.java:44: warning: no comment
+	public QueueBroker(String name) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/Task.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Task.java:36: warning: no comment
+	public static int MAX_TRIES = 10;
+	                  ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Task.java:51: warning: no comment
+	public Task() {
+	       ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Impl/Task.java:44: warning: no comment
+	public Task(int remainingTries) {
+	       ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/TestChannel.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/TestChannel.java:20: warning: no comment
+	public void allChannelTests() {
+	            ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/TestChannel.java:28: warning: no comment
+	public static void main(String[] args) {
+	                   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.java:37: warning: no comment
+	public TestEchoServer() {
+	       ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.java:61: warning: no comment
+	public void allTests() {
+	            ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedChannel/Test/EchoServer/TestEchoServer.java:75: warning: no comment
+	public static void main(String[] args) {
+	                   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/TestEchoServer.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/TestEchoServer.java:51: warning: no comment
+	public TestEchoServer() {
+	       ^
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/EventBasedMessageQueue/Test/EchoServer/TestEchoServer.java:98: warning: no comment
+	public static void main(String[] args) {
+	                   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/TestMain.html...
+/home/hani/info5.sar/workspace/coleax/src/info5/sar/TestMain.java:26: warning: no comment
+	public static void main(String[] args) {
+	                   ^
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/TestMessageQueue.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Abstract/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Impl/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Client/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Client/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Server/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedChannel/Test/EchoServer/Server/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Abstract/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Impl/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Client/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/package-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/info5/sar/EventBasedMessageQueue/Test/EchoServer/Server/package-tree.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/info5.sar/module-summary.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/overview-tree.html...
+Building index for all classes...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/allclasses-index.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/allpackages-index.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/index-all.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/index.html...
+Generating /home/hani/info5.sar/workspace/coleax/src/javadoc/help-doc.html...
+23 errors
+55 warnings
+
+

@@ -6,6 +6,33 @@ import java.util.Queue;
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 
+/**
+ * The {@code Channel} class implements the IChannel interface and provides methods for reading and writing data
+ * through a circular buffer. It supports setting a listener for handling read and write events, and 
+ * managing the connection state.
+ * 
+ * <p></strong>Fields:</strong></p>
+ * <ul>
+ *  <li>{@code _rch} - The remote channel for communication.</li>
+ * <li>{@code _disconnected} - A flag indicating if the channel is disconnected.</li>
+ * <li>{@code _dangling} - A flag indicating if the channel is in a dangling state.</li>
+ * <li>{@code _in} - The circular buffer for incoming data.</li>
+ * <li>{@code _out} - The circular buffer for outgoing data.</li>
+ * <li>{@code _listener} - The listener for the channel.</li>
+ * <li>{@code _writeBuffer} - A queue for storing data to be written.</li>
+ * <li>{@code _readBuffer} - A queue for storing data to be read.</li>
+ * </ul>
+ * 
+ * <p><strong>Methods:</strong></p>
+ * <ul>
+ *  <li>{@link #setListener(IChannelListener)} - Sets the listener for the channel.</li>
+ *  <li>{@link #getListener()} - Gets the listener for the channel.</li>
+ *  <li>{@link #read(byte[])} - Reads data from the channel.</li>
+ * 	<li>{@link #write(byte[])} - Writes data to the channel.</li>
+ * 	<li>{@link #disconnect()} - Disconnects the channel.</li>
+ * 	<li>{@link #disconnected()} - Checks if the channel is disconnected.</li>
+ * </ul>
+ */
 public class Channel implements IChannel{
 	
 	private static final int MAX_BUFFER_SIZE = 60000;
@@ -25,12 +52,20 @@ public class Channel implements IChannel{
 		_readBuffer = new LinkedList<byte[]>();
 	}
 	
-
+	/**
+	 * Sets the listener for the channel.
+	 * @param listener The listener to set.
+	 * */
 	@Override
 	public void setListener(IChannelListener listener) {
 		_listener = listener;
 	}
 
+	/**
+	 * Reads data from the channel.
+	 * @param bytes The data to read.
+	 * @return {@code true} if the data was read successfully, else {@code false}.
+	 */
 	@Override
 	public boolean read(byte[] bytes) {
 		
@@ -50,6 +85,12 @@ public class Channel implements IChannel{
 		return true;
 	}
 	
+	/**
+	 * Helper method for reading data from the channel.
+	 * @param bytes The data to read.
+	 * @param offset The offset to start reading from.
+	 * @param length The length of data to read.
+	 */
 	private void _read(byte[] bytes, int offset, int length) {
 		
 		if(_disconnected) {
@@ -86,6 +127,11 @@ public class Channel implements IChannel{
 		
 	}
 
+	/**
+	 * Writes data to the channel.
+	 * @param bytes The data to write.
+	 * @return {@code true} if the data was written successfully, else {@code false}.
+	 */
 	@Override
 	public boolean write(byte[] bytes) {
 		
@@ -105,6 +151,12 @@ public class Channel implements IChannel{
 		return true;
 	}
 	
+	/**
+	 * Helper method for writing data to the channel.
+	 * @param bytes The data to write.
+	 * @param offset The offset to start writing from.
+	 * @param length The length of data to write.
+	 */
 	private void _write(byte[] bytes, int offset, int length) {
 		
 		if( _disconnected) {
@@ -143,6 +195,9 @@ public class Channel implements IChannel{
 		new Task().post(() -> _write(bytes, updatedOffset, length));
 	}
 
+	/**
+	 * Disconnects the channel.
+	 */
 	@Override
 	public void disconnect() {
 		_disconnected = true;
@@ -156,11 +211,20 @@ public class Channel implements IChannel{
 		_listener.disconnected();
 	}
 
+	/**
+	 * Checks if the channel is disconnected.
+	 * @return {@code true} if the channel is disconnected, else {@code false}.
+	 */
 	@Override
 	public boolean disconnected() {
 		return _disconnected;
 	}
 	
+	/**
+	 * Gets the size of the buffer.
+	 * @param buffer The buffer to get the size of.
+	 * @return The size of the buffer.
+	 */
 	private int getBufferSize(Queue<byte[]> buffer) {
 		int sum = 0;
 		for(byte[] bytes : buffer) {
@@ -169,15 +233,27 @@ public class Channel implements IChannel{
 		return sum;
 	}
 	
+	/**
+	 * Gets the size of the write buffer.
+	 * @return The size of the write buffer.
+	 */
 	private int getWriteBufferSize() {
 		return getBufferSize(_writeBuffer);
 	}
 	
+	/**
+	 * Gets the size of the read buffer.
+	 * @return The size of the read buffer.
+	 */
 	private int getReadBufferSize() {
 		return getBufferSize(_readBuffer);
 	}
 
 
+	/**
+	 * Gets the listener for the channel.
+	 * @return The {@link IChannelListener} for the channel.
+	 */
 	@Override
 	public IChannelListener getListener() {
 		return _listener;

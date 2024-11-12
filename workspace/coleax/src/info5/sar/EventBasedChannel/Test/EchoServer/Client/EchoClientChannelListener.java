@@ -5,6 +5,31 @@ import java.util.List;
 import info5.sar.EventBasedChannel.Abstract.IChannel;
 import info5.sar.EventBasedChannel.Abstract.IChannelListener;
 
+/**
+ * {@code EchoClientChannelListener} is an implementation of the IChannelListener interface.
+ * It listens to events on a channel and verifies that the data received matches the data sent.
+ * It also handles disconnection events and ensures the channel is properly disconnected.
+ * 
+ * <p>Constructor:</p>
+ * <ul>
+ *   <li>{@link #EchoClientChannelListener(IChannel, List, int)}: Initializes the listener with the specified channel, list of byte arrays, and number of messages per client.</li>
+ * </ul>
+ * 
+ * <p>Methods:</p>
+ * <ul>
+ *   <li>{@link #read(byte[])}: Called when data is read from the channel. Verifies the received data and disconnects the channel if the expected number of messages have been received.</li>
+ *   <li>{@link #disconnected()}: Called when the channel is disconnected. Asserts that the channel is indeed disconnected and prints a message indicating the client passed.</li>
+ *   <li>{@link #wrote(byte[])}: Called when data is written to the channel. Reads the response from the channel.</li>
+ * </ul>
+ * 
+ * <p>Fields:</p>
+ * <ul>
+ *   <li>{@code _bytes}: List of byte arrays to be compared with the received data.</li>
+ *   <li>{@code _nbMessagePerClient}: Number of messages expected per client.</li>
+ *   <li>{@code _channel}: The channel associated with this listener.</li>
+ *   <li>{@code _counter}: Counter to keep track of the number of messages received.</li>
+ * </ul>
+ */
 public class EchoClientChannelListener implements IChannelListener {
 	
 	private List<byte[]> _bytes;
