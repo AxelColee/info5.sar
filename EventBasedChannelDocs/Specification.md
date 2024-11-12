@@ -1,93 +1,94 @@
 # Event Channel
-This is an event based implementation of channels
+This is an event-based implementation of channels.
 
 ## Purpose 
-Implement a simple request/response service to allow user to exchange message with one another.
+Implement a simple request/response service to allow users to exchange messages with one another.
 
-## Binding/Unbinding/connecting
-Binding on a broker will accept all the connection on the specified port until an unbind is posted.
-In order for a connect to work a bind should already be done on the targetted broker. If a connect and a bind match the connection will be established. Several connect can be done on the same bind.
+## Binding/Unbinding/Connecting
+Binding on a broker will accept all connections on the specified port until an unbind is posted.  
+In order for a connect to work, a bind should already be done on the targeted broker. If a connect and a bind match, the connection will be established. Several connects can be done on the same bind.
 
 ## Writing/Reading
-Write and read actions will be done in the order they have been distributed. It means concureent not linked write acions can be sent and will be write in the same order ensuring data consistency.
-Even in this event based implementation, the set will eventually be written without the need to repost write or read actions.
-Moreover a limit is fixed preventing the user from posting too much write or read action.
+Write and read actions will be done in the order they have been distributed. This means concurrent, unlinked write actions can be sent and will be written in the same order, ensuring data consistency.  
+Even in this event-based implementation, the set will eventually be written without the need to repost write or read actions.  
+Moreover, a limit is set, preventing the user from posting too many write or read actions.
 
 ## Disconnecting
-If the local channel disconnects, it will reject all of the read and write actions. If actions already accepted are supposed to return a result they will be terminated without properly finishing.
-If the remote channel disconnects all the write actions will be performed as usual even if they don't reach the remote channel. Else, read will continue until there is nothing left.
+If the local channel disconnects, it will reject all read and write actions. If actions already accepted are supposed to return a result, they will be terminated without properly finishing.  
+If the remote channel disconnects, all write actions will be performed as usual, even if they don't reach the remote channel. Read actions will continue until there is nothing left.
 
 ## Broker Class
-The broker is the object that can initiate connection between tasks.
-Every broker has to be uniquely identified by a name and be accessed using also a port number.
-Even though a broker can be used by multiple task instances it **will not be synchronized**.
+The broker is the object that can initiate connections between tasks.  
+Every broker has to be uniquely identified by a name and accessed using a port number.  
+Even though a broker can be used by multiple task instances, it **will not be synchronized**.
 
-### constructor
-- **Broker(String name)** :
-    - *name* : The broker name used to connect.
+### Constructor
+- **Broker(String name)**:
+    - *name*: The broker name used to connect.
 
-- **boolean Channel bind(String name, AcceptListener listener)** : Binds connection on the specified port. Keeps the right to refuse some bind action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *port* : the port on which the client tries to connect
-    - *listener* : The listener called once the the conection is accepted.
+- **boolean Channel bind(String name, AcceptListener listener)**: Binds a connection on the specified port. It reserves the right to refuse some bind actions. Returns `true` if performed, `false` otherwise.  
+    If there is already another accept on the same port, it will return `false`.
+    - *port*: The port on which the client tries to connect.
+    - *listener*: The listener called once the connection is accepted.
 
-- **boolean Channel unbind(int port)** : Unbinds connection on the specified port. Keeps the right to refuse some bind action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *port* : the port on which the client tries to connect
+- **boolean Channel unbind(int port)**: Unbinds the connection on the specified port. It reserves the right to refuse some unbind actions. Returns `true` if performed, `false` otherwise.  
+    If there is already another accept on the same port, it will return `false`.
+    - *port*: The port on which the client tries to connect.
 
-- **boolean Channel connect(String name, int port, ConnectListener listener);** Tries connecting to an other broker. If the action is posted, will return true. Keeps the right to refuse some connect action. Returns true if performed, false otherwise
-    If there is already an other accept on the same port, will return false.
-    - *name* : The name of the broker it tries to connect
-    - *port* : The *port* of *name* on which the connection will be established 
-    - *listener* : The listener called once connected or if the connectio is refused.
+- **boolean Channel connect(String name, int port, ConnectListener listener)**: Attempts to connect to another broker. If the action is posted, it will return `true`. It reserves the right to refuse some connect actions. Returns `true` if performed, `false` otherwise.  
+    If there is already another accept on the same port, it will return `false`.
+    - *name*: The name of the broker it tries to connect to.
+    - *port*: The *port* of *name* on which the connection will be established.
+    - *listener*: The listener called once connected or if the connection is refused.
 
 ## Channel Class
-This bidirectionnal channel is a byte array that can contains data. It can be write or read on. As a prerequisite, this channel is **FIFO** and **lossless**.
+This bidirectional channel is a byte array that can contain data. It can be written to or read from.  
+As a prerequisite, this channel is **FIFO** and **lossless**.
 
-- **boolean read(bytes[] bytes);** : Returns true if the read is posted or performed. false otherwise. If read exceeds a limit, the will not be posted and return false.
-    - *bytes* : the byte array to read on.
+- **boolean read(byte[] bytes)**: Returns `true` if the read is posted or performed, `false` otherwise. If the read exceeds a limit, it will not be posted and will return `false`.
+    - *bytes*: The byte array to read from.
 
-- **boolean write(bytes[] bytes, int offset, int length);** : Returns true if the write can be performed, false if write exceeds a limit.
-    - *bytes* is a data array that has to be written in the Channel.
+- **boolean write(byte[] bytes, int offset, int length)**: Returns `true` if the write can be performed, `false` if the write exceeds a limit.
+    - *bytes*: The data array to be written in the channel.
 
-- **void disconnect();** : Stops the connection
-- **boolean disconnected()** : Returns true if the channel is disconnected 
+- **void disconnect()**: Stops the connection.
 
-- **void setListener(ChannelListener listener)** : Sets the read Listener
+- **boolean disconnected()**: Returns `true` if the channel is disconnected.
 
-- **void getListener()** : Returns the listener.
+- **void setListener(ChannelListener listener)**: Sets the read listener.
 
+- **ChannelListener getListener()**: Returns the listener.
 
 ## Task
-Task allows the user to post runnables which will enventually be executed.
+Task allows the user to post runnables which will eventually be executed.
 
-- **public void post(Runnable r)**: Post *r* on the pump 
-	
-- **public void kill()** : Kills the current task. Once killed, all the runnables posted using this task will be removed and not executed.
+- **public void post(Runnable r)**: Posts *r* on the pump.
 
-- **public boolean killed()** : Returns true if the task is killed
+- **public void kill()**: Kills the current task. Once killed, all the runnables posted using this task will be removed and not executed.
 
-- **public static Task getTask()** : Returns the currently running task.
+- **public boolean killed()**: Returns `true` if the task is killed.
 
-## Listener should be redefined and suits your specific needs
+- **public static Task getTask()**: Returns the currently running task.
 
-### AccepteListener
-This interface will only be used to define the expected behavior once a connectio is accepted.
-It should be redefined for each entity wanted
+## Listeners (should be redefined to suit specific needs)
 
-- **public void accepted(Channel channel)** : Callback once a connection is accepted.
+### AcceptListener
+This interface is used to define the expected behavior once a connection is accepted.  
+It should be redefined for each desired entity.
+
+- **public void accepted(Channel channel)**: Callback once a connection is accepted.
 
 ### ConnectListener
-This interface will only be used to define the expected behavior once a connection is established.
-It should be redefined for each entity xanted
+This interface is used to define the expected behavior once a connection is established.  
+It should be redefined for each desired entity.
 
-- **public void connected(Channel channel)** : Callback once connected to the target.
+- **public void connected(Channel channel)**: Callback once connected to the target.
 
-- **public void refused** : Remote broker keeps the right to refuse the connection (and if the asked remote broker doesn't exist).
+- **public void refused()**: Callback when the remote broker refuses the connection (or if the requested remote broker doesn't exist).
 
 ## ChannelListener
-- **void wrote(byte[] bytes)** : Callback when all the bytes have been wrote on the channel. 
+- **void wrote(byte[] bytes)**: Callback when all the bytes have been written on the channel.
 
-- **void read(bytes[] )** : Callback once a set of bytes asked has been read. *bytes* is now yours, channels dont keep a copy of it.
+- **void read(byte[] bytes)**: Callback once a set of bytes has been read. *bytes* is now owned by the user; channels don’t keep a copy of it.
 
-- **void disconnected()** : callback for a disconnected channel.
+- **void disconnected()**: Callback for a disconnected channel.
