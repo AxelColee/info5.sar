@@ -5,7 +5,6 @@
 The `Event-Based Channel` framework provides a non-threaded, event-driven system for facilitating communication between tasks using brokers and channels. The framework enables asynchronous request/response services, allowing tasks to exchange messages in a single-threaded environment.
 
 ## Purpose
-
 This framework aims to implement a reliable, FIFO-based, event-driven service, enabling message exchange and task management without the use of threads.
 
 ## Broker Class

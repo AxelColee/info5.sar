@@ -48,6 +48,7 @@ The `QueueBroker` class manages communication channels and connections between b
 
 `AcceptListener` is responsible for handling accepted connections from brokers, creating a new `MessageQueue` instance upon acceptance. This custom interface, originating from the EventBasedChannel framework, allows the system to dynamically manage client connections as they are accepted.
 
+
 ### ConnectListener
 
 The `ConnectListener` interface manages client connection events, including successful connections and connection refusals. This component creates a `MessageQueue` when a connection is established, managing the lifecycle of connections in the event-driven framework.
@@ -55,3 +56,4 @@ The `ConnectListener` interface manages client connection events, including succ
 ### Listener
 
 `Listener` monitors messages sent and received within the framework. It uses internal states for message length and content to manage each stage of the message lifecycle, ensuring consistent data handling across communication events.
+

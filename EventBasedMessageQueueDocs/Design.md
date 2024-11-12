@@ -82,6 +82,7 @@ The following interfaces are custom implementations created in the EventBasedCha
 
 ## `Listener` Interface
 
+
 ### Enums
 - **SendingState**: {Length, Message}
 - **ReceivingState**: {Length, Message}
